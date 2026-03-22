@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Work | Keyaa Kapadia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --accent: #7F7EFF;
+      --ink: #1a1a1a;
+      --muted: #999;
+      --bg: #ffffff;
+    }
+
+    html {
+      background: #fff;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: transparent;
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.6;
+      cursor: none;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    #cur {
+      width: 13px;
+      height: 13px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .2s, height .2s, background .2s, border .2s;
+    }
+
+    body.hov #cur {
+      width: 36px;
+      height: 36px;
+      background: rgba(127,126,255,.1);
+      border: 1.5px solid var(--accent);
+    }
+
+    #grad {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 18vh;
+      background: linear-gradient(to bottom, transparent 0%, rgba(127,126,255,.12) 55%, rgba(80,78,220,.45) 100%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      opacity: 0;
+      animation: fadeUp .55s ease .05s forwards;
+      transition: background .25s ease;
+    }
+
+    .topbar.scrolled {
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -24px;
+      height: 24px;
+      background: linear-gradient(to bottom, rgba(255,255,255,.94) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+
+    .topbar.scrolled::after {
+      opacity: 1;
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 30px;
+      padding: 26px 40px 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .top-left {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .site-name {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .hero-inline {
+      font-size: 15px;
+      line-height: 1.35;
+      color: var(--ink);
+      transition: opacity .18s linear, transform .18s linear;
+      will-change: opacity, transform;
+    }
+
+    .disc-word {
+      color: var(--accent);
+      font-weight: 500;
+      transition: opacity .25s;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      opacity: .5;
+    }
+
+    .nav-links a.active {
+      font-weight: 500;
+    }
+
+    .intro {
+      padding: 0 40px 36px;
+      margin-top: -2px;
+    }
+
+    .intro-topline {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--ink);
+      margin-top: 0;
+      transition: opacity .18s linear, transform .18s linear;
+      will-change: opacity, transform;
+    }
+
+    .intro-fade {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity .18s linear, transform .18s linear;
+      will-change: opacity, transform;
+    }
+
+    .h-bio {
+      max-width: 1180px;
+    }
+
+    .h-bio p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--ink);
+      margin-top: 0;
+    }
+
+    .accent {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .works {
+      padding: 0 40px 80px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      opacity: 0;
+      animation: fadeUp .55s ease .3s forwards;
+    }
+
+    .w-item {
+      text-decoration: none;
+      color: var(--ink);
+      display: block;
+    }
+
+    .w-thumb {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+    }
+
+    .w-thumb-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      transition: transform .55s cubic-bezier(.16,1,.3,1);
+    }
+
+    .w-item:hover .w-thumb-inner {
+      transform: scale(1.04);
+    }
+
+    .w-info {
+      padding: 8px 0 0;
+    }
+
+    .w-title {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .w-tags {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: .02em;
+    }
+
+    .w-desc-wrap {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .28s ease, opacity .28s ease;
+    }
+
+    .w-item:hover .w-desc-wrap {
+      max-height: 50px;
+      opacity: 1;
+    }
+
+    .w-desc {
+      font-size: 12px;
+      color: var(--ink);
+      margin-top: 3px;
+      line-height: 1.5;
+    }
+
+    .c1 { background: #E3DEDB; }
+    .c2 { background: #D6E2DE; }
+    .c3 { background: #DDD9E8; }
+    .c4 { background: #E2DECE; }
+    .c5 { background: #D9E3E0; }
+    .c6 { background: #E6DADA; }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 20px 40px 32px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp .5s ease .5s forwards;
+      margin-top: auto;
+    }
+
+    .fl {
+      display: flex;
+      gap: 20px;
+    }
+
+    .fl a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .fl a:hover {
+      color: var(--accent);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar-inner {
+        flex-direction: column;
+        gap: 14px;
+        padding: 22px 20px 10px;
+      }
+
+      .top-left {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+      }
+
+      .hero-inline {
+        margin-top: 1px;
+      }
+
+      .intro {
+        padding: 0 20px 24px;
+        margin-top: -2px;
+      }
+
+      .works {
+        padding: 0 20px 48px;
+        grid-template-columns: 1fr;
+      }
+
+      footer {
+        padding: 20px;
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+      }
+
+      .fl {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      body {
+        cursor: auto;
+      }
+
+      #cur {
+        display: none;
+      }
+
+      .nav-links {
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="grad"></div>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="top-left">
+        <a href="../index.html" class="site-name">Keyaa Kapadia</a>
+        <div class="hero-inline" id="hero-inline">
+          is a <span class="disc-word" id="dw">graphic designer</span> from Mumbai &amp; based in New York City.
+        </div>
+      </div>
+
+      <nav class="nav-links">
+        <a href="../work/work.html" class="active">Work</a>
+        <a href="../play/play.html">Play</a>
+        <!-- <a href="../lens/lens.html">Lens</a> -->
+        <a href="../about/about.html">About</a>
+      </nav>
+    </div>
+  </div>
+
+  <section class="intro">
+    <div class="h-bio">
+      <p class="intro-topline">A junior studying Communication Design at Parsons School of Design.</p>
+      <div class="intro-fade" id="intro-fade">
+        <p>Currently a <span class="accent">TikTok Design Campus Ambassador</span>, <span class="accent">Notion Campus Leader</span> and <span class="accent">Autodesk Student Ambassador</span>.</p>
+        <p>Generalist by nature, designer by choice, always finding the space where systems start to feel human.</p>
+        <p>Her work lives in the in-between: where a system starts to feel human, and a poster becomes an interface.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="works">
+    <a href="#" class="w-item">
+      <div class="w-thumb c1"><div class="w-thumb-inner">🌿</div></div>
+      <div class="w-info">
+        <p class="w-title">Project One</p>
+        <p class="w-tags">UI/UX · App Design · Branding</p>
+        <div class="w-desc-wrap">
+          <p class="w-desc">A wellness app that doesn't make you feel bad for opening it at 2 am.</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="w-item">
+      <div class="w-thumb c2"><div class="w-thumb-inner">◈</div></div>
+      <div class="w-info">
+        <p class="w-title">Project Two</p>
+        <p class="w-tags">Brand Identity · Creative Coding</p>
+        <div class="w-desc-wrap">
+          <p class="w-desc">A brand system that generates itself differently every time.</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="w-item">
+      <div class="w-thumb c3"><div class="w-thumb-inner">✦</div></div>
+      <div class="w-info">
+        <p class="w-title">Project Three</p>
+        <p class="w-tags">Web Design · Interaction · Editorial</p>
+        <div class="w-desc-wrap">
+          <p class="w-desc">Designed for the slightly over-curious. Rewards patience, punishes skimming.</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="w-item">
+      <div class="w-thumb c4"><div class="w-thumb-inner">▲</div></div>
+      <div class="w-info">
+        <p class="w-title">Project Four</p>
+        <p class="w-tags">Graphic Design · Print</p>
+        <div class="w-desc-wrap">
+          <p class="w-desc">Print still matters. Especially when it bleeds off the page.</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="w-item">
+      <div class="w-thumb c5"><div class="w-thumb-inner">✿</div></div>
+      <div class="w-info">
+        <p class="w-title">Project Five</p>
+        <p class="w-tags">Multidisciplinary Art · Motion</p>
+        <div class="w-desc-wrap">
+          <p class="w-desc">Something that started as a poster and became something else entirely.</p>
+        </div>
+      </div>
+    </a>
+
+    <a href="#" class="w-item">
+      <div class="w-thumb c6"><div class="w-thumb-inner">◯</div></div>
+      <div class="w-info">
+        <p class="w-title">Project Six</p>
+        <p class="w-tags">UI/UX · Web Design</p>
+        <div class="w-desc-wrap">
+          <p class="w-desc">A project that asks more questions than it answers.</p>
+        </div>
+      </div>
+    </a>
+  </section>
+
+  <footer>
+    <div class="fl">
+      <a href="mailto:kapadiakeyaa@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank">LinkedIn</a>
+      <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank">Instagram</a>
+      <a href="../resume.html">Resume</a>
+    </div>
+    <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
+  </footer>
+
+  <script>
+    const cur = document.getElementById('cur');
+    const heroInline = document.getElementById('hero-inline');
+    const dw = document.getElementById('dw');
+
+    document.addEventListener('mousemove', (e) => {
+      if (!cur) return;
+      cur.style.left = e.clientX + 'px';
+      cur.style.top = e.clientY + 'px';
+    });
+
+    document.querySelectorAll('a, .w-item').forEach((el) => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    const words = [
+      'graphic designer',
+      'UI/UX designer',
+      'brand strategist',
+      'web designer',
+      'creative coder',
+      'multidisciplinary artist'
+    ];
+
+    let wi = 0;
+
+    setInterval(() => {
+      dw.style.opacity = '0';
+      setTimeout(() => {
+        wi = (wi + 1) % words.length;
+        dw.textContent = words[wi];
+        dw.style.opacity = '1';
+      }, 260);
+    }, 2200);
+
+    const topbar = document.querySelector('.topbar');
+
+    function handleTopbarScroll() {
+      if (window.scrollY > 10) {
+        topbar.classList.add('scrolled');
+      } else {
+        topbar.classList.remove('scrolled');
+      }
+    }
+
+    handleTopbarScroll();
+    window.addEventListener('scroll', handleTopbarScroll, { passive: true });
+
+    const introFade = document.getElementById('intro-fade');
+    const introTopline = document.querySelector('.intro-topline');
+
+    function handleScrollFade() {
+      const works = document.querySelector('.works');
+      const topbarBottom = topbar.getBoundingClientRect().bottom;
+      const worksTop = works.getBoundingClientRect().top;
+
+      // Start fading only once the works grid reaches the topbar
+      if (worksTop > topbarBottom) {
+        heroInline.style.opacity = '1';
+        heroInline.style.transform = 'translateY(0)';
+        introFade.style.opacity = '1';
+        introFade.style.transform = 'translateY(0)';
+        introTopline.style.opacity = '1';
+        introTopline.style.transform = 'translateY(0)';
+        return;
+      }
+
+      // Fade everything together over 100px
+      const fadeRange = 100;
+      const progress = Math.min(Math.abs(worksTop - topbarBottom) / fadeRange, 1);
+      const opacity = 1 - progress;
+      const translateY = -16 * progress;
+
+      heroInline.style.opacity = opacity;
+      heroInline.style.transform = `translateY(${translateY}px)`;
+      introFade.style.opacity = opacity;
+      introFade.style.transform = `translateY(${translateY}px)`;
+      introTopline.style.opacity = opacity;
+      introTopline.style.transform = `translateY(${translateY}px)`;
+    }
+
+    handleScrollFade();
+    window.addEventListener('scroll', handleScrollFade, { passive: true });
+  </script>
+</body>
+</html>

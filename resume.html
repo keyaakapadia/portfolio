@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Resume — Keyaa Kapadia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --accent: #7F7EFF;
+      --ink: #111111;
+      --muted: #9b9b9b;
+      --bg: #ffffff;
+    }
+
+    html {
+      background: var(--bg);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: transparent;
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.5;
+      cursor: none;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      opacity: 0;
+      animation: pageFade .6s ease .03s forwards;
+    }
+
+    @keyframes pageFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    #cur {
+      width: 13px;
+      height: 13px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .2s, height .2s, background .2s, border .2s;
+    }
+
+    body.hov #cur {
+      width: 36px;
+      height: 36px;
+      background: rgba(127,126,255,.10);
+      border: 1.5px solid var(--accent);
+    }
+
+    #grad {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 18vh;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(127,126,255,.12) 55%,
+        rgba(80,78,220,.45) 100%
+      );
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      animation: fadeUp .5s ease .04s forwards;
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -24px;
+      height: 24px;
+      background: linear-gradient(to bottom, rgba(255,255,255,.94) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .22s ease;
+    }
+
+    .topbar.scrolled::after {
+      opacity: 1;
+    }
+
+    .topbar-inner {
+      padding: 26px 40px 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    nav.top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      flex-shrink: 0;
+      padding-top: 1px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover {
+      opacity: .5;
+    }
+
+    .nav-links a.active {
+      font-weight: 500;
+    }
+
+    .resume {
+      flex: 1;
+      padding: 56px 40px 100px;
+      opacity: 0;
+      animation: fadeUp .55s ease .18s forwards;
+    }
+
+    .r-row {
+      display: grid;
+      grid-template-columns: 190px 260px 1fr;
+      gap: 0 32px;
+      margin-bottom: 48px;
+      align-items: start;
+    }
+
+    .r-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .r-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--accent);
+      line-height: 1.4;
+      letter-spacing: -.01em;
+    }
+
+    .r-org-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.4;
+      letter-spacing: -.01em;
+    }
+
+    .r-org-role {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.45;
+      margin-top: 1px;
+    }
+
+    .r-org-meta {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .r-bullets {
+      list-style: none;
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .r-bullets li {
+      padding-left: 1em;
+      text-indent: -1em;
+      margin-bottom: 5px;
+    }
+
+    .r-bullets li::before {
+      content: "• ";
+      color: var(--accent);
+    }
+
+    .r-bullets li:last-child {
+      margin-bottom: 0;
+    }
+
+    .r-text {
+      font-size: 14px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    .inline-link {
+      color: var(--ink);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    footer {
+      padding: 20px 40px 32px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp .5s ease .35s forwards;
+      margin-top: auto;
+    }
+
+    .fl {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .fl a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .fl a:hover {
+      color: var(--accent);
+    }
+
+    @media (max-width: 900px) {
+      .r-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+        margin-bottom: 34px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      body {
+        cursor: auto;
+      }
+
+      #cur {
+        display: none;
+      }
+
+      .topbar-inner {
+        padding: 22px 20px 10px;
+      }
+
+      nav.top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 18px;
+      }
+
+      .resume {
+        padding: 40px 20px 72px;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .fl {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="grad"></div>
+
+  <div class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <nav class="top">
+        <a class="nav-name" href="work/work.html">Keyaa Kapadia</a>
+        <div class="nav-links">
+          <a href="work/work.html">Work</a>
+          <a href="play/play.html">Play</a>
+          <!-- <a href="lens/lens.html">Lens</a> -->
+          <a href="about/about.html">About</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="resume">
+    <div class="r-row">
+      <div class="r-label">Experience</div>
+      <div>
+        <p class="r-org-name">TikTok</p>
+        <p class="r-org-role">Design Campus Ambassador</p>
+        <p class="r-org-meta">New York, NY<br>March 2026 – Present</p>
+      </div>
+      <ul class="r-bullets">
+        <li>Represent TikTok’s product design presence on campus through peer outreach, event promotion, and design-centered community building.</li>
+        <li>Share design opportunities, team culture, and product thinking with students across communication design, UI/UX, and related creative disciplines.</li>
+        <li>Gather student feedback and insights to help inform future design resources, programming, and campus engagement efforts.</li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div></div>
+      <div>
+        <p class="r-org-name">Notion</p>
+        <p class="r-org-role">Campus Leader</p>
+        <p class="r-org-meta">New York, NY<br>August 2025 – Present</p>
+      </div>
+      <ul class="r-bullets">
+        <li>Led campus engagement and product adoption initiatives through workshops, peer onboarding, and community-driven events centered on productivity systems and digital workflows.</li>
+        <li>Built awareness and usage of Notion by supporting students with workspace setup, collaboration practices, and creator-focused templates.</li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div></div>
+      <div>
+        <p class="r-org-name">Autodesk</p>
+        <p class="r-org-role">Student Ambassador</p>
+        <p class="r-org-meta">New York, NY<br>January 2025 – Present</p>
+      </div>
+      <ul class="r-bullets">
+        <li>Represent Autodesk on campus by promoting design tools and supporting students across 3D, product design, and digital workflow use cases.</li>
+        <li>Facilitated tool adoption through peer education, troubleshooting, and campus-facing communication.</li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div></div>
+      <div>
+        <p class="r-org-name">Questus</p>
+        <p class="r-org-role">Design Intern</p>
+        <p class="r-org-meta">New York, NY<br>June 2025 – August 2025</p>
+      </div>
+      <ul class="r-bullets">
+        <li>Supported internal and client-facing creative projects across branding, presentation design, visual storytelling, and marketing communications.</li>
+        <li>Designed decks, organized assets, and contributed research, competitor analysis, and trend analysis to inform creative direction.</li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div></div>
+      <div>
+        <p class="r-org-name">Jain Heritage Centre, Koba</p>
+        <p class="r-org-role">Creative Director</p>
+        <p class="r-org-meta">Mumbai, India<br>August 2020 – Present</p>
+      </div>
+      <ul class="r-bullets">
+        <li>Directed creative work for a cultural museum environment through environmental graphics, publications, fundraising materials, and visual storytelling systems.</li>
+        <li>Curated and cataloged artifacts while designing visitor-facing identity and communication assets.</li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div></div>
+      <div>
+        <p class="r-org-name">Math Me Up</p>
+        <p class="r-org-role">Design &amp; Marketing Intern</p>
+        <p class="r-org-meta">Mumbai, India<br>June 2024 – February 2025</p>
+      </div>
+      <ul class="r-bullets">
+        <li>Developed brand-aligned social media and marketing assets to increase digital engagement and audience reach.</li>
+        <li>Designed a beta website with a focus on user experience, accessibility, and stronger visual identity.</li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div></div>
+      <div>
+        <p class="r-org-name">Adolessons / Notion Press India</p>
+        <p class="r-org-role">Author &amp; Illustrator</p>
+        <p class="r-org-meta">Mumbai, India<br>December 2020</p>
+      </div>
+      <ul class="r-bullets">
+        <li>Authored and illustrated a humor-driven book on teen life lessons, including 16 original illustrations.</li>
+        <li>Sold 1,000+ copies and ranked #3 in the Indie Author Championship.</li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div class="r-label">Education</div>
+      <div>
+        <p class="r-org-name">Parsons School of Design, The New School</p>
+        <p class="r-org-role">BFA, Communication Design</p>
+        <p class="r-org-meta">New York, NY<br>Expected 2027</p>
+      </div>
+      <ul class="r-bullets">
+        <li>Dean’s List.</li>
+        <li>Coursework across UI/UX design, product design, branding, typography, motion, creative coding, interaction design, editorial design, and multidisciplinary studio practice.</li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div class="r-label">Awards &amp; Features</div>
+      <div></div>
+      <ul class="r-bullets">
+        <li>Dean’s List</li>
+        <li>Parsons Dean’s Merit Scholarship</li>
+        <li>Indie Author Championship, #3 ranking for <em>Adolessons</em></li>
+      </ul>
+    </div>
+
+    <div class="r-row">
+      <div class="r-label">Skills</div>
+      <div></div>
+      <p class="r-text">
+        UI/UX Design, Product Design, Interaction Design, Branding, Visual Identity, Design Systems, User Research,
+        User Flows, Wireframing, Prototyping, Responsive Design, Accessibility, Typography, Editorial Design,
+        Packaging Design, Motion Design, Presentation Design, Creative Coding, Visual Storytelling, Marketing Design,
+        Campaign Research, Competitor Analysis, Community Engagement, Content Strategy
+      </p>
+    </div>
+
+    <div class="r-row">
+      <div class="r-label">Tools</div>
+      <div></div>
+      <p class="r-text">
+        Figma, Adobe Photoshop, Illustrator, InDesign, After Effects, Premiere Pro, HTML, CSS, JavaScript, p5.js,
+        Notion, GitHub
+      </p>
+    </div>
+
+    <div class="r-row">
+      <div class="r-label">Contact</div>
+      <div></div>
+      <p class="r-text">
+        <a class="inline-link" href="mailto:kapadiakeyaa@gmail.com">kapadiakeyaa@gmail.com</a> ·
+        <a class="inline-link" href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank">LinkedIn</a> ·
+        <a class="inline-link" href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank">Instagram</a>
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="fl">
+      <a href="mailto:kapadiakeyaa@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank">LinkedIn</a>
+      <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank">Instagram</a>
+      <a href="resume.html">Resume</a>
+    </div>
+    <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
+  </footer>
+
+  <script>
+    const cur = document.getElementById('cur');
+    const topbar = document.getElementById('topbar');
+
+    document.addEventListener('mousemove', e => {
+      if (!cur) return;
+      cur.style.left = e.clientX + 'px';
+      cur.style.top = e.clientY + 'px';
+    });
+
+    document.querySelectorAll('a').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    function handleTopbarGradient() {
+      if (window.scrollY > 8) {
+        topbar.classList.add('scrolled');
+      } else {
+        topbar.classList.remove('scrolled');
+      }
+    }
+
+    handleTopbarGradient();
+    window.addEventListener('scroll', handleTopbarGradient);
+  </script>
+</body>
+</html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About | Keyaa Kapadia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root { --accent: #7F7EFF; --ink: #1a1a1a; --muted: #999; }
+    html { background: #fff; }
+
+    body {
+      background: transparent;
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.6;
+      cursor: none;
+      overflow-x: hidden;
+      opacity: 0;
+      animation: pageFade .65s ease .05s forwards;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    @keyframes pageFade {
+      from { opacity:0; }
+      to { opacity:1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to { opacity:1; transform:none; }
+    }
+
+    #cur {
+      width: 13px;
+      height: 13px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: width .2s, height .2s, background .2s, border .2s;
+    }
+
+    body.hov #cur {
+      width: 36px;
+      height: 36px;
+      background: rgba(127,126,255,.1);
+      border: 1.5px solid var(--accent);
+    }
+
+    #grad {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 18vh;
+      background: linear-gradient(to bottom,transparent 0%,rgba(127,126,255,.12) 55%,rgba(80,78,220,.45) 100%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      animation: fadeUp .55s ease .05s forwards;
+      flex-shrink: 0;
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -24px;
+      height: 24px;
+      background: linear-gradient(to bottom, rgba(255,255,255,.94) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 30px;
+      padding: 26px 40px 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    nav.top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .nav-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover { opacity: .5; }
+    .nav-links a.active { font-weight: 500; }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 20px 40px 32px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp .5s ease .7s forwards;
+      flex-shrink: 0;
+      margin-top: auto;
+    }
+
+    .info-grid {
+      padding: 20px 40px 0;
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      gap: 52px;
+      align-items: stretch;
+      opacity: 0;
+      animation: fadeUp .6s ease .3s forwards;
+      flex: 1;
+    }
+
+    .col-bio {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .bio-body {
+      font-size: clamp(14px, 1.55vw, 21px);
+      line-height: 1.85;
+      color: var(--ink);
+    }
+
+    .bio-body p + p { margin-top: 0.9em; }
+
+    .bio-links {
+      font-size: clamp(14px, 1.5vw, 20px);
+    }
+
+    .bio-links-row {
+      display: flex;
+      gap: 0;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .bio-links-row a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color .2s;
+    }
+
+    .bio-links-row a:hover { border-color: var(--accent); }
+
+    .bio-links-row .sep {
+      color: var(--muted);
+      margin: 0 8px;
+    }
+
+    .col-photo {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .photo-stack {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+    }
+
+    .bg-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      opacity: 0;
+      transition: opacity 1.4s ease-in-out;
+      filter: brightness(.85) saturate(.85);
+    }
+
+    .bg-slide.active { opacity: 0.52; }
+
+    .portrait {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .photo-caption {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 1400px) {
+      .info-grid {
+        grid-template-columns: 1fr 540px;
+        gap: 72px;
+        padding: 0 40px;
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .info-grid {
+        grid-template-columns: 1fr 400px;
+        gap: 36px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .info-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 28px;
+        align-items: start;
+      }
+
+      .col-bio { justify-content: flex-start; }
+      .bio-links { margin-top: 1.4em; }
+      .photo-stack { flex: none; aspect-ratio: 1 / 1; }
+    }
+
+    @media (max-width: 680px) {
+      body { cursor: auto; }
+      #cur { display: none; }
+
+      .topbar-inner {
+        padding: 22px 20px 10px;
+      }
+
+      .nav-links {
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      footer {
+        padding: 20px;
+        justify-content: center;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+        padding: 0 20px;
+        align-items: start;
+      }
+
+      .col-photo { order: -1; }
+      .photo-stack { flex: none; aspect-ratio: 1 / 1; }
+      .col-bio { justify-content: flex-start; }
+      .bio-links { margin-top: 1.4em; }
+      .bio-body { font-size: 14px; line-height: 1.75; }
+      .bio-links { text-align: center; }
+      .bio-links-row { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="grad"></div>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <nav class="top">
+        <a class="nav-name" href="../index.html">Keyaa Kapadia</a>
+        <div class="nav-links">
+          <a href="../work/work.html">Work</a>
+          <a href="../play/play.html">Play</a>
+          <!-- <a href="../lens/lens.html">Lens</a> -->
+          <a href="../about/about.html" class="active">About</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="info-grid">
+    <div class="col-bio">
+      <div class="bio-body">
+        <p>Keyaa Kapadia is a multidisciplinary designer from Mumbai, India, currently based in New York City. She is a junior at Parsons School of Design, majoring in Communication Design.</p>
+        <p>She considers herself a generalist, deliberately. Her practice moves between UI/UX, branding, web design, creative coding, and multidisciplinary art, always looking for the connective tissue between them.</p>
+        <p>She's drawn to the in-between: the moment a system starts to feel human, or a poster becomes an interface. When she's not designing, you can find her attending concerts, sketching, baking, or starting projects she'll definitely finish later.</p>
+      </div>
+
+      <div class="bio-links" style="margin-top: 1.6em;">
+        <div class="bio-links-row">
+          <a href="mailto:kapadiakeyaa@gmail.com">Email</a><span class="sep">/</span>
+          <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank">LinkedIn</a><span class="sep">/</span>
+          <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank">Instagram</a><span class="sep">/</span>
+          <a href="../resume.html">Resume</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-photo">
+      <div class="photo-stack">
+        <img class="bg-slide" src="rotatation1.png" alt="">
+        <img class="bg-slide" src="rotatation2.png" alt="">
+        <img class="bg-slide" src="rotatation3.png" alt="">
+        <img class="bg-slide" src="rotatation4.png" alt="">
+        <img class="bg-slide" src="rotatation5.png" alt="">
+        <img class="bg-slide" src="rotatation6.png" alt="">
+        <img class="portrait" src="keyaaimage.png" alt="Keyaa Kapadia">
+      </div>
+      <p class="photo-caption">Photo by Ahana Sonpal</p>
+    </div>
+  </div>
+
+  <footer>
+    <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
+  </footer>
+
+  <script>
+    const cur = document.getElementById('cur');
+
+    document.addEventListener('mousemove', e => {
+      if (!cur) return;
+      cur.style.left = e.clientX + 'px';
+      cur.style.top = e.clientY + 'px';
+    });
+
+    document.querySelectorAll('a').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    const slides = document.querySelectorAll('.bg-slide');
+    let current = Math.floor(Math.random() * slides.length);
+
+    if (slides.length) {
+      slides[current].classList.add('active');
+
+      function nextSlide() {
+        slides[current].classList.remove('active');
+        current = (current + 1) % slides.length;
+        slides[current].classList.add('active');
+      }
+
+      if (slides.length > 1) {
+        setInterval(nextSlide, 3800);
+      }
+    }
+  </script>
+</body>
+</html>

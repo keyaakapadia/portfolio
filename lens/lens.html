@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lens | Keyaa Kapadia</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --accent: #7F7EFF;
+      --ink: #1a1a1a;
+      --muted: #999;
+    }
+
+    html { background: #fff; }
+
+    body {
+      background: transparent;
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.6;
+      cursor: none;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      opacity: 0;
+      animation: pageFade .65s ease .05s forwards;
+    }
+
+    @keyframes pageFade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: none; }
+    }
+
+    #cur {
+      width: 13px;
+      height: 13px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width .2s, height .2s, background .2s, border .2s;
+    }
+
+    body.hov #cur {
+      width: 36px;
+      height: 36px;
+      background: rgba(127,126,255,.1);
+      border: 1.5px solid var(--accent);
+    }
+
+    #grad {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 18vh;
+      background: linear-gradient(to bottom, transparent 0%, rgba(127,126,255,.12) 55%, rgba(80,78,220,.45) 100%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 0;
+      animation: fadeUp .55s ease .05s forwards;
+    }
+
+    .topbar::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -24px;
+      height: 24px;
+      background: linear-gradient(to bottom, rgba(255,255,255,.94) 0%, rgba(255,255,255,0) 100%);
+      pointer-events: none;
+    }
+
+    .topbar-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 30px;
+      padding: 26px 40px 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    nav.top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .nav-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--accent);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      align-items: center;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity .2s;
+      white-space: nowrap;
+    }
+
+    .nav-links a:hover { opacity: .5; }
+    .nav-links a.active { font-weight: 500; }
+
+    .lens-header {
+      padding: 0 40px 28px;
+      opacity: 0;
+      animation: fadeUp .55s ease .15s forwards;
+    }
+
+    .lens-header p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .lens-header p em {
+      font-style: italic;
+      color: var(--ink);
+    }
+
+    .lens-wrap {
+      padding: 0 40px 60px;
+      flex: 1;
+      opacity: 0;
+      animation: fadeUp .55s ease .25s forwards;
+    }
+
+    .mosaic-row {
+      display: flex;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .mosaic-row:last-child { margin-bottom: 0; }
+
+    .mosaic-cell {
+      overflow: hidden;
+      flex-shrink: 0;
+      cursor: none;
+    }
+
+    .mosaic-cell img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .5s cubic-bezier(.16,1,.3,1), filter .4s ease;
+      filter: saturate(.92);
+    }
+
+    .mosaic-cell:hover img {
+      transform: scale(1.03);
+      filter: saturate(1.08);
+    }
+
+    footer {
+      position: relative;
+      z-index: 10;
+      padding: 20px 40px 32px;
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp .5s ease .55s forwards;
+      margin-top: auto;
+      flex-shrink: 0;
+    }
+
+    .fl {
+      display: flex;
+      gap: 20px;
+    }
+
+    .fl a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .fl a:hover { color: var(--accent); }
+
+    @media (max-width: 680px) {
+      body { cursor: auto; }
+      #cur { display: none; }
+
+      .topbar-inner {
+        padding: 22px 20px 10px;
+      }
+
+      .nav-links {
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      .lens-wrap { padding: 0 20px 40px; }
+      .lens-header { padding: 0 20px 20px; }
+
+      .mosaic-row {
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .mosaic-cell {
+        width: 100% !important;
+        height: auto !important;
+        flex-basis: auto !important;
+      }
+
+      .mosaic-cell img {
+        height: auto;
+        object-fit: contain;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .fl {
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="grad"></div>
+
+  <div class="topbar">
+    <div class="topbar-inner">
+      <nav class="top">
+        <a class="nav-name" href="../index.html">Keyaa Kapadia</a>
+        <div class="nav-links">
+          <a href="../work/work.html">Work</a>
+          <a href="../play/play.html">Play</a>
+          <a href="../lens/lens.html" class="active">Lens</a>
+          <a href="../about/about.html">About</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <div class="lens-header">
+    <p>People, places and things that are <em>close to my heart.</em></p>
+  </div>
+
+  <div class="lens-wrap">
+    <div class="mosaic" id="mosaic"></div>
+  </div>
+
+  <footer>
+    <div class="fl">
+      <a href="mailto:kapadiakeyaa@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank">LinkedIn</a>
+      <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank">Instagram</a>
+      <a href="../resume.html">Resume</a>
+    </div>
+    <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
+  </footer>
+
+  <script>
+    const cur = document.getElementById('cur');
+
+    document.addEventListener('mousemove', (e) => {
+      if (!cur) return;
+      cur.style.left = e.clientX + 'px';
+      cur.style.top = e.clientY + 'px';
+    });
+
+    document.querySelectorAll('a').forEach((el) => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    document.getElementById('yr').textContent = new Date().getFullYear();
+
+    const GAP = 20;
+    const DESKTOP_ROWS = 5;
+
+    function shuffle(arr) {
+      const a = [...arr];
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function tryLoad(index) {
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => resolve({
+          index,
+          aspect: img.naturalWidth / img.naturalHeight
+        });
+        img.onerror = () => resolve(null);
+        img.src = `photography/${index}.jpg`;
+      });
+    }
+
+    function distributeIntoRows(items, rowCount) {
+      const rows = [];
+      let start = 0;
+      let remainingAspect = items.reduce((sum, item) => sum + item.aspect, 0);
+
+      for (let rowIndex = 0; rowIndex < rowCount; rowIndex++) {
+        const rowsLeft = rowCount - rowIndex;
+        const targetAspect = remainingAspect / rowsLeft;
+        const row = [];
+        let rowAspect = 0;
+
+        while (start < items.length) {
+          const nextItem = items[start];
+          const itemsLeftAfterThis = items.length - (start + 1);
+          const rowsLeftAfterThis = rowCount - (rowIndex + 1);
+
+          row.push(nextItem);
+          rowAspect += nextItem.aspect;
+          start++;
+
+          const enoughForOtherRows = itemsLeftAfterThis >= rowsLeftAfterThis;
+          const reachedTarget = rowAspect >= targetAspect;
+          const mustStopToLeaveOneEach = itemsLeftAfterThis === rowsLeftAfterThis;
+
+          if ((reachedTarget && enoughForOtherRows) || mustStopToLeaveOneEach) break;
+        }
+
+        rows.push(row);
+        remainingAspect -= rowAspect;
+      }
+
+      return rows.filter(row => row.length);
+    }
+
+    async function buildMosaic() {
+      const mosaic = document.getElementById('mosaic');
+      mosaic.innerHTML = '';
+
+      await new Promise(resolve => requestAnimationFrame(resolve));
+
+      const containerWidth = mosaic.getBoundingClientRect().width || (window.innerWidth - 80);
+
+      const loaded = [];
+      for (let i = 1; i <= 500; i++) {
+        const item = await tryLoad(i);
+        if (!item) break;
+        loaded.push(item);
+      }
+
+      if (!loaded.length) return;
+
+      const items = shuffle(loaded);
+
+      if (window.innerWidth <= 680) {
+        items.forEach((item) => {
+          const rowEl = document.createElement('div');
+          rowEl.className = 'mosaic-row';
+
+          const cell = document.createElement('div');
+          cell.className = 'mosaic-cell';
+
+          const img = document.createElement('img');
+          img.src = `photography/${item.index}.jpg`;
+          img.alt = '';
+          img.loading = 'lazy';
+
+          cell.appendChild(img);
+          rowEl.appendChild(cell);
+          mosaic.appendChild(rowEl);
+
+          cell.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+          cell.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+        });
+        return;
+      }
+
+      const rowCount = Math.min(DESKTOP_ROWS, items.length);
+      const rows = distributeIntoRows(items, rowCount);
+
+      rows.forEach((rowItems) => {
+        const rowEl = document.createElement('div');
+        rowEl.className = 'mosaic-row';
+
+        const gaps = (rowItems.length - 1) * GAP;
+        const usableWidth = containerWidth - gaps;
+        const totalAspect = rowItems.reduce((sum, item) => sum + item.aspect, 0);
+        const rowHeight = usableWidth / totalAspect;
+
+        rowItems.forEach((item) => {
+          const cellWidth = item.aspect * rowHeight;
+
+          const cell = document.createElement('div');
+          cell.className = 'mosaic-cell';
+          cell.style.width = `${cellWidth}px`;
+          cell.style.height = `${rowHeight}px`;
+          cell.style.flexBasis = `${cellWidth}px`;
+
+          const img = document.createElement('img');
+          img.src = `photography/${item.index}.jpg`;
+          img.alt = '';
+          img.loading = 'lazy';
+
+          cell.appendChild(img);
+          rowEl.appendChild(cell);
+
+          cell.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+          cell.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+        });
+
+        mosaic.appendChild(rowEl);
+      });
+    }
+
+    buildMosaic();
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(buildMosaic, 150);
+    });
+  </script>
+</body>
+</html>
