@@ -113,6 +113,12 @@ makeVideoTile(
 );
 
 makeVideoTile(
+  document.getElementById("animationBlock"),
+  document.getElementById("animationStill"),
+  document.querySelectorAll('[data-tile="animation"]')
+);
+
+makeVideoTile(
   document.getElementById("disconnectBlock"),
   document.getElementById("disconnectStill"),
   document.querySelectorAll('[data-tile="disconnect"]')
