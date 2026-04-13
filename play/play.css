@@ -161,7 +161,6 @@ nav.top {
 .item {
   display: block;
   position: relative;
-  overflow: hidden;
   cursor: none;
   text-decoration: none;
   color: inherit;
@@ -170,8 +169,11 @@ nav.top {
 .ph {
   width: 100%;
   display: block;
+  height: auto;
+  aspect-ratio: var(--media-ratio, 5 / 3);
   object-fit: cover;
   background: #e8e8e8;
+  border-radius: 18px;
 }
 
 .cap {
@@ -237,13 +239,11 @@ nav.top {
 .video-piece {
   position: relative;
   width: 100%;
+  aspect-ratio: var(--media-ratio, 5 / 3);
   overflow: hidden;
   background: #e0e0e0;
+  border-radius: 18px;
 }
-
-.video-piece.short { height: 220px; }
-.video-piece.medium { height: 320px; }
-.video-piece.tall { height: 270px; }
 
 .video-still,
 .video-clip {
