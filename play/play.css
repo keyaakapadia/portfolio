@@ -173,7 +173,6 @@ nav.top {
   aspect-ratio: var(--media-ratio, 5 / 3);
   object-fit: cover;
   background: #e8e8e8;
-  border-radius: 18px;
 }
 
 .cap {
@@ -242,7 +241,6 @@ nav.top {
   aspect-ratio: var(--media-ratio, 5 / 3);
   overflow: hidden;
   background: #e0e0e0;
-  border-radius: 18px;
 }
 
 .video-still,
