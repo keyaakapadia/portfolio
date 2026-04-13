@@ -220,6 +220,63 @@
 
     .fl a:hover { color: var(--accent); }
 
+    @media (max-width: 1200px) {
+      .topbar-inner {
+        padding: 24px 32px 8px;
+      }
+
+      .lens-header {
+        padding: 0 32px 24px;
+      }
+
+      .lens-wrap {
+        padding: 0 32px 56px;
+      }
+
+      .mosaic-row {
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      footer {
+        padding: 20px 32px 28px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar-inner {
+        padding: 22px 24px 10px;
+      }
+
+      nav.top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 22px;
+        flex-wrap: wrap;
+      }
+
+      .lens-header {
+        padding: 0 24px 22px;
+      }
+
+      .lens-wrap {
+        padding: 0 24px 48px;
+      }
+
+      .mosaic-row {
+        gap: 14px;
+        margin-bottom: 14px;
+      }
+
+      footer {
+        padding: 20px 24px 26px;
+      }
+    }
+
     @media (max-width: 680px) {
       body { cursor: auto; }
       #cur { display: none; }
