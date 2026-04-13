@@ -111,7 +111,8 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 30px;
-      padding: 26px 40px 8px;
+      gap: clamp(16px, 2vw, 30px);
+      padding: clamp(20px, 2.6vw, 26px) clamp(20px, 3.2vw, 40px) 8px;
       position: relative;
       z-index: 2;
     }
@@ -126,7 +127,7 @@
     }
 
     .site-name {
-      font-size: 15px;
+      font-size: clamp(13px, 1.1vw, 15px);
       font-weight: 500;
       color: var(--accent);
       text-decoration: none;
@@ -135,7 +136,7 @@
     }
 
     .hero-inline {
-      font-size: 15px;
+      font-size: clamp(13px, 1.1vw, 15px);
       line-height: 1.35;
       color: var(--ink);
       transition: opacity .18s linear, transform .18s linear;
@@ -150,14 +151,14 @@
 
     .nav-links {
       display: flex;
-      gap: 36px;
+      gap: clamp(18px, 2.5vw, 36px);
       align-items: center;
       flex-shrink: 0;
       padding-top: 1px;
     }
 
     .nav-links a {
-      font-size: 14px;
+      font-size: clamp(13px, 1vw, 14px);
       font-weight: 400;
       color: var(--accent);
       text-decoration: none;
@@ -174,12 +175,12 @@
     }
 
     .intro {
-      padding: 0 40px 36px;
+      padding: 0 clamp(20px, 3.2vw, 40px) clamp(24px, 3vw, 36px);
       margin-top: -2px;
     }
 
     .intro-topline {
-      font-size: 15px;
+      font-size: clamp(13px, 1.1vw, 15px);
       line-height: 1.8;
       color: var(--ink);
       margin-top: 0;
@@ -199,7 +200,7 @@
     }
 
     .h-bio p {
-      font-size: 15px;
+      font-size: clamp(13px, 1.1vw, 15px);
       line-height: 1.8;
       color: var(--ink);
       margin-top: 0;
@@ -211,10 +212,10 @@
     }
 
     .works {
-      padding: 0 40px 80px;
+      padding: 0 clamp(20px, 3.2vw, 40px) clamp(48px, 6vw, 80px);
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
+      gap: clamp(16px, 2vw, 20px);
       opacity: 0;
       animation: fadeUp .55s ease .3s forwards;
     }
@@ -291,7 +292,7 @@
     footer {
       position: relative;
       z-index: 10;
-      padding: 20px 40px 32px;
+      padding: 20px clamp(20px, 3.2vw, 40px) clamp(24px, 3vw, 32px);
       font-size: 12px;
       color: var(--muted);
       display: flex;
@@ -328,37 +329,10 @@
       }
     }
 
-    @media (max-width: 1200px) {
-      .topbar-inner {
-        padding: 24px 32px 8px;
-      }
-
-      .intro {
-        padding: 0 32px 32px;
-      }
-
-      .works {
-        padding: 0 32px 72px;
-        gap: 18px;
-      }
-
-      footer {
-        padding: 20px 32px 28px;
-      }
-
-      .site-name,
-      .hero-inline,
-      .intro-topline,
-      .h-bio p {
-        font-size: 14px;
-      }
-    }
-
-    @media (max-width: 900px) {
+    @media (max-width: 980px) {
       .topbar-inner {
         flex-direction: column;
         gap: 14px;
-        padding: 22px 24px 10px;
       }
 
       .top-left {
@@ -377,17 +351,14 @@
       }
 
       .intro {
-        padding: 0 24px 24px;
         margin-top: -2px;
       }
 
       .works {
-        padding: 0 24px 48px;
         grid-template-columns: 1fr;
       }
 
       footer {
-        padding: 20px 24px;
         flex-direction: column;
         gap: 10px;
         text-align: center;
@@ -413,15 +384,6 @@
         gap: 18px;
         flex-wrap: wrap;
       }
-
-      .site-name,
-      .hero-inline,
-      .intro-topline,
-      .h-bio p {
-        font-size: 13.5px;
-        line-height: 1.7;
-      }
-
       .w-title { font-size: 12.5px; }
       .w-tags,
       .w-desc { font-size: 11px; }
