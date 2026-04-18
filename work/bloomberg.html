@@ -230,6 +230,39 @@
       background: linear-gradient(135deg, #ece8f7 0%, #ddd9e8 100%);
     }
 
+    .other-thumb--chaos {
+      position: relative;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 20%),
+        linear-gradient(135deg, #f4efe7 0%, #e9e3dc 58%, #dfe3f4 100%);
+      overflow: hidden;
+    }
+
+    .other-thumb--chaos::before,
+    .other-thumb--chaos::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .other-thumb--chaos::before {
+      inset: 0;
+      background:
+        repeating-linear-gradient(118deg, rgba(17,17,17,.1) 0 1px, transparent 1px 20px),
+        repeating-linear-gradient(180deg, rgba(17,17,17,.045) 0 1px, transparent 1px 30px);
+      opacity: .38;
+    }
+
+    .other-thumb--chaos::after {
+      right: -12%;
+      bottom: -10%;
+      width: 46%;
+      height: 48%;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(122,231,255,.72) 0%, rgba(122,231,255,.16) 36%, transparent 72%);
+      filter: blur(18px);
+    }
+
     .other-thumb--wired {
       background: linear-gradient(135deg, #e6efe7 0%, #d9e3e0 100%);
     }
@@ -354,11 +387,9 @@
     <section class="other-projects">
       <h2 class="other-title">Other Projects</h2>
       <div class="other-grid">
-        <a class="other-card" href="work.html">
-          <div class="other-thumb">
-            <img src="field.png" alt="field project preview" loading="lazy">
-          </div>
-          <p class="other-name">field.</p>
+        <a class="other-card" href="controlledchaos.html">
+          <div class="other-thumb other-thumb--chaos">◈</div>
+          <p class="other-name">Controlled Chaos</p>
         </a>
 
         <a class="other-card" href="work.html">

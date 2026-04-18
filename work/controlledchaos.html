@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keyaa Kapadia - Controlled Chaos</title>
+  <link rel="stylesheet" href="../shared.css"/>
+  <style>
+    :root {
+      --chaos-base: #f6f2eb;
+      --chaos-sand: #ebe5dd;
+      --chaos-mist: #dfe2f4;
+      --chaos-ink: #111111;
+      --chaos-blue: #3558ff;
+      --chaos-cyan: #88e7ff;
+      --chaos-lime: #d7ff7a;
+      --chaos-shadow: rgba(18, 20, 26, 0.12);
+      --chaos-gap: clamp(8px, 1vw, 12px);
+    }
+
+    body {
+      opacity: 0;
+      animation: pageFade .6s ease .03s forwards;
+    }
+
+    .topbar {
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transition: background .25s ease;
+    }
+
+    .topbar.scrolled {
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .topbar::after {
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+
+    .topbar.scrolled::after {
+      opacity: 1;
+    }
+
+    .project-page {
+      flex: 1;
+      padding: clamp(18px, 2.4vw, 28px) var(--page-pad) clamp(64px, 7vw, 96px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(26px, 3.8vw, 48px);
+    }
+
+    .project-intro,
+    .project-block,
+    .other-projects {
+      opacity: 0;
+      animation: fadeUp .55s ease forwards;
+    }
+
+    .project-intro { animation-delay: .12s; }
+    .block-hero { animation-delay: .18s; }
+    .block-mosaic { animation-delay: .24s; }
+    .block-interaction { animation-delay: .3s; }
+    .block-gallery { animation-delay: .36s; }
+    .other-projects { animation-delay: .42s; }
+
+    .project-intro {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(20px, 2.6vw, 36px);
+      align-items: start;
+    }
+
+    .project-intro > * {
+      min-width: 0;
+    }
+
+    .project-brand {
+      padding-top: clamp(6px, 0.8vw, 12px);
+    }
+
+    .project-title {
+      font-size: clamp(42px, 6vw, 88px);
+      line-height: .9;
+      letter-spacing: -.08em;
+      font-weight: 500;
+      color: var(--chaos-ink);
+      max-width: 8ch;
+      text-wrap: balance;
+    }
+
+    .project-meta,
+    .project-copy p {
+      font-size: var(--text-body);
+      line-height: 1.58;
+      color: var(--ink);
+      font-weight: 400;
+      text-wrap: pretty;
+    }
+
+    .project-meta {
+      max-width: 24ch;
+    }
+
+    .project-copy p {
+      max-width: 36ch;
+    }
+
+    .project-copy p + p {
+      margin-top: 12px;
+    }
+
+    .project-tools {
+      color: var(--muted);
+    }
+
+    .project-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .mosaic-grid,
+    .interaction-grid,
+    .gallery-grid,
+    .side-stack {
+      display: grid;
+      gap: var(--chaos-gap);
+    }
+
+    .mosaic-grid {
+      grid-template-columns: minmax(0, 1.45fr) minmax(280px, .85fr);
+      align-items: stretch;
+    }
+
+    .side-stack {
+      grid-template-rows: 1fr 1.12fr;
+    }
+
+    .interaction-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gallery-grid {
+      grid-template-columns: minmax(0, .88fr) minmax(0, 1.32fr) minmax(0, .94fr);
+      align-items: stretch;
+    }
+
+    .placeholder-stage {
+      --pointer-x: 50%;
+      --pointer-y: 50%;
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--media-radius);
+      isolation: isolate;
+      color: var(--chaos-ink);
+      background:
+        radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255,255,255,.88) 0%, rgba(255,255,255,0) 26%),
+        linear-gradient(135deg, var(--chaos-base) 0%, var(--chaos-sand) 52%, var(--chaos-mist) 100%);
+      box-shadow: 0 18px 48px var(--chaos-shadow);
+    }
+
+    .placeholder-stage::before,
+    .placeholder-stage::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .placeholder-stage::before {
+      background:
+        repeating-linear-gradient(115deg, rgba(17,17,17,.08) 0 1px, transparent 1px 26px),
+        repeating-linear-gradient(180deg, rgba(17,17,17,.045) 0 1px, transparent 1px 34px);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.25));
+      opacity: .55;
+      animation: fieldSweep 18s linear infinite;
+    }
+
+    .placeholder-stage::after {
+      inset: auto -12% -16% auto;
+      width: 42%;
+      height: 48%;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(136,231,255,.72) 0%, rgba(136,231,255,.18) 38%, transparent 72%);
+      filter: blur(24px);
+      animation: glowDrift 8s ease-in-out infinite;
+    }
+
+    .placeholder-stage--hero {
+      aspect-ratio: 16 / 9;
+      min-height: min(68vh, 640px);
+    }
+
+    .placeholder-stage--landscape {
+      aspect-ratio: 16 / 9;
+    }
+
+    .placeholder-stage--wide {
+      aspect-ratio: 21 / 9;
+    }
+
+    .placeholder-stage--square {
+      aspect-ratio: 1 / 1;
+    }
+
+    .placeholder-stage--portrait {
+      aspect-ratio: 4 / 5;
+    }
+
+    .placeholder-stage--video .video-pill {
+      display: inline-flex;
+    }
+
+    .stage-meta,
+    .stage-copy,
+    .stage-footer,
+    .stage-badges,
+    .video-pill {
+      position: absolute;
+      z-index: 3;
+    }
+
+    .stage-meta,
+    .stage-footer {
+      left: clamp(16px, 2vw, 24px);
+      right: clamp(16px, 2vw, 24px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .stage-meta {
+      top: clamp(16px, 2vw, 24px);
+    }
+
+    .stage-footer {
+      bottom: clamp(16px, 2vw, 24px);
+    }
+
+    .stage-kicker,
+    .stage-ratio,
+    .video-pill,
+    .stage-badges span {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: var(--text-caption);
+      line-height: 1;
+      color: rgba(17,17,17,.76);
+      background: rgba(255,255,255,.68);
+      border: 1px solid rgba(17,17,17,.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .video-pill {
+      top: clamp(16px, 2vw, 24px);
+      right: clamp(16px, 2vw, 24px);
+      gap: 8px;
+    }
+
+    .video-pill::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--chaos-blue);
+      box-shadow: 0 0 0 6px rgba(53,88,255,.12);
+    }
+
+    .stage-copy {
+      left: clamp(18px, 2.4vw, 30px);
+      bottom: clamp(18px, 2.4vw, 30px);
+      max-width: min(58ch, calc(100% - 36px));
+    }
+
+    .stage-copy h2,
+    .stage-copy h3 {
+      font-size: clamp(24px, 2.4vw, 40px);
+      line-height: .98;
+      letter-spacing: -.05em;
+      font-weight: 500;
+      color: var(--chaos-ink);
+      max-width: 16ch;
+      text-wrap: balance;
+    }
+
+    .stage-copy h3 {
+      font-size: clamp(20px, 1.9vw, 28px);
+      max-width: 15ch;
+    }
+
+    .stage-copy p {
+      margin-top: 10px;
+      max-width: 34ch;
+      font-size: var(--text-small);
+      line-height: 1.55;
+      color: rgba(17,17,17,.72);
+    }
+
+    .stage-badges {
+      right: clamp(18px, 2.2vw, 28px);
+      bottom: clamp(18px, 2.2vw, 28px);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+      max-width: min(40ch, 48%);
+    }
+
+    .stage-footer-note {
+      font-size: var(--text-caption);
+      color: rgba(17,17,17,.56);
+      line-height: 1.35;
+    }
+
+    .particle-layer,
+    .field-rings {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .field-rings::before,
+    .field-rings::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(17,17,17,.1);
+      animation: ringShift 18s ease-in-out infinite;
+    }
+
+    .field-rings::before {
+      width: 48%;
+      aspect-ratio: 1 / 1;
+      left: 8%;
+      top: 18%;
+    }
+
+    .field-rings::after {
+      width: 32%;
+      aspect-ratio: 1 / 1;
+      right: 14%;
+      top: 22%;
+      animation-delay: -6s;
+    }
+
+    .particle {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--size);
+      height: var(--size);
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,.98) 0%, rgba(255,255,255,.82) 18%, rgba(53,88,255,.34) 58%, transparent 78%);
+      box-shadow:
+        0 0 28px rgba(53,88,255,.18),
+        0 0 42px rgba(136,231,255,.14);
+      animation: particleFloat var(--dur, 14s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+      opacity: .92;
+    }
+
+    .particle--lime {
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,.98) 0%, rgba(255,255,255,.84) 18%, rgba(215,255,122,.38) 58%, transparent 78%);
+      box-shadow:
+        0 0 28px rgba(215,255,122,.18),
+        0 0 42px rgba(255,255,255,.12);
+    }
+
+    .other-projects {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .other-title {
+      font-size: var(--text-heading-sm);
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .other-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 1.8vw, 20px);
+    }
+
+    .other-card {
+      text-decoration: none;
+      color: var(--ink);
+      display: block;
+    }
+
+    .other-thumb {
+      aspect-ratio: 4 / 3;
+      border-radius: var(--media-radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #efeff4;
+      color: rgba(17, 17, 17, 0.58);
+      font-size: clamp(28px, 4vw, 50px);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .other-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .other-thumb--chaos {
+      background:
+        radial-gradient(circle at 28% 24%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 20%),
+        linear-gradient(135deg, #f3eee7 0%, #e9e3dc 60%, #dde2f5 100%);
+      position: relative;
+    }
+
+    .other-thumb--chaos::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(120deg, rgba(17,17,17,.1) 0 1px, transparent 1px 20px);
+      opacity: .38;
+    }
+
+    .other-card:hover .other-thumb {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(17, 17, 17, 0.08);
+    }
+
+    .other-name {
+      margin-top: 10px;
+      font-size: var(--text-small);
+      font-weight: 500;
+      text-wrap: balance;
+    }
+
+    footer {
+      opacity: 0;
+      animation: fadeUp .5s ease .5s forwards;
+    }
+
+    @keyframes fieldSweep {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-3%, 2%, 0) scale(1.02); }
+      100% { transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes glowDrift {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-6%, -8%, 0) scale(1.12); }
+    }
+
+    @keyframes particleFloat {
+      0%, 100% { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1); }
+      25% { transform: translate(-50%, -50%) translate3d(12px, -10px, 0) scale(1.08); }
+      50% { transform: translate(-50%, -50%) translate3d(-8px, 14px, 0) scale(.94); }
+      75% { transform: translate(-50%, -50%) translate3d(16px, 4px, 0) scale(1.04); }
+    }
+
+    @keyframes ringShift {
+      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      50% { transform: translate3d(10px, -12px, 0) rotate(12deg); }
+    }
+
+    /*
+      Reserved for the later brand campaign extension.
+      Use this when the project becomes a campaign system and needs logo lockups,
+      partner marks, headlines, CTA modules, and brand-specific end cards.
+
+      .block-campaign {
+        display: block;
+      }
+
+      .campaign-shell {
+        display: grid;
+        grid-template-columns: 1.2fr .8fr;
+        gap: var(--chaos-gap);
+      }
+
+      .campaign-logo-rail,
+      .campaign-end-card {
+        min-height: 280px;
+        border-radius: var(--media-radius);
+        background: linear-gradient(135deg, #f4efe7 0%, #dfe2f4 100%);
+      }
+    */
+
+    @media (max-width: 1180px) {
+      .project-intro {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project-copy {
+        grid-column: 1 / -1;
+        max-width: 64ch;
+      }
+
+      .gallery-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .gallery-grid .placeholder-stage--landscape {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .project-intro,
+      .mosaic-grid,
+      .interaction-grid,
+      .gallery-grid,
+      .other-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .side-stack {
+        grid-template-rows: none;
+      }
+
+      .stage-copy {
+        max-width: calc(100% - 36px);
+      }
+
+      .stage-badges {
+        left: 18px;
+        right: auto;
+        bottom: 18px;
+        max-width: calc(100% - 36px);
+        justify-content: flex-start;
+      }
+
+      .placeholder-stage--hero .stage-copy {
+        bottom: 82px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .project-page {
+        padding: 16px 20px 72px;
+        gap: 28px;
+      }
+
+      .project-title {
+        font-size: clamp(40px, 13vw, 62px);
+      }
+
+      .placeholder-stage--hero {
+        min-height: 430px;
+      }
+
+      .stage-meta,
+      .stage-footer {
+        left: 14px;
+        right: 14px;
+      }
+
+      .stage-copy {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        max-width: calc(100% - 32px);
+      }
+
+      .video-pill {
+        top: 14px;
+        right: 14px;
+      }
+
+      .stage-badges {
+        left: 16px;
+        bottom: 16px;
+        max-width: calc(100% - 32px);
+      }
+
+      .placeholder-stage--hero .stage-copy {
+        bottom: 84px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="grad"></div>
+
+  <div class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <nav class="top">
+        <a class="nav-name" href="../index.html">Keyaa Kapadia</a>
+        <div class="nav-links">
+          <a href="../work/work.html" class="active">Work</a>
+          <a href="../play/play.html">Play</a>
+          <a href="../about/about.html">About</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="project-page">
+    <section class="project-intro">
+      <div class="project-brand">
+        <h1 class="project-title">Controlled Chaos</h1>
+      </div>
+
+      <div>
+        <p class="project-meta">Creative Coding, Generative Design, Interaction Design, Systems Thinking, Computational Design</p>
+      </div>
+
+      <div class="project-copy">
+        <p>An interactive generative system where user input shapes a continuously evolving particle field. Through presets, controls, and gestures, the project explores how structured rules can produce unpredictable, fluid visual behaviors in real time.</p>
+        <p class="project-tools">[JavaScript, Three.js, HTML / CSS, WebGL (via Three.js)]</p>
+      </div>
+    </section>
+
+    <section class="project-block block-hero">
+      <div class="placeholder-stage placeholder-stage--hero" role="img" aria-label="Placeholder for the primary landscape hero capture of Controlled Chaos">
+        <div class="stage-meta">
+          <span class="stage-kicker">Landscape sample / 01</span>
+          <span class="stage-ratio">16:9 hero loop</span>
+        </div>
+
+        <div class="stage-copy">
+          <h2>Generative field responding to touch, cursor drift, and preset changes.</h2>
+          <p>Use this slot for the main landscape recording of the system in motion, ideally the one that feels most immersive and alive.</p>
+        </div>
+
+        <div class="stage-badges" aria-hidden="true">
+          <span>Gesture input</span>
+          <span>Preset morphs</span>
+          <span>Velocity trails</span>
+          <span>Particle bloom</span>
+        </div>
+
+        <div class="field-rings" aria-hidden="true"></div>
+        <div class="particle-layer" aria-hidden="true">
+          <span class="particle" style="--x: 18%; --y: 28%; --size: 16px; --dur: 14s; --delay: -2s;"></span>
+          <span class="particle particle--lime" style="--x: 28%; --y: 58%; --size: 22px; --dur: 18s; --delay: -6s;"></span>
+          <span class="particle" style="--x: 40%; --y: 36%; --size: 14px; --dur: 16s; --delay: -1s;"></span>
+          <span class="particle" style="--x: 54%; --y: 22%; --size: 12px; --dur: 17s; --delay: -9s;"></span>
+          <span class="particle particle--lime" style="--x: 62%; --y: 56%; --size: 28px; --dur: 19s; --delay: -5s;"></span>
+          <span class="particle" style="--x: 76%; --y: 34%; --size: 16px; --dur: 15s; --delay: -4s;"></span>
+          <span class="particle" style="--x: 82%; --y: 68%; --size: 18px; --dur: 18s; --delay: -7s;"></span>
+          <span class="particle particle--lime" style="--x: 48%; --y: 74%; --size: 12px; --dur: 13s; --delay: -3s;"></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-block block-mosaic">
+      <div class="mosaic-grid">
+        <div class="placeholder-stage placeholder-stage--landscape" role="img" aria-label="Placeholder for a landscape detail study of Controlled Chaos">
+          <div class="stage-meta">
+            <span class="stage-kicker">Landscape sample / 02</span>
+            <span class="stage-ratio">Preset comparison</span>
+          </div>
+
+          <div class="stage-copy">
+            <h3>Structured controls, unpredictable visual behavior.</h3>
+            <p>Good place for a widescreen frame showing a UI state, parameter controls, or two adjacent moods of the system.</p>
+          </div>
+
+          <div class="stage-footer">
+            <p class="stage-footer-note">Swap with a still, a looping capture, or a composite frame once final media is ready.</p>
+            <span class="stage-ratio">Mostly landscape</span>
+          </div>
+
+          <div class="particle-layer" aria-hidden="true">
+            <span class="particle" style="--x: 26%; --y: 34%; --size: 13px; --dur: 15s; --delay: -2s;"></span>
+            <span class="particle particle--lime" style="--x: 54%; --y: 66%; --size: 20px; --dur: 14s; --delay: -8s;"></span>
+            <span class="particle" style="--x: 72%; --y: 30%; --size: 16px; --dur: 17s; --delay: -5s;"></span>
+          </div>
+        </div>
+
+        <div class="side-stack">
+          <div class="placeholder-stage placeholder-stage--square" role="img" aria-label="Placeholder for a square crop of Controlled Chaos">
+            <div class="stage-meta">
+              <span class="stage-kicker">Square crop</span>
+              <span class="stage-ratio">1:1</span>
+            </div>
+
+            <div class="stage-copy">
+              <h3>Dense particle cluster.</h3>
+              <p>Useful for a punchy detail crop or social tile that highlights texture over interface.</p>
+            </div>
+
+            <div class="particle-layer" aria-hidden="true">
+              <span class="particle" style="--x: 36%; --y: 26%; --size: 14px; --dur: 12s; --delay: -2s;"></span>
+              <span class="particle particle--lime" style="--x: 62%; --y: 52%; --size: 22px; --dur: 16s; --delay: -6s;"></span>
+              <span class="particle" style="--x: 48%; --y: 70%; --size: 10px; --dur: 13s; --delay: -9s;"></span>
+            </div>
+          </div>
+
+          <div class="placeholder-stage placeholder-stage--portrait" role="img" aria-label="Placeholder for a vertical interaction crop of Controlled Chaos">
+            <div class="stage-meta">
+              <span class="stage-kicker">Vertical sample</span>
+              <span class="stage-ratio">4:5 crop</span>
+            </div>
+
+            <div class="stage-copy">
+              <h3>Portrait crop for motion snippets.</h3>
+              <p>Reserved for a tighter mobile-friendly edit, hand interaction shot, or reel-style cutdown.</p>
+            </div>
+
+            <div class="particle-layer" aria-hidden="true">
+              <span class="particle particle--lime" style="--x: 28%; --y: 32%; --size: 18px; --dur: 15s; --delay: -3s;"></span>
+              <span class="particle" style="--x: 64%; --y: 46%; --size: 14px; --dur: 14s; --delay: -8s;"></span>
+              <span class="particle" style="--x: 52%; --y: 72%; --size: 12px; --dur: 16s; --delay: -5s;"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-block block-interaction">
+      <div class="interaction-grid">
+        <div class="placeholder-stage placeholder-stage--landscape placeholder-stage--video" role="img" aria-label="Placeholder for interaction video showing people using Controlled Chaos">
+          <span class="video-pill">Interaction video / 01</span>
+
+          <div class="stage-copy">
+            <h3>Audience testing the field in real time.</h3>
+            <p>Best used for a landscape clip showing how people drag, hover, or tap through the system and how the field responds back.</p>
+          </div>
+
+          <div class="stage-footer">
+            <p class="stage-footer-note">Placeholder for a real-world interaction video or usability capture.</p>
+            <span class="stage-ratio">Landscape interaction</span>
+          </div>
+
+          <div class="particle-layer" aria-hidden="true">
+            <span class="particle" style="--x: 22%; --y: 44%; --size: 15px; --dur: 13s; --delay: -2s;"></span>
+            <span class="particle particle--lime" style="--x: 58%; --y: 24%; --size: 18px; --dur: 15s; --delay: -6s;"></span>
+            <span class="particle" style="--x: 78%; --y: 62%; --size: 12px; --dur: 14s; --delay: -4s;"></span>
+          </div>
+        </div>
+
+        <div class="placeholder-stage placeholder-stage--landscape placeholder-stage--video" role="img" aria-label="Placeholder for process video of users engaging with Controlled Chaos presets">
+          <span class="video-pill">Interaction video / 02</span>
+
+          <div class="stage-copy">
+            <h3>Preset switching, gesture play, and reaction shots.</h3>
+            <p>Another slot for documenting different kinds of user behavior: hesitant testing, playful exploration, or rapid preset changes.</p>
+          </div>
+
+          <div class="stage-footer">
+            <p class="stage-footer-note">Could also hold a behind-the-scenes recording of setup, controls, or installation context.</p>
+            <span class="stage-ratio">Process capture</span>
+          </div>
+
+          <div class="particle-layer" aria-hidden="true">
+            <span class="particle particle--lime" style="--x: 26%; --y: 30%; --size: 12px; --dur: 14s; --delay: -3s;"></span>
+            <span class="particle" style="--x: 48%; --y: 56%; --size: 20px; --dur: 16s; --delay: -8s;"></span>
+            <span class="particle" style="--x: 72%; --y: 36%; --size: 14px; --dur: 12s; --delay: -6s;"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="project-block block-gallery">
+      <div class="gallery-grid">
+        <div class="placeholder-stage placeholder-stage--portrait" role="img" aria-label="Placeholder for a vertical detail or interaction crop">
+          <div class="stage-meta">
+            <span class="stage-kicker">Detail crop</span>
+            <span class="stage-ratio">3:4 vertical</span>
+          </div>
+
+          <div class="stage-copy">
+            <h3>Close-up of field behavior.</h3>
+            <p>Nice slot for a tighter crop that focuses on one moment of turbulence, drag, or particle accumulation.</p>
+          </div>
+
+          <div class="particle-layer" aria-hidden="true">
+            <span class="particle" style="--x: 34%; --y: 22%; --size: 15px; --dur: 13s; --delay: -5s;"></span>
+            <span class="particle particle--lime" style="--x: 62%; --y: 50%; --size: 19px; --dur: 15s; --delay: -2s;"></span>
+            <span class="particle" style="--x: 48%; --y: 78%; --size: 11px; --dur: 12s; --delay: -8s;"></span>
+          </div>
+        </div>
+
+        <div class="placeholder-stage placeholder-stage--wide" role="img" aria-label="Placeholder for a wide montage of system states">
+          <div class="stage-meta">
+            <span class="stage-kicker">Landscape montage</span>
+            <span class="stage-ratio">21:9 strip</span>
+          </div>
+
+          <div class="stage-copy">
+            <h3>System states, presets, and motion studies in one long strip.</h3>
+            <p>This can become a no-gutter sequence of landscape variations later if you decide to turn the page into a denser campaign system.</p>
+          </div>
+
+          <div class="stage-footer">
+            <p class="stage-footer-note">Built to stay flexible while you decide between loose gallery mode and a stricter campaign layout.</p>
+            <span class="stage-ratio">Expandable strip</span>
+          </div>
+
+          <div class="particle-layer" aria-hidden="true">
+            <span class="particle particle--lime" style="--x: 18%; --y: 40%; --size: 14px; --dur: 13s; --delay: -1s;"></span>
+            <span class="particle" style="--x: 36%; --y: 22%; --size: 11px; --dur: 12s; --delay: -8s;"></span>
+            <span class="particle" style="--x: 52%; --y: 58%; --size: 20px; --dur: 15s; --delay: -4s;"></span>
+            <span class="particle particle--lime" style="--x: 76%; --y: 34%; --size: 16px; --dur: 17s; --delay: -7s;"></span>
+          </div>
+        </div>
+
+        <div class="placeholder-stage placeholder-stage--portrait" role="img" aria-label="Placeholder for a branded cutdown crop">
+          <div class="stage-meta">
+            <span class="stage-kicker">Social cutdown</span>
+            <span class="stage-ratio">4:5</span>
+          </div>
+
+          <div class="stage-copy">
+            <h3>Future campaign crop.</h3>
+            <p>Leaving this ratio open for later so it can become a branded cutdown, social asset, or logo-led frame when you are ready.</p>
+          </div>
+
+          <div class="particle-layer" aria-hidden="true">
+            <span class="particle" style="--x: 26%; --y: 36%; --size: 12px; --dur: 14s; --delay: -4s;"></span>
+            <span class="particle particle--lime" style="--x: 66%; --y: 28%; --size: 18px; --dur: 16s; --delay: -7s;"></span>
+            <span class="particle" style="--x: 54%; --y: 68%; --size: 13px; --dur: 15s; --delay: -2s;"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--
+    <section class="project-block block-campaign">
+      <div class="campaign-shell">
+        <div class="campaign-logo-rail">Primary logo, partner marks, or sponsor lockups</div>
+        <div class="campaign-end-card">Headline, CTA, brand copy, or campaign close</div>
+      </div>
+    </section>
+    -->
+
+    <section class="other-projects">
+      <h2 class="other-title">Other Projects</h2>
+      <div class="other-grid">
+        <a class="other-card" href="bloomberg.html">
+          <div class="other-thumb">
+            <img src="bloomberg_mall.png" alt="Bloomberg project preview" loading="lazy">
+          </div>
+          <p class="other-name">Bloomberg</p>
+        </a>
+
+        <a class="other-card" href="work.html">
+          <div class="other-thumb other-thumb--chaos">◈</div>
+          <p class="other-name">Work Index</p>
+        </a>
+
+        <a class="other-card" href="../play/play.html">
+          <div class="other-thumb">
+            <img src="../play/animation.png" alt="Play section preview" loading="lazy">
+          </div>
+          <p class="other-name">Play Experiments</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="fl">
+      <a href="mailto:kapadiakeyaa@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="../resume.html">Resume</a>
+    </div>
+    <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
+  </footer>
+
+  <script>
+    const cur = document.getElementById('cur');
+    const topbar = document.getElementById('topbar');
+    const yearEl = document.getElementById('yr');
+    const interactiveStages = document.querySelectorAll('.placeholder-stage');
+
+    document.addEventListener('mousemove', (e) => {
+      if (!cur) return;
+      cur.style.left = `${e.clientX}px`;
+      cur.style.top = `${e.clientY}px`;
+    });
+
+    document.querySelectorAll('a').forEach((el) => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    function handleTopbarScroll() {
+      if (!topbar) return;
+      if (window.scrollY > 10) {
+        topbar.classList.add('scrolled');
+      } else {
+        topbar.classList.remove('scrolled');
+      }
+    }
+
+    handleTopbarScroll();
+    window.addEventListener('scroll', handleTopbarScroll, { passive: true });
+
+    interactiveStages.forEach((stage) => {
+      const resetPointer = () => {
+        stage.style.setProperty('--pointer-x', '50%');
+        stage.style.setProperty('--pointer-y', '50%');
+      };
+
+      stage.addEventListener('pointermove', (event) => {
+        const bounds = stage.getBoundingClientRect();
+        const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+        const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+        stage.style.setProperty('--pointer-x', `${x}%`);
+        stage.style.setProperty('--pointer-y', `${y}%`);
+      });
+
+      stage.addEventListener('pointerleave', resetPointer);
+      stage.addEventListener('pointercancel', resetPointer);
+    });
+  </script>
+</body>
+</html>

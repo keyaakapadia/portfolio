@@ -178,12 +178,101 @@
       line-height: 1.55;
     }
 
+    .chaos-thumb {
+      background:
+        radial-gradient(circle at 26% 24%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 18%),
+        linear-gradient(135deg, #f4efe7 0%, #e9e3dc 58%, #dfe3f4 100%);
+    }
+
+    .chaos-thumb::before,
+    .chaos-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .chaos-thumb::before {
+      background:
+        repeating-linear-gradient(118deg, rgba(17,17,17,.1) 0 1px, transparent 1px 22px),
+        repeating-linear-gradient(180deg, rgba(17,17,17,.045) 0 1px, transparent 1px 32px);
+      opacity: .4;
+      animation: chaosShift 16s linear infinite;
+    }
+
+    .chaos-thumb::after {
+      inset: auto -8% 14% 46%;
+      height: 42%;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(122,231,255,.72) 0%, rgba(122,231,255,.16) 36%, transparent 72%);
+      filter: blur(18px);
+      animation: chaosPulse 8s ease-in-out infinite;
+    }
+
+    .chaos-thumb-inner {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .chaos-thumb-dot {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: var(--size);
+      height: var(--size);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,.96) 0%, rgba(255,255,255,.84) 20%, rgba(53,88,255,.32) 58%, transparent 78%);
+      box-shadow: 0 0 28px rgba(53,88,255,.18);
+      animation: thumbOrbit var(--dur, 13s) ease-in-out infinite;
+      animation-delay: var(--delay, 0s);
+    }
+
+    .chaos-thumb-dot--lime {
+      background:
+        radial-gradient(circle at 35% 35%, rgba(255,255,255,.96) 0%, rgba(255,255,255,.84) 20%, rgba(215,255,122,.4) 58%, transparent 78%);
+      box-shadow: 0 0 28px rgba(215,255,122,.18);
+    }
+
+    .chaos-thumb-mark {
+      position: absolute;
+      left: 14px;
+      bottom: 12px;
+      z-index: 2;
+      font-size: clamp(18px, 2.2vw, 30px);
+      line-height: .92;
+      letter-spacing: -.05em;
+      font-weight: 500;
+      color: #111;
+      text-align: left;
+    }
+
     .c1 { background: #E3DEDB; }
     .c2 { background: #D6E2DE; }
     .c3 { background: #DDD9E8; }
     .c4 { background: #E2DECE; }
     .c5 { background: #D9E3E0; }
     .c6 { background: #E6DADA; }
+
+    @keyframes chaosShift {
+      0% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-2%, 2%, 0) scale(1.02); }
+      100% { transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes chaosPulse {
+      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+      50% { transform: translate3d(-8%, -10%, 0) scale(1.12); }
+    }
+
+    @keyframes thumbOrbit {
+      0%, 100% { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1); }
+      25% { transform: translate(-50%, -50%) translate3d(10px, -8px, 0) scale(1.06); }
+      50% { transform: translate(-50%, -50%) translate3d(-8px, 10px, 0) scale(.94); }
+      75% { transform: translate(-50%, -50%) translate3d(14px, 3px, 0) scale(1.02); }
+    }
 
     footer {
       opacity: 0;
@@ -306,17 +395,23 @@
       </div>
     </a>
 
-    <!-- PROJECT 2: field. -->
-    <a href="field.html" class="w-item">
-      <div class="w-thumb c2">
-        <div class="w-thumb-inner">◈</div>
+    <!-- PROJECT 2: Controlled Chaos -->
+    <a href="controlledchaos.html" class="w-item">
+      <div class="w-thumb chaos-thumb">
+        <div class="w-thumb-inner chaos-thumb-inner" aria-hidden="true">
+          <span class="chaos-thumb-dot" style="--x: 18%; --y: 26%; --size: 14px; --dur: 12s; --delay: -2s;"></span>
+          <span class="chaos-thumb-dot chaos-thumb-dot--lime" style="--x: 34%; --y: 58%; --size: 22px; --dur: 16s; --delay: -6s;"></span>
+          <span class="chaos-thumb-dot" style="--x: 56%; --y: 32%; --size: 11px; --dur: 14s; --delay: -8s;"></span>
+          <span class="chaos-thumb-dot" style="--x: 72%; --y: 62%; --size: 16px; --dur: 15s; --delay: -4s;"></span>
+          <span class="chaos-thumb-dot chaos-thumb-dot--lime" style="--x: 82%; --y: 24%; --size: 12px; --dur: 13s; --delay: -9s;"></span>
+          <span class="chaos-thumb-mark">Controlled<br>Chaos</span>
+        </div>
       </div>
       <div class="w-info">
-        <p class="w-title">field.</p>
-        <!-- <p class="w-tags">Brand Identity · Creative Coding</p> -->
-        <p class="w-tags">Web Design · Creative Coding</p>
+        <p class="w-title">Controlled Chaos</p>
+        <p class="w-tags">Creative Coding · Generative Design · Interaction Design</p>
         <div class="w-desc-wrap">
-          <p class="w-desc">A brand system that generates itself differently every time.</p>
+          <p class="w-desc">An interactive generative system where user gestures shape a continuously evolving particle field.</p>
         </div>
       </div>
     </a>
