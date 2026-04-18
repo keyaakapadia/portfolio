@@ -4,151 +4,21 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lens | Keyaa Kapadia</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <title>Keyaa Kapadia - Lens</title>
+  <link rel="stylesheet" href="../shared.css"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --accent: #7F7EFF;
-      --ink: #1a1a1a;
-      --muted: #999;
-    }
-
-    html { background: #fff; }
-
     body {
-      background: transparent;
-      color: var(--ink);
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 1.6;
-      cursor: none;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
       opacity: 0;
       animation: pageFade .65s ease .05s forwards;
     }
-
-    @keyframes pageFade {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: none; }
-    }
-
-    #cur {
-      width: 13px;
-      height: 13px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width .2s, height .2s, background .2s, border .2s;
-    }
-
-    body.hov #cur {
-      width: 36px;
-      height: 36px;
-      background: rgba(127,126,255,.1);
-      border: 1.5px solid var(--accent);
-    }
-
-    #grad {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 18vh;
-      background: linear-gradient(to bottom, transparent 0%, rgba(127,126,255,.12) 55%, rgba(80,78,220,.45) 100%);
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255,255,255,.94);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      opacity: 0;
-      animation: fadeUp .55s ease .05s forwards;
-    }
-
-    .topbar::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -24px;
-      height: 24px;
-      background: linear-gradient(to bottom, rgba(255,255,255,.94) 0%, rgba(255,255,255,0) 100%);
-      pointer-events: none;
-    }
-
-    .topbar-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: clamp(16px, 2vw, 30px);
-      padding: clamp(20px, 2.6vw, 26px) clamp(20px, 3.2vw, 40px) 8px;
-      position: relative;
-      z-index: 2;
-    }
-
-    nav.top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-
-    .nav-name {
-      font-size: clamp(13px, 1vw, 14px);
-      font-weight: 500;
-      color: var(--accent);
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: clamp(18px, 2.5vw, 36px);
-      align-items: center;
-      flex-shrink: 0;
-      padding-top: 1px;
-    }
-
-    .nav-links a {
-      font-size: clamp(13px, 1vw, 14px);
-      color: var(--accent);
-      text-decoration: none;
-      transition: opacity .2s;
-      white-space: nowrap;
-    }
-
-    .nav-links a:hover { opacity: .5; }
-    .nav-links a.active { font-weight: 500; }
-
     .lens-header {
-      padding: 0 clamp(20px, 3.2vw, 40px) clamp(20px, 2.2vw, 28px);
+      padding: 0 var(--page-pad) clamp(24px, 2.2vw, 32px);
       opacity: 0;
       animation: fadeUp .55s ease .15s forwards;
     }
 
     .lens-header p {
-      font-size: 13px;
+      font-size: var(--text-small);
       color: var(--muted);
     }
 
@@ -158,7 +28,7 @@
     }
 
     .lens-wrap {
-      padding: 0 clamp(20px, 3.2vw, 40px) clamp(40px, 5vw, 60px);
+      padding: 0 var(--page-pad) clamp(44px, 5vw, 64px);
       flex: 1;
       opacity: 0;
       animation: fadeUp .55s ease .25s forwards;
@@ -175,7 +45,6 @@
     .mosaic-cell {
       overflow: hidden;
       flex-shrink: 0;
-      cursor: none;
     }
 
     .mosaic-cell img {
@@ -193,60 +62,11 @@
     }
 
     footer {
-      position: relative;
-      z-index: 10;
-      padding: 20px clamp(20px, 3.2vw, 40px) clamp(24px, 3vw, 32px);
-      font-size: 12px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       opacity: 0;
       animation: fadeUp .5s ease .55s forwards;
-      margin-top: auto;
-      flex-shrink: 0;
-    }
-
-    .fl {
-      display: flex;
-      gap: 20px;
-    }
-
-    .fl a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color .2s;
-    }
-
-    .fl a:hover { color: var(--accent); }
-
-    @media (max-width: 980px) {
-      nav.top {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .nav-links {
-        gap: 22px;
-        flex-wrap: wrap;
-      }
-
     }
 
     @media (max-width: 680px) {
-      body { cursor: auto; }
-      #cur { display: none; }
-
-      .topbar-inner {
-        padding: 22px 20px 10px;
-      }
-
-      .nav-links {
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-
       .lens-wrap { padding: 0 20px 40px; }
       .lens-header { padding: 0 20px 20px; }
 
@@ -276,7 +96,6 @@
 
       .fl {
         justify-content: center;
-        flex-wrap: wrap;
         gap: 14px;
       }
     }

@@ -4,82 +4,13 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Keyaa Kapadia | Work</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <title>Keyaa Kapadia - Work</title>
+  <link rel="stylesheet" href="../shared.css"/>
   <style>
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    :root {
-      --accent: #7F7EFF;
-      --ink: #1a1a1a;
-      --muted: #999;
-      --bg: #ffffff;
-    }
-
-    html {
-      background: #fff;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      background: transparent;
-      color: var(--ink);
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 1.6;
-      cursor: none;
-      overflow-x: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    #cur {
-      width: 13px;
-      height: 13px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: width .2s, height .2s, background .2s, border .2s;
-    }
-
-    body.hov #cur {
-      width: 36px;
-      height: 36px;
-      background: rgba(127,126,255,.1);
-      border: 1.5px solid var(--accent);
-    }
-
-    #grad {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 18vh;
-      background: linear-gradient(to bottom, transparent 0%, rgba(127,126,255,.12) 55%, rgba(80,78,220,.45) 100%);
-      pointer-events: none;
-      z-index: -1;
-    }
-
     .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
       background: transparent;
       backdrop-filter: none;
       -webkit-backdrop-filter: none;
-      opacity: 0;
-      animation: fadeUp .55s ease .05s forwards;
       transition: background .25s ease;
     }
 
@@ -90,14 +21,6 @@
     }
 
     .topbar::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -24px;
-      height: 24px;
-      background: linear-gradient(to bottom, rgba(255,255,255,.94) 0%, rgba(255,255,255,0) 100%);
-      pointer-events: none;
       opacity: 0;
       transition: opacity .25s ease;
     }
@@ -106,41 +29,21 @@
       opacity: 1;
     }
 
-    .topbar-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 30px;
-      gap: clamp(16px, 2vw, 30px);
-      padding: clamp(20px, 2.6vw, 26px) clamp(20px, 3.2vw, 40px) 8px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .top-left {
-      display: flex;
-      align-items: baseline;
-      flex-wrap: wrap;
-      gap: 10px;
-      min-width: 0;
-      flex: 1;
-    }
-
-    .site-name {
-      font-size: clamp(13px, 1.1vw, 15px);
-      font-weight: 500;
-      color: var(--accent);
-      text-decoration: none;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
-
     .hero-inline {
-      font-size: clamp(13px, 1.1vw, 15px);
-      line-height: 1.35;
+      font-size: var(--text-body);
+      line-height: 1.55;
       color: var(--ink);
       transition: opacity .18s linear, transform .18s linear;
       will-change: opacity, transform;
+    }
+
+    .top-left {
+      gap: clamp(4px, 0.35vw, 6px);
+    }
+
+    .site-name {
+      font-size: var(--text-body);
+      line-height: 1.55;
     }
 
     .disc-word {
@@ -149,39 +52,14 @@
       transition: opacity .25s;
     }
 
-    .nav-links {
-      display: flex;
-      gap: clamp(18px, 2.5vw, 36px);
-      align-items: center;
-      flex-shrink: 0;
-      padding-top: 1px;
-    }
-
-    .nav-links a {
-      font-size: clamp(13px, 1vw, 14px);
-      font-weight: 400;
-      color: var(--accent);
-      text-decoration: none;
-      transition: opacity .2s;
-      white-space: nowrap;
-    }
-
-    .nav-links a:hover {
-      opacity: .5;
-    }
-
-    .nav-links a.active {
-      font-weight: 500;
-    }
-
     .intro {
-      padding: 0 clamp(20px, 3.2vw, 40px) clamp(24px, 3vw, 36px);
+      padding: 0 var(--page-pad) clamp(28px, 3vw, 40px);
       margin-top: -2px;
     }
 
     .intro-topline {
-      font-size: clamp(13px, 1.1vw, 15px);
-      line-height: 1.8;
+      font-size: var(--text-body);
+      line-height: 1.6;
       color: var(--ink);
       margin-top: 0;
       transition: opacity .18s linear, transform .18s linear;
@@ -200,8 +78,8 @@
     }
 
     .h-bio p {
-      font-size: clamp(13px, 1.1vw, 15px);
-      line-height: 1.8;
+      font-size: var(--text-body);
+      line-height: 1.6;
       color: var(--ink);
       margin-top: 0;
     }
@@ -212,10 +90,10 @@
     }
 
     .works {
-      padding: 0 clamp(20px, 3.2vw, 40px) clamp(48px, 6vw, 80px);
+      padding: 0 var(--page-pad) clamp(52px, 6vw, 84px);
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: clamp(16px, 2vw, 20px);
+      gap: clamp(18px, 2vw, 22px);
       opacity: 0;
       animation: fadeUp .55s ease .3s forwards;
     }
@@ -230,6 +108,7 @@
       width: 100%;
       aspect-ratio: 4 / 3;
       overflow: hidden;
+      position: relative;
     }
 
     .w-thumb-inner {
@@ -242,24 +121,41 @@
       transition: transform .55s cubic-bezier(.16,1,.3,1);
     }
 
+    /* Image support */
+    .w-thumb-inner img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      font-size: 0;
+    }
+
+    /* Video support */
+    .w-thumb-inner video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
     .w-item:hover .w-thumb-inner {
       transform: scale(1.04);
     }
 
     .w-info {
-      padding: 8px 0 0;
+      padding: 10px 0 0;
     }
 
     .w-title {
-      font-size: 13px;
+      font-size: var(--text-small);
       font-weight: 500;
       color: var(--ink);
     }
 
     .w-tags {
-      font-size: 11px;
+      font-size: var(--text-caption);
       color: var(--muted);
-      margin-top: 2px;
+      margin-top: 3px;
       letter-spacing: .02em;
     }
 
@@ -276,10 +172,10 @@
     }
 
     .w-desc {
-      font-size: 12px;
+      font-size: var(--text-small);
       color: var(--ink);
-      margin-top: 3px;
-      line-height: 1.5;
+      margin-top: 4px;
+      line-height: 1.55;
     }
 
     .c1 { background: #E3DEDB; }
@@ -290,43 +186,8 @@
     .c6 { background: #E6DADA; }
 
     footer {
-      position: relative;
-      z-index: 10;
-      padding: 20px clamp(20px, 3.2vw, 40px) clamp(24px, 3vw, 32px);
-      font-size: 12px;
-      color: var(--muted);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       opacity: 0;
       animation: fadeUp .5s ease .5s forwards;
-      margin-top: auto;
-    }
-
-    .fl {
-      display: flex;
-      gap: 20px;
-    }
-
-    .fl a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color .2s;
-    }
-
-    .fl a:hover {
-      color: var(--accent);
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(12px);
-      }
-      to {
-        opacity: 1;
-        transform: none;
-      }
     }
 
     @media (max-width: 980px) {
@@ -372,21 +233,9 @@
     }
 
     @media (max-width: 680px) {
-      body {
-        cursor: auto;
-      }
-
-      #cur {
-        display: none;
-      }
-
-      .nav-links {
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-      .w-title { font-size: 12.5px; }
+      .w-title { font-size: 14px; }
       .w-tags,
-      .w-desc { font-size: 11px; }
+      .w-desc { font-size: 13px; }
     }
   </style>
 </head>
@@ -425,25 +274,43 @@
 
   <section class="works">
     
-    <a href="#" class="w-item">
-      <div class="w-thumb c1"><div class="w-thumb-inner">✿</div></div>
+    <!-- PROJECT 1: Editorial Illustration -->
+    <a href="bloomberg.html" class="w-item">
+      <div class="w-thumb c1">
+        <div class="w-thumb-inner">
+          <!-- bloomberg_combination.mp4 -->
+          <video
+            src="bloomberg_combination.mp4"
+            muted
+            playsinline
+            preload="metadata"
+            data-video
+          ></video>
+        </div>
+      </div>
       <div class="w-info">
-        <p class="w-title">Editorial Illustration - Bloomberg</p>
-        <!-- https://keyaakapadia.github.io/editorial_illustration_bloomberg/ -->
+        <p class="w-title">Editorial Illustration</p>
         <p class="w-tags"> Creative Coding · Editorial Design · Web Design</p>
         <div class="w-desc-wrap">
           <p class="w-desc">An illustration that depicts the sentiments of consumers quietly turning away from American brands.</p>
         </div>
 
-        <!-- A response to Beth Kowitt's Bloomberg Opinion piece on anti-American sentiment eroding the appeal of iconic U.S.
+        <!-- https://keyaakapadia.github.io/editorial_illustration_bloomberg/
+        A response to Beth Kowitt's Bloomberg Opinion piece on anti-American sentiment eroding the appeal of iconic U.S.
         brands. Built in HTML and JavaScript, the illustration follows a shopper through a virtual store where American products 
         repel away no matter where they turn, revealing the buyer behind every transaction. The further you reach, the more the 
-        shelves empty. -->
+        shelves empty.  (https://www.bloomberg.com/opinion/articles/2025-09-16/anti-americanism-is-hurting-us-brands?srnd=phx-opinion)
+        Fall 2025
+        Under - Talia Cotton (Cotton Design)
+        bloomberg_combination.mp4, -->
       </div>
     </a>
 
-    <a href="#" class="w-item">
-      <div class="w-thumb c2"><div class="w-thumb-inner">◈</div></div>
+    <!-- PROJECT 2: field. -->
+    <a href="field.html" class="w-item">
+      <div class="w-thumb c2">
+        <div class="w-thumb-inner">◈</div>
+      </div>
       <div class="w-info">
         <p class="w-title">field.</p>
         <!-- <p class="w-tags">Brand Identity · Creative Coding</p> -->
@@ -454,8 +321,11 @@
       </div>
     </a>
 
-    <a href="#" class="w-item">
-      <div class="w-thumb c3"><div class="w-thumb-inner">✦</div></div>
+    <!-- PROJECT 3: O(love) you (olive oil) -->
+    <a href="oloveyouoliveoil.html" class="w-item">
+      <div class="w-thumb c3">
+        <div class="w-thumb-inner">✦</div>
+      </div>
       <div class="w-info">
         <p class="w-title">O(love) you (olive oil)</p>
         <p class="w-tags">Brand Identity · Graphic Design</p>
@@ -465,8 +335,11 @@
       </div>
     </a>
 
-    <a href="#" class="w-item">
-      <div class="w-thumb c4"><div class="w-thumb-inner">▲</div></div>
+    <!-- PROJECT 4: Project Four -->
+    <a href="projectfour.html" class="w-item">
+      <div class="w-thumb c4">
+        <div class="w-thumb-inner">▲</div>
+      </div>
       <div class="w-info">
         <p class="w-title">Project Four</p>
         <p class="w-tags">Graphic Design · Print</p>
@@ -476,8 +349,11 @@
       </div>
     </a>
 
-    <a href="#" class="w-item">
-      <div class="w-thumb c5"><div class="w-thumb-inner">🌿</div></div>
+    <!-- PROJECT 5: WIRED -->
+    <a href="wired.html" class="w-item">
+      <div class="w-thumb c5">
+        <div class="w-thumb-inner">🌿</div>
+      </div>
       <div class="w-info">
         <p class="w-title">WIRED </p>
         <p class="w-tags">UI/UX · App Design · Branding</p>
@@ -487,11 +363,14 @@
       </div>
     </a>
 
-    <a href="#" class="w-item">
-      <div class="w-thumb c6"><div class="w-thumb-inner">◯</div></div>
+    <!-- PROJECT 6: Golden Ratio -->
+    <a href="goldenratio.html" class="w-item">
+      <div class="w-thumb c6">
+        <div class="w-thumb-inner">◯</div>
+      </div>
       <div class="w-info">
         <p class="w-title"> Golden Ratio </p>
-        <p class="w-tags">UI/UX · Web Design · Editorial Design/p>
+        <p class="w-tags">UI/UX · Web Design · Editorial Design</p>
         <div class="w-desc-wrap">
           <p class="w-desc">An exploration of artworks that have been based around the Golden Ratio.</p>
         </div>
@@ -595,6 +474,22 @@
 
     handleScrollFade();
     window.addEventListener('scroll', handleScrollFade, { passive: true });
+
+    // ── Video hover-to-play / pause-on-leave ──────────────────────────────────
+    document.querySelectorAll('.w-item').forEach((item) => {
+      const video = item.querySelector('video[data-video]');
+      if (!video) return;
+
+      item.addEventListener('mouseenter', () => {
+        // Resume from wherever it was paused
+        video.play().catch(() => {});
+      });
+
+      item.addEventListener('mouseleave', () => {
+        video.pause();
+        // currentTime is intentionally NOT reset — stays at last frame
+      });
+    });
   </script>
 </body>
 </html>

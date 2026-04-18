@@ -4,159 +4,24 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Keyaa Kapadia | About</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <title>Keyaa Kapadia - About</title>
+  <link rel="stylesheet" href="../shared.css"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root { --accent: #7F7EFF; --ink: #1a1a1a; --muted: #999; }
-    html { background: #fff; }
-
     body {
-      background: transparent;
-      color: var(--ink);
-      font-family: 'Inter', sans-serif;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 1.6;
-      cursor: none;
-      overflow-x: hidden;
       opacity: 0;
       animation: pageFade .65s ease .05s forwards;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
     }
-
-    @keyframes pageFade {
-      from { opacity:0; }
-      to { opacity:1; }
-    }
-
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(14px); }
-      to { opacity:1; transform:none; }
-    }
-
-    #cur {
-      width: 13px;
-      height: 13px;
-      background: var(--accent);
-      border-radius: 50%;
-      position: fixed;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%,-50%);
-      transition: width .2s, height .2s, background .2s, border .2s;
-    }
-
-    body.hov #cur {
-      width: 36px;
-      height: 36px;
-      background: rgba(127,126,255,.1);
-      border: 1.5px solid var(--accent);
-    }
-
-    #grad {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 18vh;
-      background: linear-gradient(to bottom,transparent 0%,rgba(127,126,255,.12) 55%,rgba(80,78,220,.45) 100%);
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-      background: rgba(255,255,255,.94);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      opacity: 0;
-      animation: fadeUp .55s ease .05s forwards;
-      flex-shrink: 0;
-    }
-
-    .topbar::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: -24px;
-      height: 24px;
-      background: linear-gradient(to bottom, rgba(255,255,255,.94) 0%, rgba(255,255,255,0) 100%);
-      pointer-events: none;
-    }
-
-    .topbar-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: clamp(16px, 2vw, 30px);
-      padding: clamp(20px, 2.6vw, 26px) clamp(20px, 3.2vw, 40px) 8px;
-      position: relative;
-      z-index: 2;
-    }
-
-    nav.top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-
-    .nav-name {
-      font-size: clamp(13px, 1vw, 14px);
-      font-weight: 500;
-      color: var(--accent);
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: clamp(18px, 2.5vw, 36px);
-      align-items: center;
-      flex-shrink: 0;
-      padding-top: 1px;
-    }
-
-    .nav-links a {
-      font-size: clamp(13px, 1vw, 14px);
-      font-weight: 400;
-      color: var(--accent);
-      text-decoration: none;
-      transition: opacity .2s;
-      white-space: nowrap;
-    }
-
-    .nav-links a:hover { opacity: .5; }
-    .nav-links a.active { font-weight: 500; }
-
     footer {
-      position: relative;
-      z-index: 10;
-      padding: 20px clamp(20px, 3.2vw, 40px) clamp(24px, 3vw, 32px);
-      font-size: 12px;
-      color: var(--muted);
-      display: flex;
       justify-content: flex-end;
-      align-items: center;
       opacity: 0;
       animation: fadeUp .5s ease .7s forwards;
-      flex-shrink: 0;
-      margin-top: auto;
     }
 
     .info-grid {
-      padding: 20px clamp(20px, 3.2vw, 40px) 0;
+      padding: 20px var(--page-pad) 0;
       display: grid;
       grid-template-columns: 1fr 480px;
-      gap: clamp(24px, 4vw, 52px);
+      gap: clamp(28px, 4vw, 52px);
       align-items: stretch;
       opacity: 0;
       animation: fadeUp .6s ease .3s forwards;
@@ -170,15 +35,15 @@
     }
 
     .bio-body {
-      font-size: clamp(14px, 1.55vw, 21px);
-      line-height: 1.85;
+      font-size: clamp(16px, 0.68vw + 14.75px, 20px);
+      line-height: 1.72;
       color: var(--ink);
     }
 
     .bio-body p + p { margin-top: 0.9em; }
 
     .bio-links {
-      font-size: clamp(14px, 1.5vw, 20px);
+      font-size: var(--text-small);
     }
 
     .bio-links-row {
@@ -240,8 +105,8 @@
     }
 
     .photo-caption {
-      margin-top: 8px;
-      font-size: 11px;
+      margin-top: 10px;
+      font-size: var(--text-caption);
       color: var(--accent);
       flex-shrink: 0;
     }
@@ -250,7 +115,7 @@
       .info-grid {
         grid-template-columns: 1fr 540px;
         gap: 72px;
-        padding: 0 40px;
+        padding: 0 var(--page-pad);
       }
     }
 
@@ -261,11 +126,8 @@
         padding-top: 12px;
       }
       .bio-body {
-        font-size: clamp(14px, 1.45vw, 18px);
-        line-height: 1.78;
-      }
-      .bio-links {
-        font-size: clamp(13px, 1.25vw, 17px);
+        font-size: clamp(16px, 0.45vw + 14.9px, 18px);
+        line-height: 1.68;
       }
     }
 
@@ -277,21 +139,6 @@
     }
 
     @media (max-width: 980px) {
-      .topbar-inner {
-        gap: 18px;
-      }
-
-      nav.top {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-      }
-
-      .nav-links {
-        gap: 22px;
-        flex-wrap: wrap;
-      }
-
       .info-grid {
         grid-template-columns: 1fr 1fr;
         gap: 28px;
@@ -305,18 +152,6 @@
     }
 
     @media (max-width: 680px) {
-      body { cursor: auto; }
-      #cur { display: none; }
-
-      .topbar-inner {
-        padding: 22px 20px 10px;
-      }
-
-      .nav-links {
-        gap: 18px;
-        flex-wrap: wrap;
-      }
-
       footer {
         padding: 20px;
         justify-content: center;
@@ -334,7 +169,7 @@
       .photo-stack { flex: none; aspect-ratio: 1 / 1; }
       .col-bio { justify-content: flex-start; }
       .bio-links { margin-top: 1.4em; }
-      .bio-body { font-size: 14px; line-height: 1.75; }
+      .bio-body { font-size: 16px; line-height: 1.65; }
       .bio-links { text-align: center; }
       .bio-links-row { justify-content: center; }
     }
