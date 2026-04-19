@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keyaa Kapadia - Editorial Illustration</title>
+  <link rel="stylesheet" href="../../shared.css"/>
+  <style>
+    :root {
+      --project-blue: #1449C8;
+      --project-red: #C10C0B;
+      --project-cream: #FDFCFF;
+      --project-deep: #170055;
+    }
+
+    body {
+      opacity: 0;
+      animation: pageFade .6s ease .03s forwards;
+    }
+
+    .topbar {
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transition: background .25s ease;
+    }
+
+    .topbar.scrolled {
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .topbar::after {
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+
+    .topbar.scrolled::after {
+      opacity: 1;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .project-page {
+      flex: 1;
+      padding: clamp(18px, 2.4vw, 28px) var(--page-pad) clamp(64px, 7vw, 96px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(26px, 3.8vw, 48px);
+    }
+
+    .project-intro,
+    .project-block,
+    .other-projects {
+      opacity: 0;
+      animation: fadeUp .55s ease forwards;
+    }
+
+    .project-intro { animation-delay: .12s; }
+    .block-browser { animation-delay: .18s; }
+    .block-breakdown { animation-delay: .24s; }
+    .block-combination { animation-delay: .3s; }
+    .block-phone { animation-delay: .36s; }
+    .other-projects { animation-delay: .42s; }
+
+    .project-intro {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(20px, 2.6vw, 36px);
+      align-items: start;
+    }
+
+    .project-intro > * {
+      min-width: 0;
+    }
+
+    .project-brand {
+      padding-top: clamp(6px, 0.8vw, 12px);
+    }
+
+    .project-title {
+      font-size: clamp(42px, 6vw, 88px);
+      line-height: .9;
+      letter-spacing: -.08em;
+      font-weight: 500;
+      color: var(--ink);
+      max-width: 9ch;
+      text-wrap: balance;
+    }
+
+    .project-meta,
+    .project-copy p {
+      font-size: var(--text-body);
+      line-height: 1.58;
+      color: var(--ink);
+      font-weight: 400;
+      text-wrap: pretty;
+    }
+
+    .project-meta {
+      max-width: 24ch;
+    }
+
+    .project-copy p {
+      max-width: 36ch;
+    }
+
+    .project-copy p + p {
+      margin-top: 12px;
+    }
+
+    .project-tools {
+      color: var(--muted);
+    }
+
+    .project-credit {
+      color: var(--muted);
+    }
+
+    .project-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .project-link {
+      display: block;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .browser-stage {
+      background: transparent;
+      padding: 0;
+      position: relative;
+    }
+
+    .browser-stage video {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .browser-stage.has-fallback video {
+      display: none;
+    }
+
+    .browser-fallback {
+      width: 100%;
+      height: auto;
+      display: none;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .browser-stage.has-fallback .browser-fallback {
+      display: block;
+    }
+
+    .project-media {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+      background: transparent;
+    }
+
+    .project-picture {
+      display: block;
+    }
+
+    .phone-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(16px, 2vw, 22px);
+      align-items: start;
+    }
+
+    .other-projects {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .other-title {
+      font-size: var(--text-heading-sm);
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .other-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 1.8vw, 20px);
+    }
+
+    .other-card {
+      text-decoration: none;
+      color: var(--ink);
+      display: block;
+    }
+
+    .other-thumb {
+      aspect-ratio: 4 / 3;
+      border-radius: var(--media-radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #efeff4;
+      color: rgba(17, 17, 17, 0.58);
+      font-size: clamp(28px, 4vw, 50px);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .other-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .other-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .other-thumb--olive {
+      background: linear-gradient(135deg, #ece8f7 0%, #ddd9e8 100%);
+    }
+
+    .other-thumb--chaos {
+      position: relative;
+      background:
+        radial-gradient(circle at 28% 24%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 20%),
+        linear-gradient(135deg, #f4efe7 0%, #e9e3dc 58%, #dfe3f4 100%);
+      overflow: hidden;
+    }
+
+    .other-thumb--chaos::before,
+    .other-thumb--chaos::after {
+      content: "";
+      position: absolute;
+      pointer-events: none;
+    }
+
+    .other-thumb--chaos::before {
+      inset: 0;
+      background:
+        repeating-linear-gradient(118deg, rgba(17,17,17,.1) 0 1px, transparent 1px 20px),
+        repeating-linear-gradient(180deg, rgba(17,17,17,.045) 0 1px, transparent 1px 30px);
+      opacity: .38;
+    }
+
+    .other-thumb--chaos::after {
+      right: -12%;
+      bottom: -10%;
+      width: 46%;
+      height: 48%;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(122,231,255,.72) 0%, rgba(122,231,255,.16) 36%, transparent 72%);
+      filter: blur(18px);
+    }
+
+    .other-thumb--wired {
+      background: linear-gradient(135deg, #e6efe7 0%, #d9e3e0 100%);
+    }
+
+    .other-card:hover .other-thumb {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(17, 17, 17, 0.08);
+    }
+
+    .other-name {
+      margin-top: 10px;
+      font-size: var(--text-small);
+      font-weight: 500;
+      text-wrap: balance;
+    }
+
+    footer {
+      opacity: 0;
+      animation: fadeUp .5s ease .5s forwards;
+    }
+
+    @media (max-width: 1100px) {
+      .project-intro {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project-brand {
+        padding-top: 0;
+      }
+
+      .project-copy {
+        grid-column: 1 / -1;
+        max-width: 64ch;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .project-intro,
+      .phone-grid,
+      .other-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .project-page {
+        padding: 16px 20px 72px;
+        gap: 28px;
+      }
+
+      .project-title {
+        font-size: clamp(40px, 13vw, 62px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="grad"></div>
+
+  <div class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <nav class="top">
+        <a class="nav-name" href="../../index.html">Keyaa Kapadia</a>
+        <div class="nav-links">
+          <a href="../work.html" class="active">Work</a>
+          <a href="../../play/play.html">Play</a>
+          <a href="../../about/about.html">About</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="project-page">
+    <section class="project-intro">
+      <div class="project-brand">
+        <h1 class="project-title">Editorial Illustration</h1>
+      </div>
+
+      <div>
+        <p class="project-meta">Creative Coding, Interaction Design, Illustration</p>
+      </div>
+
+      <div class="project-copy">
+        <p>A response to Beth Kowitt's Bloomberg Opinion piece on anti-American sentiment eroding the appeal of iconic U.S. brands. Built in HTML and JavaScript, the illustration follows a shopper through a virtual store where American products repel away no matter where they turn, revealing the buyer behind every transaction. The further you reach, the more the shelves empty.</p>
+        <p class="project-tools">[Figma, Adobe Illustrator, Photoshop, After Effects]</p>
+        <p class="project-credit">With Talia Cotton · Fall 2025</p>
+      </div>
+    </section>
+
+    <section class="project-block block-browser">
+      <a class="project-link" href="https://keyaakapadia.github.io/editorial_illustration_bloomberg/" target="_blank" rel="noopener noreferrer" aria-label="Open the live Bloomberg editorial illustration">
+        <div class="browser-stage" id="browserStage">
+          <video class="project-media" id="browserVideo" src="bloomberg_browser.mp4" poster="bloomberg_logo.png" autoplay muted loop playsinline preload="metadata"></video>
+          <img class="browser-fallback" src="bloomberg_logo.png" alt="Bloomberg browser preview fallback" loading="lazy">
+        </div>
+      </a>
+    </section>
+
+    <section class="project-block block-breakdown">
+      <a class="project-link" href="https://keyaakapadia.github.io/editorial_illustration_bloomberg/" target="_blank" rel="noopener noreferrer" aria-label="Open the live Bloomberg editorial illustration">
+        <picture class="project-picture">
+          <source media="(max-width: 768px)" srcset="bloomberg_breakdown_mobile.png">
+          <img class="project-media" src="bloomberg_breakdown_desktop.png" alt="Bloomberg visual breakdown" loading="lazy">
+        </picture>
+      </a>
+    </section>
+
+    <section class="project-block block-combination">
+      <video class="project-media" src="bloomberg_combination.mp4" autoplay muted loop playsinline preload="metadata"></video>
+    </section>
+
+    <section class="project-block block-phone">
+      <a class="project-link" href="https://keyaakapadia.github.io/editorial_illustration_bloomberg/" target="_blank" rel="noopener noreferrer" aria-label="Open the live Bloomberg editorial illustration">
+        <div class="phone-grid">
+          <video class="project-media" src="bloomberg_breakdown.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <img class="project-media" src="bloomberg_mall.png" alt="Bloomberg mall phone mockup" loading="lazy">
+        </div>
+      </a>
+    </section>
+
+    <section class="other-projects">
+      <h2 class="other-title">Other Projects</h2>
+      <div class="other-grid">
+        <a class="other-card" href="../controlledchaos.html">
+          <div class="other-thumb">
+            <video src="../chaos /particles1.mp4" poster="../chaos /chaos_00001.png" autoplay muted loop playsinline preload="metadata"></video>
+          </div>
+          <p class="other-name">Controlled Chaos</p>
+        </a>
+
+        <a class="other-card" href="../work.html">
+          <div class="other-thumb other-thumb--olive">✦</div>
+          <p class="other-name">O(love) you (olive oil)</p>
+        </a>
+
+        <a class="other-card" href="../work.html">
+          <div class="other-thumb other-thumb--wired">🌿</div>
+          <p class="other-name">WIRED</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="fl">
+      <a href="mailto:kapadiakeyaa@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="../../resume.html">Resume</a>
+    </div>
+    <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
+  </footer>
+
+  <script>
+    const cur = document.getElementById('cur');
+    const topbar = document.getElementById('topbar');
+    const yearEl = document.getElementById('yr');
+    const browserVideo = document.getElementById('browserVideo');
+    const browserStage = document.getElementById('browserStage');
+
+    document.addEventListener('mousemove', (e) => {
+      if (!cur) return;
+      cur.style.left = `${e.clientX}px`;
+      cur.style.top = `${e.clientY}px`;
+    });
+
+    document.querySelectorAll('a').forEach((el) => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    function handleTopbarScroll() {
+      if (!topbar) return;
+      if (window.scrollY > 10) {
+        topbar.classList.add('scrolled');
+      } else {
+        topbar.classList.remove('scrolled');
+      }
+    }
+
+    handleTopbarScroll();
+    window.addEventListener('scroll', handleTopbarScroll, { passive: true });
+
+    if (browserVideo && browserStage) {
+      const showBrowserFallback = () => browserStage.classList.add('has-fallback');
+
+      browserVideo.addEventListener('error', showBrowserFallback);
+
+      browserVideo.addEventListener('loadeddata', () => {
+        browserStage.classList.remove('has-fallback');
+      });
+
+      browserVideo.addEventListener('stalled', () => {
+        if (!browserVideo.currentSrc) {
+          showBrowserFallback();
+        }
+      });
+    }
+  </script>
+</body>
+</html>

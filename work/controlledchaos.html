@@ -12,11 +12,8 @@
       --chaos-sand: #ebe5dd;
       --chaos-mist: #dfe2f4;
       --chaos-ink: #111111;
-      --chaos-blue: #3558ff;
-      --chaos-cyan: #88e7ff;
-      --chaos-lime: #d7ff7a;
       --chaos-shadow: rgba(18, 20, 26, 0.12);
-      --chaos-gap: clamp(8px, 1vw, 12px);
+      --chaos-gap: clamp(10px, 1vw, 14px);
     }
 
     body {
@@ -62,11 +59,8 @@
     }
 
     .project-intro { animation-delay: .12s; }
-    .block-hero { animation-delay: .18s; }
-    .block-mosaic { animation-delay: .24s; }
-    .block-interaction { animation-delay: .3s; }
-    .block-gallery { animation-delay: .36s; }
-    .other-projects { animation-delay: .42s; }
+    .block-flow { animation-delay: .2s; }
+    .other-projects { animation-delay: .28s; }
 
     .project-intro {
       display: grid;
@@ -124,261 +118,132 @@
       gap: 0;
     }
 
-    .mosaic-grid,
-    .interaction-grid,
-    .gallery-grid,
-    .side-stack {
-      display: grid;
-      gap: var(--chaos-gap);
+    .flow-shell {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(14px, 1.8vw, 22px);
     }
 
-    .mosaic-grid {
-      grid-template-columns: minmax(0, 1.45fr) minmax(280px, .85fr);
-      align-items: stretch;
-    }
-
-    .side-stack {
-      grid-template-rows: 1fr 1.12fr;
+    .interaction-strip[hidden] {
+      display: none;
     }
 
     .interaction-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: var(--chaos-gap);
     }
 
-    .gallery-grid {
-      grid-template-columns: minmax(0, .88fr) minmax(0, 1.32fr) minmax(0, .94fr);
-      align-items: stretch;
+    .interaction-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      border-radius: var(--media-radius);
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 18%),
+        linear-gradient(135deg, var(--chaos-base) 0%, var(--chaos-sand) 54%, var(--chaos-mist) 100%);
+      box-shadow: 0 18px 48px var(--chaos-shadow);
+      isolation: isolate;
     }
 
-    .placeholder-stage {
-      --pointer-x: 50%;
-      --pointer-y: 50%;
+    .interaction-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, rgba(15, 17, 21, .22) 0%, rgba(15, 17, 21, .06) 34%, rgba(15, 17, 21, 0) 60%),
+        linear-gradient(to bottom, rgba(255,255,255,.1) 0%, rgba(255,255,255,0) 26%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .interaction-card video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.01);
+    }
+
+    .media-frame,
+    .feed-item {
       position: relative;
       overflow: hidden;
       border-radius: var(--media-radius);
-      isolation: isolate;
-      color: var(--chaos-ink);
       background:
-        radial-gradient(circle at var(--pointer-x) var(--pointer-y), rgba(255,255,255,.88) 0%, rgba(255,255,255,0) 26%),
-        linear-gradient(135deg, var(--chaos-base) 0%, var(--chaos-sand) 52%, var(--chaos-mist) 100%);
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 18%),
+        linear-gradient(135deg, var(--chaos-base) 0%, var(--chaos-sand) 54%, var(--chaos-mist) 100%);
       box-shadow: 0 18px 48px var(--chaos-shadow);
+      isolation: isolate;
     }
 
-    .placeholder-stage::before,
-    .placeholder-stage::after {
+    .media-frame::before,
+    .feed-item::before {
       content: "";
       position: absolute;
       inset: 0;
-      pointer-events: none;
-    }
-
-    .placeholder-stage::before {
       background:
-        repeating-linear-gradient(115deg, rgba(17,17,17,.08) 0 1px, transparent 1px 26px),
-        repeating-linear-gradient(180deg, rgba(17,17,17,.045) 0 1px, transparent 1px 34px);
-      mask-image: linear-gradient(to bottom, rgba(0,0,0,.9), rgba(0,0,0,.25));
-      opacity: .55;
-      animation: fieldSweep 18s linear infinite;
-    }
-
-    .placeholder-stage::after {
-      inset: auto -12% -16% auto;
-      width: 42%;
-      height: 48%;
-      border-radius: 999px;
-      background: radial-gradient(circle, rgba(136,231,255,.72) 0%, rgba(136,231,255,.18) 38%, transparent 72%);
-      filter: blur(24px);
-      animation: glowDrift 8s ease-in-out infinite;
-    }
-
-    .placeholder-stage--hero {
-      aspect-ratio: 16 / 9;
-      min-height: min(68vh, 640px);
-    }
-
-    .placeholder-stage--landscape {
-      aspect-ratio: 16 / 9;
-    }
-
-    .placeholder-stage--wide {
-      aspect-ratio: 21 / 9;
-    }
-
-    .placeholder-stage--square {
-      aspect-ratio: 1 / 1;
-    }
-
-    .placeholder-stage--portrait {
-      aspect-ratio: 4 / 5;
-    }
-
-    .placeholder-stage--video .video-pill {
-      display: inline-flex;
-    }
-
-    .stage-meta,
-    .stage-copy,
-    .stage-footer,
-    .stage-badges,
-    .video-pill {
-      position: absolute;
-      z-index: 3;
-    }
-
-    .stage-meta,
-    .stage-footer {
-      left: clamp(16px, 2vw, 24px);
-      right: clamp(16px, 2vw, 24px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .stage-meta {
-      top: clamp(16px, 2vw, 24px);
-    }
-
-    .stage-footer {
-      bottom: clamp(16px, 2vw, 24px);
-    }
-
-    .stage-kicker,
-    .stage-ratio,
-    .video-pill,
-    .stage-badges span {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      padding: 8px 12px;
-      font-size: var(--text-caption);
-      line-height: 1;
-      color: rgba(17,17,17,.76);
-      background: rgba(255,255,255,.68);
-      border: 1px solid rgba(17,17,17,.08);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-
-    .video-pill {
-      top: clamp(16px, 2vw, 24px);
-      right: clamp(16px, 2vw, 24px);
-      gap: 8px;
-    }
-
-    .video-pill::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--chaos-blue);
-      box-shadow: 0 0 0 6px rgba(53,88,255,.12);
-    }
-
-    .stage-copy {
-      left: clamp(18px, 2.4vw, 30px);
-      bottom: clamp(18px, 2.4vw, 30px);
-      max-width: min(58ch, calc(100% - 36px));
-    }
-
-    .stage-copy h2,
-    .stage-copy h3 {
-      font-size: clamp(24px, 2.4vw, 40px);
-      line-height: .98;
-      letter-spacing: -.05em;
-      font-weight: 500;
-      color: var(--chaos-ink);
-      max-width: 16ch;
-      text-wrap: balance;
-    }
-
-    .stage-copy h3 {
-      font-size: clamp(20px, 1.9vw, 28px);
-      max-width: 15ch;
-    }
-
-    .stage-copy p {
-      margin-top: 10px;
-      max-width: 34ch;
-      font-size: var(--text-small);
-      line-height: 1.55;
-      color: rgba(17,17,17,.72);
-    }
-
-    .stage-badges {
-      right: clamp(18px, 2.2vw, 28px);
-      bottom: clamp(18px, 2.2vw, 28px);
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: flex-end;
-      gap: 8px;
-      max-width: min(40ch, 48%);
-    }
-
-    .stage-footer-note {
-      font-size: var(--text-caption);
-      color: rgba(17,17,17,.56);
-      line-height: 1.35;
-    }
-
-    .particle-layer,
-    .field-rings {
-      position: absolute;
-      inset: 0;
+        linear-gradient(to top, rgba(15, 17, 21, .3) 0%, rgba(15, 17, 21, .08) 34%, rgba(15, 17, 21, 0) 60%),
+        linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 26%);
+      pointer-events: none;
       z-index: 1;
-      pointer-events: none;
     }
 
-    .field-rings::before,
-    .field-rings::after {
-      content: "";
-      position: absolute;
-      border-radius: 50%;
-      border: 1px solid rgba(17,17,17,.1);
-      animation: ringShift 18s ease-in-out infinite;
+    .media-frame video,
+    .media-frame img,
+    .feed-item video,
+    .feed-item img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.01);
     }
 
-    .field-rings::before {
-      width: 48%;
-      aspect-ratio: 1 / 1;
-      left: 8%;
-      top: 18%;
+    .flow-feed {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--chaos-gap);
+      align-items: start;
     }
 
-    .field-rings::after {
-      width: 32%;
-      aspect-ratio: 1 / 1;
-      right: 14%;
-      top: 22%;
-      animation-delay: -6s;
+    .feed-column {
+      display: flex;
+      flex-direction: column;
+      gap: var(--chaos-gap);
+      min-width: 0;
     }
 
-    .particle {
-      position: absolute;
-      left: var(--x);
-      top: var(--y);
-      width: var(--size);
-      height: var(--size);
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background:
-        radial-gradient(circle at 35% 35%, rgba(255,255,255,.98) 0%, rgba(255,255,255,.82) 18%, rgba(53,88,255,.34) 58%, transparent 78%);
-      box-shadow:
-        0 0 28px rgba(53,88,255,.18),
-        0 0 42px rgba(136,231,255,.14);
-      animation: particleFloat var(--dur, 14s) ease-in-out infinite;
-      animation-delay: var(--delay, 0s);
-      opacity: .92;
+    .feed-item {
+      display: block;
+      transition: transform .28s ease, box-shadow .28s ease;
     }
 
-    .particle--lime {
-      background:
-        radial-gradient(circle at 35% 35%, rgba(255,255,255,.98) 0%, rgba(255,255,255,.84) 18%, rgba(215,255,122,.38) 58%, transparent 78%);
-      box-shadow:
-        0 0 28px rgba(215,255,122,.18),
-        0 0 42px rgba(255,255,255,.12);
+    .flow-feed.is-packed {
+      align-items: stretch;
     }
+
+    .flow-feed.is-packed .feed-column {
+      height: var(--feed-height, auto);
+    }
+
+    .flow-feed.is-packed .feed-item {
+      flex: var(--share, 1) 1 0;
+      min-height: 0;
+      aspect-ratio: auto;
+    }
+
+    .feed-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 54px rgba(18, 20, 26, 0.16);
+    }
+
+    .feed-item.is-portrait { aspect-ratio: 9 / 16; }
+    .feed-item.is-square { aspect-ratio: 1 / 1; }
+    .feed-item.is-poster { aspect-ratio: 4 / 5; }
+    .feed-item.is-landscape { aspect-ratio: 16 / 10; }
 
     .other-projects {
       display: flex;
@@ -419,10 +284,12 @@
       transition: transform .25s ease, box-shadow .25s ease;
     }
 
-    .other-thumb img {
+    .other-thumb img,
+    .other-thumb video {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      display: block;
     }
 
     .other-thumb--chaos {
@@ -454,54 +321,8 @@
 
     footer {
       opacity: 0;
-      animation: fadeUp .5s ease .5s forwards;
+      animation: fadeUp .5s ease .45s forwards;
     }
-
-    @keyframes fieldSweep {
-      0% { transform: translate3d(0, 0, 0) scale(1); }
-      50% { transform: translate3d(-3%, 2%, 0) scale(1.02); }
-      100% { transform: translate3d(0, 0, 0) scale(1); }
-    }
-
-    @keyframes glowDrift {
-      0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
-      50% { transform: translate3d(-6%, -8%, 0) scale(1.12); }
-    }
-
-    @keyframes particleFloat {
-      0%, 100% { transform: translate(-50%, -50%) translate3d(0, 0, 0) scale(1); }
-      25% { transform: translate(-50%, -50%) translate3d(12px, -10px, 0) scale(1.08); }
-      50% { transform: translate(-50%, -50%) translate3d(-8px, 14px, 0) scale(.94); }
-      75% { transform: translate(-50%, -50%) translate3d(16px, 4px, 0) scale(1.04); }
-    }
-
-    @keyframes ringShift {
-      0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
-      50% { transform: translate3d(10px, -12px, 0) rotate(12deg); }
-    }
-
-    /*
-      Reserved for the later brand campaign extension.
-      Use this when the project becomes a campaign system and needs logo lockups,
-      partner marks, headlines, CTA modules, and brand-specific end cards.
-
-      .block-campaign {
-        display: block;
-      }
-
-      .campaign-shell {
-        display: grid;
-        grid-template-columns: 1.2fr .8fr;
-        gap: var(--chaos-gap);
-      }
-
-      .campaign-logo-rail,
-      .campaign-end-card {
-        min-height: 280px;
-        border-radius: var(--media-radius);
-        background: linear-gradient(135deg, #f4efe7 0%, #dfe2f4 100%);
-      }
-    */
 
     @media (max-width: 1180px) {
       .project-intro {
@@ -513,42 +334,19 @@
         max-width: 64ch;
       }
 
-      .gallery-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .gallery-grid .placeholder-stage--landscape {
-        grid-column: 1 / -1;
+      .flow-feed {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 980px) {
       .project-intro,
-      .mosaic-grid,
-      .interaction-grid,
-      .gallery-grid,
       .other-grid {
         grid-template-columns: 1fr;
       }
 
-      .side-stack {
-        grid-template-rows: none;
-      }
-
-      .stage-copy {
-        max-width: calc(100% - 36px);
-      }
-
-      .stage-badges {
-        left: 18px;
-        right: auto;
-        bottom: 18px;
-        max-width: calc(100% - 36px);
-        justify-content: flex-start;
-      }
-
-      .placeholder-stage--hero .stage-copy {
-        bottom: 82px;
+      .flow-feed {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
@@ -562,36 +360,20 @@
         font-size: clamp(40px, 13vw, 62px);
       }
 
-      .placeholder-stage--hero {
-        min-height: 430px;
+      .interaction-grid {
+        grid-template-columns: 1fr;
       }
 
-      .stage-meta,
-      .stage-footer {
-        left: 14px;
-        right: 14px;
+      .flow-feed {
+        grid-template-columns: 1fr;
       }
 
-      .stage-copy {
-        left: 16px;
-        right: 16px;
-        bottom: 16px;
-        max-width: calc(100% - 32px);
-      }
-
-      .video-pill {
-        top: 14px;
-        right: 14px;
-      }
-
-      .stage-badges {
-        left: 16px;
-        bottom: 16px;
-        max-width: calc(100% - 32px);
-      }
-
-      .placeholder-stage--hero .stage-copy {
-        bottom: 84px;
+      .media-frame video,
+      .media-frame img,
+      .interaction-card video,
+      .feed-item video,
+      .feed-item img {
+        transform: none;
       }
     }
   </style>
@@ -629,220 +411,23 @@
       </div>
     </section>
 
-    <section class="project-block block-hero">
-      <div class="placeholder-stage placeholder-stage--hero" role="img" aria-label="Placeholder for the primary landscape hero capture of Controlled Chaos">
-        <div class="stage-meta">
-          <span class="stage-kicker">Landscape sample / 01</span>
-          <span class="stage-ratio">16:9 hero loop</span>
+    <section class="project-block block-flow">
+      <div class="flow-shell">
+        <div class="interaction-strip" id="interactionStrip">
+          <div class="interaction-grid" id="interactionGrid"></div>
         </div>
 
-        <div class="stage-copy">
-          <h2>Generative field responding to touch, cursor drift, and preset changes.</h2>
-          <p>Use this slot for the main landscape recording of the system in motion, ideally the one that feels most immersive and alive.</p>
-        </div>
+        <div class="flow-feed" id="flowFeed" aria-live="polite"></div>
 
-        <div class="stage-badges" aria-hidden="true">
-          <span>Gesture input</span>
-          <span>Preset morphs</span>
-          <span>Velocity trails</span>
-          <span>Particle bloom</span>
+        <!--
+        Future campaign extension:
+        <div class="brand-lockup">
+          <img src="brand-logo.svg" alt="Brand logo">
+          <div class="campaign-copy">Tagline, product lockup, CTA, or sponsored edit.</div>
         </div>
-
-        <div class="field-rings" aria-hidden="true"></div>
-        <div class="particle-layer" aria-hidden="true">
-          <span class="particle" style="--x: 18%; --y: 28%; --size: 16px; --dur: 14s; --delay: -2s;"></span>
-          <span class="particle particle--lime" style="--x: 28%; --y: 58%; --size: 22px; --dur: 18s; --delay: -6s;"></span>
-          <span class="particle" style="--x: 40%; --y: 36%; --size: 14px; --dur: 16s; --delay: -1s;"></span>
-          <span class="particle" style="--x: 54%; --y: 22%; --size: 12px; --dur: 17s; --delay: -9s;"></span>
-          <span class="particle particle--lime" style="--x: 62%; --y: 56%; --size: 28px; --dur: 19s; --delay: -5s;"></span>
-          <span class="particle" style="--x: 76%; --y: 34%; --size: 16px; --dur: 15s; --delay: -4s;"></span>
-          <span class="particle" style="--x: 82%; --y: 68%; --size: 18px; --dur: 18s; --delay: -7s;"></span>
-          <span class="particle particle--lime" style="--x: 48%; --y: 74%; --size: 12px; --dur: 13s; --delay: -3s;"></span>
-        </div>
+        -->
       </div>
     </section>
-
-    <section class="project-block block-mosaic">
-      <div class="mosaic-grid">
-        <div class="placeholder-stage placeholder-stage--landscape" role="img" aria-label="Placeholder for a landscape detail study of Controlled Chaos">
-          <div class="stage-meta">
-            <span class="stage-kicker">Landscape sample / 02</span>
-            <span class="stage-ratio">Preset comparison</span>
-          </div>
-
-          <div class="stage-copy">
-            <h3>Structured controls, unpredictable visual behavior.</h3>
-            <p>Good place for a widescreen frame showing a UI state, parameter controls, or two adjacent moods of the system.</p>
-          </div>
-
-          <div class="stage-footer">
-            <p class="stage-footer-note">Swap with a still, a looping capture, or a composite frame once final media is ready.</p>
-            <span class="stage-ratio">Mostly landscape</span>
-          </div>
-
-          <div class="particle-layer" aria-hidden="true">
-            <span class="particle" style="--x: 26%; --y: 34%; --size: 13px; --dur: 15s; --delay: -2s;"></span>
-            <span class="particle particle--lime" style="--x: 54%; --y: 66%; --size: 20px; --dur: 14s; --delay: -8s;"></span>
-            <span class="particle" style="--x: 72%; --y: 30%; --size: 16px; --dur: 17s; --delay: -5s;"></span>
-          </div>
-        </div>
-
-        <div class="side-stack">
-          <div class="placeholder-stage placeholder-stage--square" role="img" aria-label="Placeholder for a square crop of Controlled Chaos">
-            <div class="stage-meta">
-              <span class="stage-kicker">Square crop</span>
-              <span class="stage-ratio">1:1</span>
-            </div>
-
-            <div class="stage-copy">
-              <h3>Dense particle cluster.</h3>
-              <p>Useful for a punchy detail crop or social tile that highlights texture over interface.</p>
-            </div>
-
-            <div class="particle-layer" aria-hidden="true">
-              <span class="particle" style="--x: 36%; --y: 26%; --size: 14px; --dur: 12s; --delay: -2s;"></span>
-              <span class="particle particle--lime" style="--x: 62%; --y: 52%; --size: 22px; --dur: 16s; --delay: -6s;"></span>
-              <span class="particle" style="--x: 48%; --y: 70%; --size: 10px; --dur: 13s; --delay: -9s;"></span>
-            </div>
-          </div>
-
-          <div class="placeholder-stage placeholder-stage--portrait" role="img" aria-label="Placeholder for a vertical interaction crop of Controlled Chaos">
-            <div class="stage-meta">
-              <span class="stage-kicker">Vertical sample</span>
-              <span class="stage-ratio">4:5 crop</span>
-            </div>
-
-            <div class="stage-copy">
-              <h3>Portrait crop for motion snippets.</h3>
-              <p>Reserved for a tighter mobile-friendly edit, hand interaction shot, or reel-style cutdown.</p>
-            </div>
-
-            <div class="particle-layer" aria-hidden="true">
-              <span class="particle particle--lime" style="--x: 28%; --y: 32%; --size: 18px; --dur: 15s; --delay: -3s;"></span>
-              <span class="particle" style="--x: 64%; --y: 46%; --size: 14px; --dur: 14s; --delay: -8s;"></span>
-              <span class="particle" style="--x: 52%; --y: 72%; --size: 12px; --dur: 16s; --delay: -5s;"></span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="project-block block-interaction">
-      <div class="interaction-grid">
-        <div class="placeholder-stage placeholder-stage--landscape placeholder-stage--video" role="img" aria-label="Placeholder for interaction video showing people using Controlled Chaos">
-          <span class="video-pill">Interaction video / 01</span>
-
-          <div class="stage-copy">
-            <h3>Audience testing the field in real time.</h3>
-            <p>Best used for a landscape clip showing how people drag, hover, or tap through the system and how the field responds back.</p>
-          </div>
-
-          <div class="stage-footer">
-            <p class="stage-footer-note">Placeholder for a real-world interaction video or usability capture.</p>
-            <span class="stage-ratio">Landscape interaction</span>
-          </div>
-
-          <div class="particle-layer" aria-hidden="true">
-            <span class="particle" style="--x: 22%; --y: 44%; --size: 15px; --dur: 13s; --delay: -2s;"></span>
-            <span class="particle particle--lime" style="--x: 58%; --y: 24%; --size: 18px; --dur: 15s; --delay: -6s;"></span>
-            <span class="particle" style="--x: 78%; --y: 62%; --size: 12px; --dur: 14s; --delay: -4s;"></span>
-          </div>
-        </div>
-
-        <div class="placeholder-stage placeholder-stage--landscape placeholder-stage--video" role="img" aria-label="Placeholder for process video of users engaging with Controlled Chaos presets">
-          <span class="video-pill">Interaction video / 02</span>
-
-          <div class="stage-copy">
-            <h3>Preset switching, gesture play, and reaction shots.</h3>
-            <p>Another slot for documenting different kinds of user behavior: hesitant testing, playful exploration, or rapid preset changes.</p>
-          </div>
-
-          <div class="stage-footer">
-            <p class="stage-footer-note">Could also hold a behind-the-scenes recording of setup, controls, or installation context.</p>
-            <span class="stage-ratio">Process capture</span>
-          </div>
-
-          <div class="particle-layer" aria-hidden="true">
-            <span class="particle particle--lime" style="--x: 26%; --y: 30%; --size: 12px; --dur: 14s; --delay: -3s;"></span>
-            <span class="particle" style="--x: 48%; --y: 56%; --size: 20px; --dur: 16s; --delay: -8s;"></span>
-            <span class="particle" style="--x: 72%; --y: 36%; --size: 14px; --dur: 12s; --delay: -6s;"></span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="project-block block-gallery">
-      <div class="gallery-grid">
-        <div class="placeholder-stage placeholder-stage--portrait" role="img" aria-label="Placeholder for a vertical detail or interaction crop">
-          <div class="stage-meta">
-            <span class="stage-kicker">Detail crop</span>
-            <span class="stage-ratio">3:4 vertical</span>
-          </div>
-
-          <div class="stage-copy">
-            <h3>Close-up of field behavior.</h3>
-            <p>Nice slot for a tighter crop that focuses on one moment of turbulence, drag, or particle accumulation.</p>
-          </div>
-
-          <div class="particle-layer" aria-hidden="true">
-            <span class="particle" style="--x: 34%; --y: 22%; --size: 15px; --dur: 13s; --delay: -5s;"></span>
-            <span class="particle particle--lime" style="--x: 62%; --y: 50%; --size: 19px; --dur: 15s; --delay: -2s;"></span>
-            <span class="particle" style="--x: 48%; --y: 78%; --size: 11px; --dur: 12s; --delay: -8s;"></span>
-          </div>
-        </div>
-
-        <div class="placeholder-stage placeholder-stage--wide" role="img" aria-label="Placeholder for a wide montage of system states">
-          <div class="stage-meta">
-            <span class="stage-kicker">Landscape montage</span>
-            <span class="stage-ratio">21:9 strip</span>
-          </div>
-
-          <div class="stage-copy">
-            <h3>System states, presets, and motion studies in one long strip.</h3>
-            <p>This can become a no-gutter sequence of landscape variations later if you decide to turn the page into a denser campaign system.</p>
-          </div>
-
-          <div class="stage-footer">
-            <p class="stage-footer-note">Built to stay flexible while you decide between loose gallery mode and a stricter campaign layout.</p>
-            <span class="stage-ratio">Expandable strip</span>
-          </div>
-
-          <div class="particle-layer" aria-hidden="true">
-            <span class="particle particle--lime" style="--x: 18%; --y: 40%; --size: 14px; --dur: 13s; --delay: -1s;"></span>
-            <span class="particle" style="--x: 36%; --y: 22%; --size: 11px; --dur: 12s; --delay: -8s;"></span>
-            <span class="particle" style="--x: 52%; --y: 58%; --size: 20px; --dur: 15s; --delay: -4s;"></span>
-            <span class="particle particle--lime" style="--x: 76%; --y: 34%; --size: 16px; --dur: 17s; --delay: -7s;"></span>
-          </div>
-        </div>
-
-        <div class="placeholder-stage placeholder-stage--portrait" role="img" aria-label="Placeholder for a branded cutdown crop">
-          <div class="stage-meta">
-            <span class="stage-kicker">Social cutdown</span>
-            <span class="stage-ratio">4:5</span>
-          </div>
-
-          <div class="stage-copy">
-            <h3>Future campaign crop.</h3>
-            <p>Leaving this ratio open for later so it can become a branded cutdown, social asset, or logo-led frame when you are ready.</p>
-          </div>
-
-          <div class="particle-layer" aria-hidden="true">
-            <span class="particle" style="--x: 26%; --y: 36%; --size: 12px; --dur: 14s; --delay: -4s;"></span>
-            <span class="particle particle--lime" style="--x: 66%; --y: 28%; --size: 18px; --dur: 16s; --delay: -7s;"></span>
-            <span class="particle" style="--x: 54%; --y: 68%; --size: 13px; --dur: 15s; --delay: -2s;"></span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!--
-    <section class="project-block block-campaign">
-      <div class="campaign-shell">
-        <div class="campaign-logo-rail">Primary logo, partner marks, or sponsor lockups</div>
-        <div class="campaign-end-card">Headline, CTA, brand copy, or campaign close</div>
-      </div>
-    </section>
-    -->
 
     <section class="other-projects">
       <h2 class="other-title">Other Projects</h2>
@@ -883,7 +468,552 @@
     const cur = document.getElementById('cur');
     const topbar = document.getElementById('topbar');
     const yearEl = document.getElementById('yr');
-    const interactiveStages = document.querySelectorAll('.placeholder-stage');
+    const interactionStrip = document.getElementById('interactionStrip');
+    const interactionGrid = document.getElementById('interactionGrid');
+    const flowFeed = document.getElementById('flowFeed');
+    const chaosBase = 'chaos /';
+    const mobileFeedRange = [5, 6];
+    const desktopPreferredRanges = {
+      2: [7, 8],
+      3: [10, 12],
+      4: [10, 12],
+    };
+    const desktopExtendedCounts = {
+      2: [9, 10],
+      3: [13],
+      4: [13, 14],
+    };
+    const desiredColumnHeights = {
+      1: 5.4,
+      2: 4.8,
+      3: 4.2,
+      4: 3.8,
+    };
+
+    const interactionSlots = [
+      [`${chaosBase}test1.mp4`, `${chaosBase}particles1.mp4`],
+      [`${chaosBase}test2.mp4`],
+      [`${chaosBase}test3.mp4`],
+      [`${chaosBase}test4.mp4`],
+    ];
+
+    // Add future clips here with shape, tone, and pattern notes so the feed keeps
+    // mixing textures instead of stacking similar colors or motion states together.
+    const mediaLibrary = [
+      { id: 'chaos13', src: `${chaosBase}chaos_00013.mp4`, shape: 'landscape', tone: 'neutral', pattern: 'swirl' },
+      { id: 'chaos14', src: `${chaosBase}chaos_00014.mp4`, shape: 'square', tone: 'cool', pattern: 'threads' },
+      { id: 'chaos15', src: `${chaosBase}chaos_00015.mp4`, shape: 'poster', tone: 'warm', pattern: 'mist' },
+      { id: 'chaos16', src: `${chaosBase}chaos_00016.mp4`, shape: 'portrait', tone: 'cool', pattern: 'trails' },
+      { id: 'chaos17', src: `${chaosBase}chaos_00017.mp4`, shape: 'square', tone: 'warm', pattern: 'burst' },
+      { id: 'chaos18', src: `${chaosBase}chaos_00018.mp4`, shape: 'landscape', tone: 'cool', pattern: 'lines' },
+      { id: 'chaos19', src: `${chaosBase}chaos_00019.mp4`, shape: 'poster', tone: 'warm', pattern: 'cluster' },
+      { id: 'chaos20', src: `${chaosBase}chaos_00020.mp4`, shape: 'portrait', tone: 'neutral', pattern: 'ripple' },
+      { id: 'chaos21', src: `${chaosBase}chaos_00021.mp4`, shape: 'square', tone: 'cool', pattern: 'grain' },
+      { id: 'chaos22', src: `${chaosBase}chaos_00022.mp4`, shape: 'landscape', tone: 'warm', pattern: 'veil' },
+      { id: 'chaos23', src: `${chaosBase}chaos_00023.mp4`, shape: 'poster', tone: 'cool', pattern: 'field' },
+      { id: 'chaos24', src: `${chaosBase}chaos_00024.mp4`, shape: 'portrait', tone: 'warm', pattern: 'soft-bloom' },
+      { id: 'chaos25', src: `${chaosBase}chaos_00025.mp4`, shape: 'square', tone: 'neutral', pattern: 'drift' },
+      { id: 'chaos26', src: `${chaosBase}chaos_00026.mp4`, shape: 'poster', tone: 'cool', pattern: 'spark' },
+      { id: 'chaos27', src: `${chaosBase}chaos_00027.mp4`, shape: 'landscape', tone: 'warm', pattern: 'mesh' },
+      { id: 'chaos28', src: `${chaosBase}chaos_00028.mp4`, shape: 'portrait', tone: 'neutral', pattern: 'spray' },
+      { id: 'chaos29', src: `${chaosBase}chaos_00029.mp4`, shape: 'square', tone: 'cool', pattern: 'glow' },
+      { id: 'chaos30', src: `${chaosBase}chaos_00030.mp4`, shape: 'poster', tone: 'warm', pattern: 'eddies' },
+      { id: 'chaos31', src: `${chaosBase}chaos_00031.mp4`, shape: 'landscape', tone: 'neutral', pattern: 'threads-2' },
+      { id: 'chaos32', src: `${chaosBase}chaos_00032.mp4`, shape: 'portrait', tone: 'cool', pattern: 'vapor' },
+    ];
+    const colorGroupCache = new Map();
+    let analyzedMediaLibrary = null;
+    let activeFeedColumns = 0;
+    let resizeTimer = null;
+
+    function createMediaMarkup(item) {
+      return `<video src="${item.src}" autoplay muted loop playsinline preload="metadata"></video>`;
+    }
+
+    function randomBetween(min, max) {
+      return min + Math.floor(Math.random() * (max - min + 1));
+    }
+
+    function shuffleArray(items) {
+      const copy = [...items];
+
+      for (let index = copy.length - 1; index > 0; index -= 1) {
+        const swapIndex = Math.floor(Math.random() * (index + 1));
+        [copy[index], copy[swapIndex]] = [copy[swapIndex], copy[index]];
+      }
+
+      return copy;
+    }
+
+    function getFeedColumnCount() {
+      if (window.matchMedia('(max-width: 680px)').matches) return 1;
+      if (window.matchMedia('(max-width: 980px)').matches) return 2;
+      if (window.matchMedia('(max-width: 1180px)').matches) return 3;
+      return 4;
+    }
+
+    function getTargetFeedCount(availableCount, columnCount) {
+      if (columnCount === 1) {
+        return Math.min(availableCount, randomBetween(...mobileFeedRange));
+      }
+
+      const preferredRange = desktopPreferredRanges[columnCount] || desktopPreferredRanges[4];
+      return Math.min(availableCount, preferredRange[0]);
+    }
+
+    function getFeedCountCandidates(availableCount, columnCount) {
+      if (columnCount === 1) {
+        return [Math.min(availableCount, randomBetween(...mobileFeedRange))];
+      }
+
+      const preferredRange = desktopPreferredRanges[columnCount] || desktopPreferredRanges[4];
+      const extendedCounts = desktopExtendedCounts[columnCount] || desktopExtendedCounts[4] || [];
+      const candidateSet = new Set();
+
+      for (let count = preferredRange[0]; count <= preferredRange[1]; count += 1) {
+        if (count <= availableCount) {
+          candidateSet.add(count);
+        }
+      }
+
+      extendedCounts.forEach((count) => {
+        if (count <= availableCount) {
+          candidateSet.add(count);
+        }
+      });
+
+      return Array.from(candidateSet).sort((left, right) => left - right);
+    }
+
+    function getColorKey(item) {
+      return item.colorGroup || item.tone;
+    }
+
+    function selectionScore(item, chosen) {
+      const shapeCount = chosen.filter((entry) => entry.shape === item.shape).length;
+      const colorCount = chosen.filter((entry) => getColorKey(entry) === getColorKey(item)).length;
+      const patternCount = chosen.filter((entry) => entry.pattern === item.pattern).length;
+      const last = chosen[chosen.length - 1];
+      let score = 26;
+
+      score -= shapeCount * 4;
+      score -= colorCount * 6;
+      score -= patternCount * 7;
+
+      if (last) {
+        score += item.shape !== last.shape ? 4 : -6;
+        score += getColorKey(item) !== getColorKey(last) ? 6 : -8;
+        score += item.pattern !== last.pattern ? 6 : -8;
+      }
+
+      return score;
+    }
+
+    function scoreItem(item, arranged) {
+      const last = arranged[arranged.length - 1];
+      const secondLast = arranged[arranged.length - 2];
+      let score = 0;
+
+      if (!last) {
+        return 100;
+      }
+
+      score += item.shape !== last.shape ? 6 : -6;
+      score += getColorKey(item) !== getColorKey(last) ? 6 : -5;
+      score += item.pattern !== last.pattern ? 4 : -5;
+
+      if (secondLast) {
+        score += item.shape !== secondLast.shape ? 2 : -1;
+        score += getColorKey(item) !== getColorKey(secondLast) ? 3 : -2;
+        score += item.pattern !== secondLast.pattern ? 2 : -1;
+      }
+
+      return score;
+    }
+
+    function pickFeedVideos(items, targetCount) {
+      const remaining = shuffleArray(items);
+      const selected = [];
+
+      while (selected.length < targetCount && remaining.length) {
+        const scoredChoices = remaining
+          .map((item, index) => ({
+            index,
+            item,
+            score: selectionScore(item, selected) + Math.random() * 1.5,
+          }))
+          .sort((left, right) => right.score - left.score);
+
+        const nextChoice = scoredChoices[0];
+        selected.push(nextChoice.item);
+        remaining.splice(nextChoice.index, 1);
+      }
+
+      return selected;
+    }
+
+    function getShapeHeightScore(shape) {
+      if (shape === 'portrait') return 1.72;
+      if (shape === 'poster') return 1.3;
+      if (shape === 'square') return 1;
+      return 0.7;
+    }
+
+    function buildBalancedFeed(items) {
+      const remaining = items.map((item, index) => ({ ...item, sourceIndex: index }));
+      const arranged = [];
+
+      while (remaining.length) {
+        remaining.sort((a, b) => {
+          const scoreDiff = scoreItem(b, arranged) - scoreItem(a, arranged);
+          return scoreDiff || a.sourceIndex - b.sourceIndex;
+        });
+
+        arranged.push(remaining.shift());
+      }
+
+      return arranged;
+    }
+
+    function buildFeedColumns(items, columnCount) {
+      const columns = Array.from({ length: columnCount }, () => ({
+        items: [],
+        height: 0,
+      }));
+
+      items.forEach((item) => {
+        let targetColumn = 0;
+
+        columns.forEach((column, index) => {
+          if (column.height < columns[targetColumn].height) {
+            targetColumn = index;
+          }
+        });
+
+        columns[targetColumn].items.push(item);
+        columns[targetColumn].height += getShapeHeightScore(item.shape);
+      });
+
+      return columns;
+    }
+
+    function getAverageGapCount(columns) {
+      if (!columns.length) return 0;
+
+      return columns.reduce((sum, column) => (
+        sum + Math.max(0, column.items.length - 1)
+      ), 0) / columns.length;
+    }
+
+    function evaluateFeedLayout(selectedFeed, columns, columnCount) {
+      const heights = columns.map((column) => column.height);
+      const itemCounts = columns.map((column) => column.items.length);
+      const maxHeight = Math.max(...heights);
+      const minHeight = Math.min(...heights);
+      const heightSpread = maxHeight - minHeight;
+      const averageHeight = heights.reduce((sum, value) => sum + value, 0) / heights.length;
+      const countSpread = Math.max(...itemCounts) - Math.min(...itemCounts);
+      const desiredHeight = desiredColumnHeights[columnCount] || 3.8;
+      const preferredRange = desktopPreferredRanges[columnCount] || desktopPreferredRanges[4] || [10, 12];
+      const preferredHigh = preferredRange[1];
+      const uniqueColors = new Set(selectedFeed.map((item) => getColorKey(item))).size;
+      const uniquePatterns = new Set(selectedFeed.map((item) => item.pattern)).size;
+      const uniqueShapes = new Set(selectedFeed.map((item) => item.shape)).size;
+      const sparseColumns = columns.filter((column) => column.items.length <= 1).length;
+      let score = 0;
+
+      score -= heightSpread * 42;
+      score -= countSpread * 18;
+      score -= sparseColumns * 60;
+      score += averageHeight * 20;
+      score += uniqueColors * 18;
+      score += uniquePatterns * 5;
+      score += uniqueShapes * 14;
+
+      if (averageHeight < desiredHeight) {
+        score -= (desiredHeight - averageHeight) * 110;
+      }
+
+      if (minHeight < desiredHeight * 0.88) {
+        score -= (desiredHeight * 0.88 - minHeight) * 140;
+      }
+
+      if (columnCount > 1 && selectedFeed.length > preferredHigh) {
+        score -= (selectedFeed.length - preferredHigh) * 26;
+      }
+
+      return score;
+    }
+
+    function rgbToHsl(red, green, blue) {
+      const r = red / 255;
+      const g = green / 255;
+      const b = blue / 255;
+      const max = Math.max(r, g, b);
+      const min = Math.min(r, g, b);
+      let hue = 0;
+      let saturation = 0;
+      const lightness = (max + min) / 2;
+      const delta = max - min;
+
+      if (delta !== 0) {
+        saturation = delta / (1 - Math.abs(2 * lightness - 1));
+
+        if (max === r) {
+          hue = 60 * (((g - b) / delta) % 6);
+        } else if (max === g) {
+          hue = 60 * ((b - r) / delta + 2);
+        } else {
+          hue = 60 * ((r - g) / delta + 4);
+        }
+      }
+
+      return {
+        h: (hue + 360) % 360,
+        s: saturation * 100,
+        l: lightness * 100,
+      };
+    }
+
+    function bucketDetectedColor(imageData, fallbackGroup) {
+      const weights = {
+        warm: 0,
+        green: 0,
+        cyan: 0,
+        blue: 0,
+        violet: 0,
+        neutral: 0,
+      };
+
+      for (let index = 0; index < imageData.data.length; index += 4) {
+        const alpha = imageData.data[index + 3];
+        if (alpha < 8) continue;
+
+        const { h, s, l } = rgbToHsl(
+          imageData.data[index],
+          imageData.data[index + 1],
+          imageData.data[index + 2],
+        );
+
+        if (l < 6) continue;
+
+        let bucket = 'neutral';
+        let weight = Math.max(0.35, l / 100) * Math.max(0.25, s / 100);
+
+        if (s < 14) {
+          weight *= 0.6;
+        } else if (h < 70 || h >= 340) {
+          bucket = 'warm';
+        } else if (h < 165) {
+          bucket = 'green';
+        } else if (h < 215) {
+          bucket = 'cyan';
+        } else if (h < 280) {
+          bucket = 'blue';
+        } else {
+          bucket = 'violet';
+        }
+
+        weights[bucket] += weight;
+      }
+
+      const sortedWeights = Object.entries(weights).sort((left, right) => right[1] - left[1]);
+      const [bucket, value] = sortedWeights[0] || [fallbackGroup, 0];
+      return value > 0 ? bucket : fallbackGroup;
+    }
+
+    function analyzeVideoColorGroup(item) {
+      if (colorGroupCache.has(item.src)) {
+        return colorGroupCache.get(item.src);
+      }
+
+      const analysisPromise = new Promise((resolve) => {
+        const video = document.createElement('video');
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d', { willReadFrequently: true });
+        let resolved = false;
+
+        function finish(group) {
+          if (resolved) return;
+          resolved = true;
+          resolve(group || item.tone);
+        }
+
+        function sampleFrame() {
+          if (!context || !video.videoWidth || !video.videoHeight) {
+            finish(item.tone);
+            return;
+          }
+
+          try {
+            canvas.width = 24;
+            canvas.height = 24;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            finish(bucketDetectedColor(imageData, item.tone));
+          } catch (error) {
+            finish(item.tone);
+          }
+        }
+
+        video.addEventListener('loadeddata', () => {
+          const seekTarget = video.duration && Number.isFinite(video.duration)
+            ? Math.min(0.18, Math.max(0.06, video.duration * 0.12))
+            : 0;
+
+          if (seekTarget > 0) {
+            video.addEventListener('seeked', sampleFrame, { once: true });
+
+            try {
+              video.currentTime = seekTarget;
+            } catch (error) {
+              sampleFrame();
+            }
+          } else {
+            sampleFrame();
+          }
+        }, { once: true });
+
+        video.addEventListener('error', () => finish(item.tone), { once: true });
+        window.setTimeout(() => finish(item.tone), 2600);
+
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = 'auto';
+        video.src = item.src;
+        video.load();
+      }).then((group) => {
+        colorGroupCache.set(item.src, Promise.resolve(group));
+        return group;
+      });
+
+      colorGroupCache.set(item.src, analysisPromise);
+      return analysisPromise;
+    }
+
+    async function analyzeMediaLibraryColors(items) {
+      const colorGroups = await Promise.all(items.map((item) => analyzeVideoColorGroup(item)));
+
+      return items.map((item, index) => ({
+        ...item,
+        colorGroup: colorGroups[index],
+      }));
+    }
+
+    function chooseBestFeedLayout(library, columnCount) {
+      const candidateCounts = getFeedCountCandidates(library.length, columnCount);
+      const attemptsPerCount = columnCount === 1 ? 6 : 18;
+      let bestLayout = null;
+
+      candidateCounts.forEach((count) => {
+        for (let attempt = 0; attempt < attemptsPerCount; attempt += 1) {
+          const selectedFeed = pickFeedVideos(library, count);
+          const arrangedFeed = buildBalancedFeed(shuffleArray(selectedFeed));
+          const feedColumns = buildFeedColumns(arrangedFeed, columnCount);
+          const score = evaluateFeedLayout(selectedFeed, feedColumns, columnCount);
+
+          if (!bestLayout || score > bestLayout.score) {
+            bestLayout = {
+              score,
+              columns: feedColumns,
+            };
+          }
+        }
+      });
+
+      return bestLayout;
+    }
+
+    function renderFeed(library = analyzedMediaLibrary || mediaLibrary) {
+      if (!flowFeed) return;
+
+      const columnCount = getFeedColumnCount();
+      const bestLayout = chooseBestFeedLayout(library, columnCount);
+      const feedColumns = bestLayout ? bestLayout.columns : [];
+      const isPacked = columnCount > 1;
+
+      activeFeedColumns = columnCount;
+      flowFeed.classList.toggle('is-packed', isPacked);
+
+      if (isPacked && feedColumns.length) {
+        const flowStyles = window.getComputedStyle(flowFeed);
+        const gapValue = parseFloat(flowStyles.rowGap || flowStyles.gap || '0') || 0;
+        const feedWidth = flowFeed.clientWidth || flowFeed.getBoundingClientRect().width || 0;
+        const columnWidth = Math.max(0, (feedWidth - gapValue * (columnCount - 1)) / columnCount);
+        const maxWeight = Math.max(...feedColumns.map((column) => column.height));
+        const averageGapCount = getAverageGapCount(feedColumns);
+        const feedHeight = Math.max(280, columnWidth * maxWeight + gapValue * averageGapCount);
+        flowFeed.style.setProperty('--feed-height', `${feedHeight}px`);
+      } else {
+        flowFeed.style.removeProperty('--feed-height');
+      }
+
+      flowFeed.innerHTML = feedColumns.map((column) => `
+        <div class="feed-column">
+          ${column.items.map((item) => {
+            const extraClasses = [`is-${item.shape}`].filter(Boolean).join(' ');
+            const shareStyle = isPacked ? ` style="--share: ${getShapeHeightScore(item.shape)}"` : '';
+
+            return `
+              <article class="feed-item ${extraClasses}"${shareStyle}>
+                ${createMediaMarkup(item)}
+              </article>
+            `;
+          }).join('')}
+        </div>
+      `).join('');
+    }
+
+    function updateInteractionVisibility() {
+      if (!interactionStrip || !interactionGrid) return;
+      interactionStrip.hidden = !interactionGrid.querySelector('.interaction-card:not([hidden])');
+    }
+
+    function assignInteractionSource(video, sources, card) {
+      const nextSource = sources.shift();
+
+      if (!nextSource) {
+        card.hidden = true;
+        updateInteractionVisibility();
+        return;
+      }
+
+      const handleLoaded = () => {
+        video.removeEventListener('error', handleError);
+        card.hidden = false;
+        updateInteractionVisibility();
+        video.play().catch(() => {});
+      };
+
+      const handleError = () => {
+        video.removeEventListener('loadeddata', handleLoaded);
+        assignInteractionSource(video, sources, card);
+      };
+
+      video.addEventListener('loadeddata', handleLoaded, { once: true });
+      video.addEventListener('error', handleError, { once: true });
+      video.src = nextSource;
+      video.load();
+    }
+
+    function renderInteractionStrip() {
+      if (!interactionGrid) return;
+
+      interactionGrid.innerHTML = interactionSlots.map((sources, index) => `
+        <article class="interaction-card" ${index > 0 ? 'hidden' : ''}>
+          <video muted loop playsinline preload="metadata"></video>
+        </article>
+      `).join('');
+
+      const cards = Array.from(interactionGrid.querySelectorAll('.interaction-card'));
+
+      cards.forEach((card, index) => {
+        const video = card.querySelector('video');
+        assignInteractionSource(video, [...interactionSlots[index]], card);
+      });
+
+      updateInteractionVisibility();
+    }
 
     document.addEventListener('mousemove', (e) => {
       if (!cur) return;
@@ -909,25 +1039,24 @@
       }
     }
 
+    renderInteractionStrip();
+    renderFeed();
+    analyzeMediaLibraryColors(mediaLibrary).then((libraryWithColors) => {
+      analyzedMediaLibrary = libraryWithColors;
+      renderFeed(analyzedMediaLibrary);
+    }).catch(() => {
+      renderFeed();
+    });
     handleTopbarScroll();
     window.addEventListener('scroll', handleTopbarScroll, { passive: true });
-
-    interactiveStages.forEach((stage) => {
-      const resetPointer = () => {
-        stage.style.setProperty('--pointer-x', '50%');
-        stage.style.setProperty('--pointer-y', '50%');
-      };
-
-      stage.addEventListener('pointermove', (event) => {
-        const bounds = stage.getBoundingClientRect();
-        const x = ((event.clientX - bounds.left) / bounds.width) * 100;
-        const y = ((event.clientY - bounds.top) / bounds.height) * 100;
-        stage.style.setProperty('--pointer-x', `${x}%`);
-        stage.style.setProperty('--pointer-y', `${y}%`);
-      });
-
-      stage.addEventListener('pointerleave', resetPointer);
-      stage.addEventListener('pointercancel', resetPointer);
+    window.addEventListener('resize', () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        const nextColumnCount = getFeedColumnCount();
+        if (nextColumnCount !== activeFeedColumns) {
+          renderFeed();
+        }
+      }, 160);
     });
   </script>
 </body>

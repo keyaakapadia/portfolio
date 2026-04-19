@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keyaa Kapadia - Controlled Chaos</title>
+  <link rel="stylesheet" href="../shared.css"/>
+  <style>
+    :root {
+      --chaos-base: #f6f2eb;
+      --chaos-sand: #ebe5dd;
+      --chaos-mist: #dfe2f4;
+      --chaos-ink: #111111;
+      --chaos-shadow: rgba(18, 20, 26, 0.12);
+      --chaos-gap: clamp(8px, 1vw, 12px);
+    }
+
+    body {
+      opacity: 0;
+      animation: pageFade .6s ease .03s forwards;
+    }
+
+    .topbar {
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transition: background .25s ease;
+    }
+
+    .topbar.scrolled {
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .topbar::after {
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+
+    .topbar.scrolled::after {
+      opacity: 1;
+    }
+
+    .project-page {
+      flex: 1;
+      padding: clamp(18px, 2.4vw, 28px) var(--page-pad) clamp(64px, 7vw, 96px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(26px, 3.8vw, 48px);
+    }
+
+    .project-intro,
+    .project-block,
+    .other-projects {
+      opacity: 0;
+      animation: fadeUp .55s ease forwards;
+    }
+
+    .project-intro { animation-delay: .12s; }
+    .block-hero { animation-delay: .18s; }
+    .block-gallery { animation-delay: .24s; }
+    .other-projects { animation-delay: .3s; }
+
+    .project-intro {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(20px, 2.6vw, 36px);
+      align-items: start;
+    }
+
+    .project-intro > * {
+      min-width: 0;
+    }
+
+    .project-brand {
+      padding-top: clamp(6px, 0.8vw, 12px);
+    }
+
+    .project-title {
+      font-size: clamp(42px, 6vw, 88px);
+      line-height: .9;
+      letter-spacing: -.08em;
+      font-weight: 500;
+      color: var(--chaos-ink);
+      max-width: 8ch;
+      text-wrap: balance;
+    }
+
+    .project-meta,
+    .project-copy p {
+      font-size: var(--text-body);
+      line-height: 1.58;
+      color: var(--ink);
+      font-weight: 400;
+      text-wrap: pretty;
+    }
+
+    .project-meta {
+      max-width: 24ch;
+    }
+
+    .project-copy p {
+      max-width: 36ch;
+    }
+
+    .project-copy p + p {
+      margin-top: 12px;
+    }
+
+    .project-tools {
+      color: var(--muted);
+    }
+
+    .project-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .media-frame {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--media-radius);
+      background:
+        radial-gradient(circle at 20% 18%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 18%),
+        linear-gradient(135deg, var(--chaos-base) 0%, var(--chaos-sand) 54%, var(--chaos-mist) 100%);
+      box-shadow: 0 18px 48px var(--chaos-shadow);
+      isolation: isolate;
+    }
+
+    .media-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, rgba(15, 17, 21, .34) 0%, rgba(15, 17, 21, .08) 34%, rgba(15, 17, 21, 0) 60%),
+        linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 26%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .media-frame video,
+    .media-frame img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      transform: scale(1.01);
+    }
+
+    .media-frame--hero {
+      aspect-ratio: 16 / 9;
+      min-height: min(68vh, 640px);
+    }
+
+    .ratio-9x16 { aspect-ratio: 9 / 16; }
+    .ratio-1x1 { aspect-ratio: 1 / 1; }
+    .ratio-4x5 { aspect-ratio: 4 / 5; }
+    .ratio-16x9 { aspect-ratio: 16 / 9; }
+
+    .gallery-shell {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 1.4vw, 18px);
+    }
+
+    .gallery-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .gallery-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .gallery-chip {
+      appearance: none;
+      border: 1px solid rgba(17,17,17,.08);
+      background: rgba(255,255,255,.76);
+      color: rgba(17,17,17,.72);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: var(--text-caption);
+      line-height: 1;
+      cursor: pointer;
+      transition: background .2s ease, border-color .2s ease, color .2s ease, transform .2s ease;
+    }
+
+    .gallery-chip:hover {
+      transform: translateY(-1px);
+      border-color: rgba(17,17,17,.16);
+    }
+
+    .gallery-chip.is-active {
+      background: rgba(244,239,231,.96);
+      color: var(--chaos-ink);
+      border-color: rgba(17,17,17,.14);
+    }
+
+    .gallery-hint {
+      font-size: var(--text-caption);
+      color: var(--muted);
+      letter-spacing: .02em;
+    }
+
+    .gallery-track {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 100%;
+      gap: clamp(18px, 2vw, 26px);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      padding-bottom: 2px;
+    }
+
+    .gallery-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .gallery-panel {
+      scroll-snap-align: start;
+      min-width: 0;
+    }
+
+    .gallery-grid {
+      display: grid;
+      gap: var(--chaos-gap);
+      min-width: 0;
+    }
+
+    .gallery-grid--916 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .gallery-grid--1x1,
+    .gallery-grid--4x5,
+    .gallery-grid--16x9 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .other-projects {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .other-title {
+      font-size: var(--text-heading-sm);
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .other-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 1.8vw, 20px);
+    }
+
+    .other-card {
+      text-decoration: none;
+      color: var(--ink);
+      display: block;
+    }
+
+    .other-thumb {
+      aspect-ratio: 4 / 3;
+      border-radius: var(--media-radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #efeff4;
+      color: rgba(17, 17, 17, 0.58);
+      font-size: clamp(28px, 4vw, 50px);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .other-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .other-thumb--chaos {
+      background:
+        radial-gradient(circle at 28% 24%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 20%),
+        linear-gradient(135deg, #f3eee7 0%, #e9e3dc 60%, #dde2f5 100%);
+      position: relative;
+    }
+
+    .other-thumb--chaos::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(120deg, rgba(17,17,17,.1) 0 1px, transparent 1px 20px);
+      opacity: .38;
+    }
+
+    .other-card:hover .other-thumb {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(17, 17, 17, 0.08);
+    }
+
+    .other-name {
+      margin-top: 10px;
+      font-size: var(--text-small);
+      font-weight: 500;
+      text-wrap: balance;
+    }
+
+    footer {
+      opacity: 0;
+      animation: fadeUp .5s ease .5s forwards;
+    }
+
+    @media (max-width: 1180px) {
+      .project-intro {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project-copy {
+        grid-column: 1 / -1;
+        max-width: 64ch;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .project-intro,
+      .other-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid--1x1,
+      .gallery-grid--4x5,
+      .gallery-grid--16x9 {
+        grid-template-columns: 1fr;
+      }
+
+      .gallery-grid--916 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 680px) {
+      .project-page {
+        padding: 16px 20px 72px;
+        gap: 28px;
+      }
+
+      .project-title {
+        font-size: clamp(40px, 13vw, 62px);
+      }
+
+      .media-frame--hero {
+        min-height: 430px;
+      }
+
+      .gallery-nav {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .media-frame video,
+      .media-frame img {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="grad"></div>
+
+  <div class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <nav class="top">
+        <a class="nav-name" href="../index.html">Keyaa Kapadia</a>
+        <div class="nav-links">
+          <a href="../work/work.html" class="active">Work</a>
+          <a href="../play/play.html">Play</a>
+          <a href="../about/about.html">About</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="project-page">
+    <section class="project-intro">
+      <div class="project-brand">
+        <h1 class="project-title">Controlled Chaos</h1>
+      </div>
+
+      <div>
+        <p class="project-meta">Creative Coding, Generative Design, Interaction Design, Systems Thinking, Computational Design</p>
+      </div>
+
+      <div class="project-copy">
+        <p>An interactive generative system where user input shapes a continuously evolving particle field. Through presets, controls, and gestures, the project explores how structured rules can produce unpredictable, fluid visual behaviors in real time.</p>
+        <p class="project-tools">[JavaScript, Three.js, HTML / CSS, WebGL (via Three.js)]</p>
+      </div>
+    </section>
+
+    <section class="project-block block-hero">
+      <div class="media-frame media-frame--hero" aria-label="Controlled Chaos hero video">
+        <video src="chaos_00013.mp4" poster="chaos_00014.png" autoplay muted loop playsinline preload="metadata"></video>
+      </div>
+    </section>
+
+    <section class="project-block block-gallery">
+      <div class="gallery-shell">
+        <div class="gallery-nav">
+          <div class="gallery-controls" role="tablist" aria-label="Media ratio gallery">
+            <button class="gallery-chip is-active" type="button" data-target="panel-916" aria-pressed="true">9:16</button>
+            <button class="gallery-chip" type="button" data-target="panel-1x1" aria-pressed="false">1:1</button>
+            <button class="gallery-chip" type="button" data-target="panel-4x5" aria-pressed="false">4:5</button>
+            <button class="gallery-chip" type="button" data-target="panel-16x9" aria-pressed="false">16:9</button>
+          </div>
+          <p class="gallery-hint">Swipe through the ratio sets.</p>
+        </div>
+
+        <div class="gallery-track" id="galleryTrack">
+          <article class="gallery-panel" id="panel-916">
+            <div class="gallery-grid gallery-grid--916">
+              <div class="media-frame ratio-9x16">
+                <video src="chaos_00012.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-9x16">
+                <video src="chaos_00003.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-9x16">
+                <video src="chaos_00010.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+          </article>
+
+          <article class="gallery-panel" id="panel-1x1">
+            <div class="gallery-grid gallery-grid--1x1">
+              <div class="media-frame ratio-1x1">
+                <video src="chaos_00005.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-1x1">
+                <video src="chaos_00004.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-1x1">
+                <video src="chaos_00006.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-1x1">
+                <video src="chaos_00008.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+          </article>
+
+          <article class="gallery-panel" id="panel-4x5">
+            <div class="gallery-grid gallery-grid--4x5">
+              <div class="media-frame ratio-4x5">
+                <video src="chaos_00007.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-4x5">
+                <video src="chaos_00009.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-4x5">
+                <video src="chaos_00001.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-4x5">
+                <video src="chaos_00002.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+          </article>
+
+          <article class="gallery-panel" id="panel-16x9">
+            <div class="gallery-grid gallery-grid--16x9">
+              <div class="media-frame ratio-16x9">
+                <video src="chaos_00013.mp4" poster="chaos_00014.png" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-16x9">
+                <video src="chaos_00011.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-16x9">
+                <video src="chaos_00001.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+              <div class="media-frame ratio-16x9">
+                <video src="chaos_00002.mp4" autoplay muted loop playsinline preload="metadata"></video>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!--
+    Future expansion idea:
+    Add more gallery panels or expand each ratio panel with more media-frame tiles
+    once you have additional campaign applications, stills, mockups, or logo-led frames.
+    -->
+
+    <section class="other-projects">
+      <h2 class="other-title">Other Projects</h2>
+      <div class="other-grid">
+        <a class="other-card" href="bloomberg.html">
+          <div class="other-thumb">
+            <img src="bloomberg_mall.png" alt="Bloomberg project preview" loading="lazy">
+          </div>
+          <p class="other-name">Bloomberg</p>
+        </a>
+
+        <a class="other-card" href="work.html">
+          <div class="other-thumb other-thumb--chaos">◈</div>
+          <p class="other-name">Work Index</p>
+        </a>
+
+        <a class="other-card" href="../play/play.html">
+          <div class="other-thumb">
+            <img src="../play/animation.png" alt="Play section preview" loading="lazy">
+          </div>
+          <p class="other-name">Play Experiments</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="fl">
+      <a href="mailto:kapadiakeyaa@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="../resume.html">Resume</a>
+    </div>
+    <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
+  </footer>
+
+  <script>
+    const cur = document.getElementById('cur');
+    const topbar = document.getElementById('topbar');
+    const yearEl = document.getElementById('yr');
+    const galleryTrack = document.getElementById('galleryTrack');
+    const galleryButtons = Array.from(document.querySelectorAll('.gallery-chip'));
+
+    document.addEventListener('mousemove', (e) => {
+      if (!cur) return;
+      cur.style.left = `${e.clientX}px`;
+      cur.style.top = `${e.clientY}px`;
+    });
+
+    document.querySelectorAll('a, button').forEach((el) => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    function handleTopbarScroll() {
+      if (!topbar) return;
+      if (window.scrollY > 10) {
+        topbar.classList.add('scrolled');
+      } else {
+        topbar.classList.remove('scrolled');
+      }
+    }
+
+    function setActiveChip(panelId) {
+      galleryButtons.forEach((button) => {
+        const isActive = button.dataset.target === panelId;
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-pressed', String(isActive));
+      });
+    }
+
+    if (galleryTrack && galleryButtons.length) {
+      const panels = Array.from(galleryTrack.querySelectorAll('.gallery-panel'));
+
+      galleryButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+          const target = document.getElementById(button.dataset.target);
+          if (!target) return;
+          target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+          setActiveChip(button.dataset.target);
+        });
+      });
+
+      const galleryObserver = new IntersectionObserver((entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+        if (visible) {
+          setActiveChip(visible.target.id);
+        }
+      }, {
+        root: galleryTrack,
+        threshold: 0.55,
+      });
+
+      panels.forEach((panel) => galleryObserver.observe(panel));
+    }
+
+    handleTopbarScroll();
+    window.addEventListener('scroll', handleTopbarScroll, { passive: true });
+  </script>
+</body>
+</html>
