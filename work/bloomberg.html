@@ -5,7 +5,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Keyaa Kapadia - Editorial Illustration</title>
-  <link rel="stylesheet" href="../../shared.css"/>
+  <link rel="stylesheet" href="../shared.css"/>
   <style>
     :root {
       --project-blue: #1449C8;
@@ -342,11 +342,11 @@
   <div class="topbar" id="topbar">
     <div class="topbar-inner">
       <nav class="top">
-        <a class="nav-name" href="../../index.html">Keyaa Kapadia</a>
+        <a class="nav-name" href="../index.html">Keyaa Kapadia</a>
         <div class="nav-links">
-          <a href="../work.html" class="active">Work</a>
-          <a href="../../play/play.html">Play</a>
-          <a href="../../about/about.html">About</a>
+          <a href="work.html" class="active">Work</a>
+          <a href="../play/play.html">Play</a>
+          <a href="../about/about.html">About</a>
         </div>
       </nav>
     </div>
@@ -364,16 +364,16 @@
 
       <div class="project-copy">
         <p>A response to Beth Kowitt's Bloomberg Opinion piece on anti-American sentiment eroding the appeal of iconic U.S. brands. Built in HTML and JavaScript, the illustration follows a shopper through a virtual store where American products repel away no matter where they turn, revealing the buyer behind every transaction. The further you reach, the more the shelves empty.</p>
-        <p class="project-tools">[Figma, Adobe Illustrator, Photoshop, After Effects]</p>
         <p class="project-credit">With Talia Cotton · Fall 2025</p>
+        <p class="project-tools">[Figma, Adobe Illustrator, Photoshop, After Effects]</p>
       </div>
     </section>
 
     <section class="project-block block-browser">
       <a class="project-link" href="https://keyaakapadia.github.io/editorial_illustration_bloomberg/" target="_blank" rel="noopener noreferrer" aria-label="Open the live Bloomberg editorial illustration">
         <div class="browser-stage" id="browserStage">
-          <video class="project-media" id="browserVideo" src="bloomberg_browser.mp4" poster="bloomberg_logo.png" autoplay muted loop playsinline preload="metadata"></video>
-          <img class="browser-fallback" src="bloomberg_logo.png" alt="Bloomberg browser preview fallback" loading="lazy">
+          <video class="project-media" id="browserVideo" src="bloomberg/bloomberg_browser.mp4" poster="bloomberg/bloomberg_logo.png" autoplay muted loop playsinline preload="metadata"></video>
+          <img class="browser-fallback" src="bloomberg/bloomberg_logo.png" alt="Bloomberg browser preview fallback" loading="lazy">
         </div>
       </a>
     </section>
@@ -381,21 +381,21 @@
     <section class="project-block block-breakdown">
       <a class="project-link" href="https://keyaakapadia.github.io/editorial_illustration_bloomberg/" target="_blank" rel="noopener noreferrer" aria-label="Open the live Bloomberg editorial illustration">
         <picture class="project-picture">
-          <source media="(max-width: 768px)" srcset="bloomberg_breakdown_mobile.png">
-          <img class="project-media" src="bloomberg_breakdown_desktop.png" alt="Bloomberg visual breakdown" loading="lazy">
+          <source media="(max-width: 768px)" srcset="bloomberg/bloomberg_breakdown_mobile.png">
+          <img class="project-media" src="bloomberg/bloomberg_breakdown_desktop.png" alt="Bloomberg visual breakdown" loading="lazy">
         </picture>
       </a>
     </section>
 
     <section class="project-block block-combination">
-      <video class="project-media" src="bloomberg_combination.mp4" autoplay muted loop playsinline preload="metadata"></video>
+      <video class="project-media" src="bloomberg/bloomberg_combination.mp4" autoplay muted loop playsinline preload="metadata"></video>
     </section>
 
     <section class="project-block block-phone">
       <a class="project-link" href="https://keyaakapadia.github.io/editorial_illustration_bloomberg/" target="_blank" rel="noopener noreferrer" aria-label="Open the live Bloomberg editorial illustration">
         <div class="phone-grid">
-          <video class="project-media" src="bloomberg_breakdown.mp4" autoplay muted loop playsinline preload="metadata"></video>
-          <img class="project-media" src="bloomberg_mall.png" alt="Bloomberg mall phone mockup" loading="lazy">
+          <video class="project-media" src="bloomberg/bloomberg_breakdown.mp4" autoplay muted loop playsinline preload="metadata"></video>
+          <img class="project-media" src="bloomberg/bloomberg_mall.png" alt="Bloomberg mall phone mockup" loading="lazy">
         </div>
       </a>
     </section>
@@ -403,19 +403,19 @@
     <section class="other-projects">
       <h2 class="other-title">Other Projects</h2>
       <div class="other-grid">
-        <a class="other-card" href="../controlledchaos.html">
-          <div class="other-thumb">
-            <video src="../chaos /particles1.mp4" poster="../chaos /chaos_00001.png" autoplay muted loop playsinline preload="metadata"></video>
+        <a class="other-card" href="controlledchaos.html">
+          <div class="other-thumb" data-live-url="https://keyaakapadia.github.io/field./">
+            <video src="chaos /particles1.mp4" poster="chaos /chaos_00001.png" autoplay muted loop playsinline preload="metadata"></video>
           </div>
           <p class="other-name">Controlled Chaos</p>
         </a>
 
-        <a class="other-card" href="../work.html">
+        <a class="other-card" href="work.html">
           <div class="other-thumb other-thumb--olive">✦</div>
           <p class="other-name">O(love) you (olive oil)</p>
         </a>
 
-        <a class="other-card" href="../work.html">
+        <a class="other-card" href="work.html">
           <div class="other-thumb other-thumb--wired">🌿</div>
           <p class="other-name">WIRED</p>
         </a>
@@ -428,7 +428,7 @@
       <a href="mailto:kapadiakeyaa@gmail.com">Email</a>
       <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
       <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a>
-      <a href="../../resume.html">Resume</a>
+      <a href="../resume.html">Resume</a>
     </div>
     <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
   </footer>
@@ -482,6 +482,14 @@
         }
       });
     }
+
+    document.querySelectorAll('[data-live-url]').forEach((surface) => {
+      surface.addEventListener('click', (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        window.open(surface.dataset.liveUrl, '_blank', 'noopener,noreferrer');
+      });
+    });
   </script>
 </body>
 </html>

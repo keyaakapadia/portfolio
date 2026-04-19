@@ -549,6 +549,7 @@
     const yearEl = document.getElementById('yr');
     const galleryTrack = document.getElementById('galleryTrack');
     const galleryButtons = Array.from(document.querySelectorAll('.gallery-chip'));
+    const chaosLiveUrl = 'https://keyaakapadia.github.io/field./';
 
     document.addEventListener('mousemove', (e) => {
       if (!cur) return;
@@ -609,6 +610,13 @@
 
       panels.forEach((panel) => galleryObserver.observe(panel));
     }
+
+    document.querySelectorAll('.media-frame').forEach((frame) => {
+      frame.style.cursor = 'pointer';
+      frame.addEventListener('click', () => {
+        window.open(chaosLiveUrl, '_blank', 'noopener,noreferrer');
+      });
+    });
 
     handleTopbarScroll();
     window.addEventListener('scroll', handleTopbarScroll, { passive: true });
