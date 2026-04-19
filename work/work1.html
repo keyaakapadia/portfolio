@@ -538,9 +538,13 @@
     handleScrollFade();
     window.addEventListener('scroll', handleScrollFade, { passive: true });
 
+    const previewItems = [];
+
     document.querySelectorAll('.w-item').forEach((item) => {
       const video = item.querySelector('video[data-video]');
       if (!video) return;
+
+      previewItems.push({ item, video });
 
       item.addEventListener('mouseenter', () => {
         video.play().catch(() => {});
@@ -550,6 +554,42 @@
         video.pause();
       });
     });
+
+    const touchPreviewMode = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+
+    if (touchPreviewMode && 'IntersectionObserver' in window) {
+      previewItems.forEach(({ video }) => {
+        video.autoplay = true;
+        video.muted = true;
+        video.defaultMuted = true;
+        video.loop = true;
+        video.playsInline = true;
+        video.setAttribute('autoplay', '');
+        video.play().catch(() => {});
+      });
+
+      const previewObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
+
+          if (entry.isIntersecting && entry.intersectionRatio > 0.05) {
+            video.play().catch(() => {});
+          } else {
+            video.pause();
+          }
+        });
+      }, {
+        threshold: [0, 0.05, 0.2, 0.45]
+      });
+
+      previewItems.forEach(({ video }) => previewObserver.observe(video));
+
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          previewItems.forEach(({ video }) => video.pause());
+        }
+      });
+    }
   </script>
 </body>
 </html>
