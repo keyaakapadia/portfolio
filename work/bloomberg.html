@@ -404,7 +404,7 @@
       <h2 class="other-title">Other Projects</h2>
       <div class="other-grid">
         <a class="other-card" href="controlledchaos.html">
-          <div class="other-thumb" data-live-url="https://keyaakapadia.github.io/field./">
+          <div class="other-thumb">
             <video src="chaos /particles1.mp4" poster="chaos /chaos_00001.png" autoplay muted loop playsinline preload="metadata"></video>
           </div>
           <p class="other-name">Controlled Chaos</p>
@@ -482,14 +482,6 @@
         }
       });
     }
-
-    document.querySelectorAll('[data-live-url]').forEach((surface) => {
-      surface.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        window.open(surface.dataset.liveUrl, '_blank', 'noopener,noreferrer');
-      });
-    });
   </script>
 </body>
 </html>

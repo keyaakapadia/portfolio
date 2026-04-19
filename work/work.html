@@ -397,7 +397,7 @@
 
     <!-- PROJECT 2: Controlled Chaos -->
     <a href="controlledchaos.html" class="w-item">
-      <div class="w-thumb" data-live-url="https://keyaakapadia.github.io/field./">
+      <div class="w-thumb">
         <div class="w-thumb-inner">
           <video
             src="chaos /particles1.mp4"
@@ -586,14 +586,6 @@
       item.addEventListener('mouseleave', () => {
         video.pause();
         // currentTime is intentionally NOT reset — stays at last frame
-      });
-    });
-
-    document.querySelectorAll('[data-live-url]').forEach((surface) => {
-      surface.addEventListener('click', (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-        window.open(surface.dataset.liveUrl, '_blank', 'noopener,noreferrer');
       });
     });
   </script>

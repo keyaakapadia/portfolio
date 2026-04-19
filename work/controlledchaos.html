@@ -124,21 +124,20 @@
       gap: clamp(14px, 1.8vw, 22px);
     }
 
-    .interaction-strip[hidden] {
+    .feature-stage[hidden] {
       display: none;
     }
 
-    .interaction-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: var(--chaos-gap);
+    .feature-stage {
+      width: 100%;
     }
 
-    .interaction-card {
+    .feature-link,
+    .media-frame,
+    .feed-item {
       display: block;
       position: relative;
       overflow: hidden;
-      aspect-ratio: 16 / 10;
       border-radius: var(--media-radius);
       background:
         radial-gradient(circle at 20% 18%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 18%),
@@ -150,18 +149,53 @@
       cursor: pointer;
     }
 
-    .interaction-card::before {
+    .feature-link {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      min-height: clamp(320px, 52vw, 760px);
+      transition: transform .28s ease, box-shadow .28s ease;
+    }
+
+    .feature-link::before,
+    .media-frame::before,
+    .feed-item::before {
       content: "";
       position: absolute;
       inset: 0;
       background:
-        linear-gradient(to top, rgba(15, 17, 21, .22) 0%, rgba(15, 17, 21, .06) 34%, rgba(15, 17, 21, 0) 60%),
-        linear-gradient(to bottom, rgba(255,255,255,.1) 0%, rgba(255,255,255,0) 26%);
+        linear-gradient(to top, rgba(15, 17, 21, .28) 0%, rgba(15, 17, 21, .08) 34%, rgba(15, 17, 21, 0) 60%),
+        linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 26%);
       pointer-events: none;
-      z-index: 1;
+      z-index: 2;
     }
 
-    .interaction-card video {
+    .feature-link:hover,
+    .feed-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 54px rgba(18, 20, 26, 0.16);
+    }
+
+    .feature-viewport {
+      position: absolute;
+      inset: 0;
+    }
+
+    .feature-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.015);
+      transition: opacity .8s ease, transform 1.1s ease;
+      pointer-events: none;
+    }
+
+    .feature-slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .feature-slide video,
+    .feature-link video {
       width: 100%;
       height: 100%;
       display: block;
@@ -170,28 +204,25 @@
       transform: scale(1.01);
     }
 
-    .media-frame,
-    .feed-item {
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--media-radius);
-      background:
-        radial-gradient(circle at 20% 18%, rgba(255,255,255,.92) 0%, rgba(255,255,255,0) 18%),
-        linear-gradient(135deg, var(--chaos-base) 0%, var(--chaos-sand) 54%, var(--chaos-mist) 100%);
-      box-shadow: 0 18px 48px var(--chaos-shadow);
-      isolation: isolate;
-    }
-
-    .media-frame::before,
-    .feed-item::before {
-      content: "";
+    .feature-note {
       position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(to top, rgba(15, 17, 21, .3) 0%, rgba(15, 17, 21, .08) 34%, rgba(15, 17, 21, 0) 60%),
-        linear-gradient(to bottom, rgba(255,255,255,.12) 0%, rgba(255,255,255,0) 26%);
-      pointer-events: none;
-      z-index: 1;
+      left: clamp(14px, 1.8vw, 22px);
+      bottom: clamp(14px, 1.8vw, 22px);
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: rgba(17, 17, 17, 0.8);
     }
 
     .media-frame video,
@@ -222,10 +253,6 @@
 
     .feed-item {
       display: block;
-      text-decoration: none;
-      color: inherit;
-      cursor: pointer;
-      transition: transform .28s ease, box-shadow .28s ease;
     }
 
     .flow-feed.is-packed {
@@ -240,11 +267,6 @@
       flex: var(--share, 1) 1 0;
       min-height: 0;
       aspect-ratio: auto;
-    }
-
-    .feed-item:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 22px 54px rgba(18, 20, 26, 0.16);
     }
 
     .feed-item.is-portrait { aspect-ratio: 9 / 16; }
@@ -367,17 +389,25 @@
         font-size: clamp(40px, 13vw, 62px);
       }
 
-      .interaction-grid {
-        grid-template-columns: 1fr;
-      }
-
       .flow-feed {
         grid-template-columns: 1fr;
       }
 
+      .feature-link {
+        aspect-ratio: 4 / 5;
+        min-height: 0;
+      }
+
+      .feature-note {
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        justify-content: center;
+      }
+
       .media-frame video,
       .media-frame img,
-      .interaction-card video,
+      .feature-link video,
       .feed-item video,
       .feed-item img {
         transform: none;
@@ -421,8 +451,18 @@
 
     <section class="project-block block-flow">
       <div class="flow-shell">
-        <div class="interaction-strip" id="interactionStrip">
-          <div class="interaction-grid" id="interactionGrid"></div>
+        <div class="feature-stage" id="featureStage">
+          <a
+            class="feature-link"
+            id="featureLink"
+            href="https://keyaakapadia.github.io/field./"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Open the live Controlled Chaos experience"
+          >
+            <div class="feature-viewport" id="featureViewport"></div>
+            <span class="feature-note">Open live experience</span>
+          </a>
         </div>
 
         <div class="flow-feed" id="flowFeed" aria-live="polite"></div>
@@ -440,7 +480,7 @@
     <section class="other-projects">
       <h2 class="other-title">Other Projects</h2>
       <div class="other-grid">
-        <a class="other-card" href="bloomberg/bloomberg.html">
+        <a class="other-card" href="bloomberg.html">
           <div class="other-thumb">
             <video src="bloomberg/bloomberg_combination.mp4" muted autoplay loop playsinline preload="metadata"></video>
           </div>
@@ -476,8 +516,8 @@
     const cur = document.getElementById('cur');
     const topbar = document.getElementById('topbar');
     const yearEl = document.getElementById('yr');
-    const interactionStrip = document.getElementById('interactionStrip');
-    const interactionGrid = document.getElementById('interactionGrid');
+    const featureStage = document.getElementById('featureStage');
+    const featureViewport = document.getElementById('featureViewport');
     const flowFeed = document.getElementById('flowFeed');
     const chaosLiveUrl = 'https://keyaakapadia.github.io/field./';
     const chaosBase = 'chaos /';
@@ -499,11 +539,12 @@
       4: 3.8,
     };
 
-    const interactionSlots = [
-      [`${chaosBase}test1.mp4`, `${chaosBase}particles1.mp4`],
-      [`${chaosBase}test2.mp4`],
-      [`${chaosBase}test3.mp4`],
-      [`${chaosBase}test4.mp4`],
+    const featureSlots = [
+      [`${chaosBase}particles1.mp4`, `${chaosBase}chaos_00022.mp4`],
+      [`${chaosBase}test1.mp4`, `${chaosBase}chaos_00027.mp4`],
+      [`${chaosBase}test2.mp4`, `${chaosBase}chaos_00018.mp4`],
+      [`${chaosBase}test3.mp4`, `${chaosBase}chaos_00031.mp4`],
+      [`${chaosBase}test4.mp4`, `${chaosBase}chaos_00022.mp4`],
     ];
 
     // Add future clips here with shape, tone, and pattern notes so the feed keeps
@@ -533,6 +574,8 @@
     const colorGroupCache = new Map();
     let analyzedMediaLibrary = null;
     let activeFeedColumns = 0;
+    let activeFeatureIndex = 0;
+    let featureRotationTimer = null;
     let resizeTimer = null;
 
     function createMediaMarkup(item) {
@@ -992,62 +1035,101 @@
       bindHoverableLinks();
     }
 
-    function updateInteractionVisibility() {
-      if (!interactionStrip || !interactionGrid) return;
-      interactionStrip.hidden = !interactionGrid.querySelector('.interaction-card:not([hidden])');
+    function resolveVideoSource(sources) {
+      return new Promise((resolve) => {
+        const attemptQueue = [...sources];
+
+        function tryNextSource() {
+          const nextSource = attemptQueue.shift();
+
+          if (!nextSource) {
+            resolve(null);
+            return;
+          }
+
+          const probe = document.createElement('video');
+          let settled = false;
+
+          function finish(result) {
+            if (settled) return;
+            settled = true;
+            resolve(result);
+          }
+
+          function cleanup() {
+            probe.removeAttribute('src');
+            probe.load();
+          }
+
+          probe.addEventListener('loadeddata', () => {
+            cleanup();
+            finish(nextSource);
+          }, { once: true });
+
+          probe.addEventListener('error', () => {
+            cleanup();
+            tryNextSource();
+          }, { once: true });
+
+          window.setTimeout(() => {
+            if (settled) return;
+            cleanup();
+            tryNextSource();
+          }, 1800);
+
+          probe.muted = true;
+          probe.playsInline = true;
+          probe.preload = 'metadata';
+          probe.src = nextSource;
+          probe.load();
+        }
+
+        tryNextSource();
+      });
     }
 
-    function assignInteractionSource(video, sources, card) {
-      const nextSource = sources.shift();
+    function rotateFeatureSlides() {
+      const slides = Array.from(featureViewport?.querySelectorAll('.feature-slide') || []);
+      if (slides.length < 2) return;
 
-      if (!nextSource) {
-        card.hidden = true;
-        updateInteractionVisibility();
+      slides[activeFeatureIndex].classList.remove('is-active');
+      activeFeatureIndex = (activeFeatureIndex + 1) % slides.length;
+      slides[activeFeatureIndex].classList.add('is-active');
+      slides[activeFeatureIndex].querySelector('video')?.play().catch(() => {});
+    }
+
+    async function renderFeatureStage() {
+      if (!featureStage || !featureViewport) return;
+
+      const resolvedSources = await Promise.all(
+        featureSlots.map((sources) => resolveVideoSource(sources)),
+      );
+
+      const uniqueSources = resolvedSources.filter((src, index, all) => src && all.indexOf(src) === index);
+
+      if (!uniqueSources.length) {
+        featureStage.hidden = true;
         return;
       }
 
-      const handleLoaded = () => {
-        video.removeEventListener('error', handleError);
-        card.hidden = false;
-        updateInteractionVisibility();
-        video.play().catch(() => {});
-      };
+      featureStage.hidden = false;
+      activeFeatureIndex = 0;
+      window.clearInterval(featureRotationTimer);
 
-      const handleError = () => {
-        video.removeEventListener('loadeddata', handleLoaded);
-        assignInteractionSource(video, sources, card);
-      };
-
-      video.addEventListener('loadeddata', handleLoaded, { once: true });
-      video.addEventListener('error', handleError, { once: true });
-      video.src = nextSource;
-      video.load();
-    }
-
-    function renderInteractionStrip() {
-      if (!interactionGrid) return;
-
-      interactionGrid.innerHTML = interactionSlots.map((sources, index) => `
-        <a
-          class="interaction-card"
-          href="${chaosLiveUrl}"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Open the live Controlled Chaos experience"
-          ${index > 0 ? 'hidden' : ''}
-        >
-          <video muted loop playsinline preload="metadata"></video>
-        </a>
+      featureViewport.innerHTML = uniqueSources.map((src, index) => `
+        <div class="feature-slide ${index === 0 ? 'is-active' : ''}">
+          <video src="${src}" autoplay muted loop playsinline preload="auto"></video>
+        </div>
       `).join('');
 
-      const cards = Array.from(interactionGrid.querySelectorAll('.interaction-card'));
-
-      cards.forEach((card, index) => {
-        const video = card.querySelector('video');
-        assignInteractionSource(video, [...interactionSlots[index]], card);
+      featureViewport.querySelectorAll('video').forEach((video) => {
+        video.play().catch(() => {});
       });
 
-      updateInteractionVisibility();
+      if (uniqueSources.length > 1) {
+        featureRotationTimer = window.setInterval(rotateFeatureSlides, 3600);
+      }
+
       bindHoverableLinks();
     }
 
@@ -1072,7 +1154,7 @@
       }
     }
 
-    renderInteractionStrip();
+    renderFeatureStage();
     renderFeed();
     analyzeMediaLibraryColors(mediaLibrary).then((libraryWithColors) => {
       analyzedMediaLibrary = libraryWithColors;
