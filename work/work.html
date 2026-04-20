@@ -104,6 +104,10 @@
       display: block;
     }
 
+    .w-item--static {
+      cursor: default;
+    }
+
     .w-thumb {
       width: 100%;
       aspect-ratio: 4 / 3;
@@ -130,6 +134,28 @@
       font-size: 0;
     }
 
+    .w-thumb-rotator {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .w-thumb-rotator img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.02);
+      transition: opacity .55s ease, transform .55s ease;
+    }
+
+    .w-thumb-rotator img.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
     /* Video support */
     .w-thumb-inner video {
       width: 100%;
@@ -142,6 +168,10 @@
       transform: scale(1.04);
     }
 
+    .w-item--static:hover .w-thumb-inner {
+      transform: none;
+    }
+
     .w-info {
       padding: 10px 0 0;
     }
@@ -150,6 +180,11 @@
       font-size: var(--text-small);
       font-weight: 500;
       color: var(--ink);
+    }
+
+    .w-status {
+      color: var(--muted);
+      font-weight: 400;
     }
 
     .w-tags {
@@ -419,61 +454,24 @@
       </div>
     </a>
 
-    <!-- PROJECT 3: O(love) you (olive oil) -->
-    <a href="oloveyouoliveoil.html" class="w-item">
-      <div class="w-thumb c3">
-        <div class="w-thumb-inner">✦</div>
-      </div>
-      <div class="w-info">
-        <p class="w-title">O(love) you (olive oil)</p>
-        <p class="w-tags">Brand Identity · Graphic Design</p>
-        <div class="w-desc-wrap">
-          <p class="w-desc">Designed for the slightly over-curious. Rewards patience, punishes skimming.</p>
-        </div>
-      </div>
-    </a>
-
-    <!-- PROJECT 4: Project Four -->
-    <a href="projectfour.html" class="w-item">
-      <div class="w-thumb c4">
-        <div class="w-thumb-inner">▲</div>
-      </div>
-      <div class="w-info">
-        <p class="w-title">Project Four</p>
-        <p class="w-tags">Graphic Design · Print</p>
-        <div class="w-desc-wrap">
-          <p class="w-desc">Print still matters. Especially when it bleeds off the page.</p>
-        </div>
-      </div>
-    </a>
-
-    <!-- PROJECT 5: WIRED -->
-    <a href="wired.html" class="w-item">
-      <div class="w-thumb c5">
-        <div class="w-thumb-inner">🌿</div>
-      </div>
-      <div class="w-info">
-        <p class="w-title">WIRED </p>
-        <p class="w-tags">UI/UX · App Design · Branding</p>
-        <div class="w-desc-wrap">
-          <p class="w-desc">A wellness app that doesn't make you feel bad for opening it at 2 am.</p>
-        </div>
-      </div>
-    </a>
-
-    <!-- PROJECT 6: Golden Ratio -->
-    <a href="goldenratio.html" class="w-item">
+    <!-- PROJECT 3: RIPED -->
+    <div class="w-item w-item--static" aria-label="RIPED coming soon">
       <div class="w-thumb c6">
-        <div class="w-thumb-inner">◯</div>
-      </div>
-      <div class="w-info">
-        <p class="w-title"> Golden Ratio </p>
-        <p class="w-tags">UI/UX · Web Design · Editorial Design</p>
-        <div class="w-desc-wrap">
-          <p class="w-desc">An exploration of artworks that have been based around the Golden Ratio.</p>
+        <div class="w-thumb-inner w-thumb-rotator" data-rotator>
+          <img src="RIPED/cherry_mockup.png" alt="RIPED cherry candle mockup" class="is-active" loading="lazy">
+          <img src="RIPED/lemon_mockup.png" alt="RIPED lemon candle mockup" loading="lazy">
+          <img src="RIPED/orange_mockup.png" alt="RIPED orange candle mockup" loading="lazy">
+          <img src="RIPED/strawberry_mockup.png" alt="RIPED strawberry candle mockup" loading="lazy">
         </div>
       </div>
-    </a>
+      <div class="w-info">
+        <p class="w-title">RIPED <span class="w-status">(Coming Soon)</span></p>
+        <p class="w-tags">Brand Identity · Visual System · Digital Design</p>
+        <div class="w-desc-wrap">
+          <p class="w-desc">A fruity scented candle concept building a playful brand world through product mockups and campaign imagery.</p>
+        </div>
+      </div>
+    </div>
   </section>
 
   <footer>
@@ -497,7 +495,7 @@
       cur.style.top = e.clientY + 'px';
     });
 
-    document.querySelectorAll('a, .w-item').forEach((el) => {
+    document.querySelectorAll('a, .w-item:not(.w-item--static)').forEach((el) => {
       el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
     });
@@ -576,7 +574,7 @@
     // Desktop keeps hover previews; touch devices autoplay visible cards.
     const previewItems = [];
 
-    document.querySelectorAll('.w-item').forEach((item) => {
+    document.querySelectorAll('.w-item:not(.w-item--static)').forEach((item) => {
       const video = item.querySelector('video[data-video]');
       if (!video) return;
 
@@ -628,6 +626,19 @@
         }
       });
     }
+
+    document.querySelectorAll('[data-rotator]').forEach((rotator) => {
+      const slides = Array.from(rotator.querySelectorAll('img'));
+      if (slides.length < 2) return;
+
+      let activeIndex = 0;
+
+      window.setInterval(() => {
+        slides[activeIndex].classList.remove('is-active');
+        activeIndex = (activeIndex + 1) % slides.length;
+        slides[activeIndex].classList.add('is-active');
+      }, 1800);
+    });
   </script>
 </body>
 </html>

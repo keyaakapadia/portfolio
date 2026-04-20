@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%237F7EFF'/></svg>"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Keyaa Kapadia - RIPED</title>
+  <link rel="stylesheet" href="../shared.css"/>
+  <style>
+    :root {
+      --riped-cream: #f6efe7;
+      --riped-sand: #eadbca;
+      --riped-red: #b84131;
+      --riped-peach: #efb27f;
+      --riped-leaf: #52613f;
+      --riped-shadow: rgba(43, 28, 18, 0.14);
+    }
+
+    body {
+      opacity: 0;
+      animation: pageFade .6s ease .03s forwards;
+    }
+
+    .topbar {
+      background: transparent;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      transition: background .25s ease;
+    }
+
+    .topbar.scrolled {
+      background: rgba(255,255,255,.94);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .topbar::after {
+      opacity: 0;
+      transition: opacity .25s ease;
+    }
+
+    .topbar.scrolled::after {
+      opacity: 1;
+    }
+
+    .project-page {
+      flex: 1;
+      padding: clamp(18px, 2.4vw, 28px) var(--page-pad) clamp(64px, 7vw, 96px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(26px, 3.8vw, 48px);
+    }
+
+    .project-intro,
+    .project-block,
+    .other-projects {
+      opacity: 0;
+      animation: fadeUp .55s ease forwards;
+    }
+
+    .project-intro { animation-delay: .12s; }
+    .block-feature { animation-delay: .2s; }
+    .block-gallery { animation-delay: .28s; }
+    .other-projects { animation-delay: .36s; }
+
+    .project-intro {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(20px, 2.6vw, 36px);
+      align-items: start;
+    }
+
+    .project-intro > * {
+      min-width: 0;
+    }
+
+    .project-brand {
+      padding-top: clamp(6px, 0.8vw, 12px);
+    }
+
+    .project-title {
+      font-size: clamp(42px, 6vw, 88px);
+      line-height: .9;
+      letter-spacing: -.08em;
+      font-weight: 500;
+      color: var(--ink);
+      max-width: 8ch;
+      text-wrap: balance;
+    }
+
+    .project-meta,
+    .project-copy p {
+      font-size: var(--text-body);
+      line-height: 1.58;
+      color: var(--ink);
+      font-weight: 400;
+      text-wrap: pretty;
+    }
+
+    .project-meta {
+      max-width: 24ch;
+    }
+
+    .project-copy p {
+      max-width: 36ch;
+    }
+
+    .project-copy p + p {
+      margin-top: 12px;
+    }
+
+    .project-credit,
+    .project-tools {
+      color: var(--muted);
+    }
+
+    .project-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .feature-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--media-radius);
+      background:
+        radial-gradient(circle at 22% 18%, rgba(255,255,255,.82) 0%, rgba(255,255,255,0) 18%),
+        linear-gradient(135deg, var(--riped-cream) 0%, #f2e3d4 52%, #e7d6c7 100%);
+      box-shadow: 0 20px 54px var(--riped-shadow);
+      min-height: clamp(340px, 52vw, 760px);
+    }
+
+    .feature-shell::after {
+      content: "";
+      position: absolute;
+      inset: auto 5% 5% auto;
+      width: min(280px, 36%);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(239,178,127,.52) 0%, rgba(239,178,127,0) 72%);
+      filter: blur(14px);
+      pointer-events: none;
+    }
+
+    .feature-viewport {
+      position: absolute;
+      inset: 0;
+    }
+
+    .feature-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.015);
+      transition: opacity .7s ease, transform .9s ease;
+    }
+
+    .feature-slide.is-active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .feature-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .feature-note {
+      position: absolute;
+      left: clamp(14px, 1.8vw, 22px);
+      bottom: clamp(14px, 1.8vw, 22px);
+      z-index: 2;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: rgba(17, 17, 17, 0.8);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(16px, 2vw, 22px);
+    }
+
+    .gallery-card {
+      background: linear-gradient(135deg, rgba(246,239,231,.96) 0%, rgba(236,221,204,.92) 100%);
+      border-radius: var(--media-radius);
+      overflow: hidden;
+      box-shadow: 0 18px 42px rgba(43, 28, 18, 0.08);
+    }
+
+    .gallery-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .gallery-copy {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px 14px;
+      font-size: var(--text-small);
+      color: var(--ink);
+    }
+
+    .gallery-copy span:last-child {
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .other-projects {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .other-title {
+      font-size: var(--text-heading-sm);
+      line-height: 1.1;
+      letter-spacing: -.03em;
+      color: var(--ink);
+      text-wrap: balance;
+    }
+
+    .other-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(14px, 1.8vw, 20px);
+    }
+
+    .other-card {
+      text-decoration: none;
+      color: var(--ink);
+      display: block;
+    }
+
+    .other-thumb {
+      aspect-ratio: 4 / 3;
+      border-radius: var(--media-radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #efeff4;
+      color: rgba(17, 17, 17, 0.58);
+      font-size: clamp(28px, 4vw, 50px);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .other-thumb img,
+    .other-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .other-thumb--riped {
+      background:
+        radial-gradient(circle at 22% 20%, rgba(255,255,255,.86) 0%, rgba(255,255,255,0) 20%),
+        linear-gradient(135deg, #f7eee7 0%, #ead9cb 52%, #e7d0c0 100%);
+    }
+
+    .other-card:hover .other-thumb {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(17, 17, 17, 0.08);
+    }
+
+    .other-name {
+      margin-top: 10px;
+      font-size: var(--text-small);
+      font-weight: 500;
+      text-wrap: balance;
+    }
+
+    footer {
+      opacity: 0;
+      animation: fadeUp .5s ease .45s forwards;
+    }
+
+    @media (max-width: 1100px) {
+      .project-intro {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .project-brand {
+        padding-top: 0;
+      }
+
+      .project-copy {
+        grid-column: 1 / -1;
+        max-width: 64ch;
+      }
+    }
+
+    @media (max-width: 980px) {
+      .project-intro,
+      .gallery-grid,
+      .other-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .project-page {
+        padding: 16px 20px 72px;
+        gap: 28px;
+      }
+
+      .project-title {
+        font-size: clamp(40px, 13vw, 62px);
+      }
+
+      .feature-shell {
+        min-height: 0;
+        aspect-ratio: 4 / 5;
+      }
+
+      .gallery-copy {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="cur"></div>
+  <div id="grad"></div>
+
+  <div class="topbar" id="topbar">
+    <div class="topbar-inner">
+      <nav class="top">
+        <a class="nav-name" href="../index.html">Keyaa Kapadia</a>
+        <div class="nav-links">
+          <a href="work.html" class="active">Work</a>
+          <a href="../play/play.html">Play</a>
+          <a href="../about/about.html">About</a>
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <main class="project-page">
+    <section class="project-intro">
+      <div class="project-brand">
+        <h1 class="project-title">RIPED</h1>
+      </div>
+
+      <div>
+        <p class="project-meta">Brand Identity, Visual System, Digital Design, Art Direction</p>
+      </div>
+
+      <div class="project-copy">
+        <p>RIPED is a branding concept for a fruity scented candle experience built around lush color, playful product styling, and a warm editorial atmosphere. The current mockups start shaping how the identity can live across fruit-led objects, product storytelling, and digital campaign moments.</p>
+        <p class="project-credit">Branding Concept · In Progress</p>
+        <p class="project-tools">[Figma, Adobe Photoshop, Adobe Illustrator, After Effects]</p>
+      </div>
+    </section>
+
+    <section class="project-block block-feature">
+      <div class="feature-shell" aria-label="RIPED mockup rotation">
+        <div class="feature-viewport" id="featureViewport">
+          <div class="feature-slide is-active">
+            <img src="RIPED/cherry_mockup.png" alt="RIPED cherry candle mockup" loading="eager">
+          </div>
+          <div class="feature-slide">
+            <img src="RIPED/lemon_mockup.png" alt="RIPED lemon candle mockup" loading="lazy">
+          </div>
+          <div class="feature-slide">
+            <img src="RIPED/orange_mockup.png" alt="RIPED orange candle mockup" loading="lazy">
+          </div>
+          <div class="feature-slide">
+            <img src="RIPED/strawberry_mockup.png" alt="RIPED strawberry candle mockup" loading="lazy">
+          </div>
+        </div>
+        <span class="feature-note">Previewing current mockups</span>
+      </div>
+    </section>
+
+    <section class="project-block block-gallery">
+      <div class="gallery-grid">
+        <article class="gallery-card">
+          <img src="RIPED/cherry_mockup.png" alt="RIPED cherry candle mockup" loading="lazy">
+          <div class="gallery-copy">
+            <span>Cherry</span>
+            <span>Product Mockup</span>
+          </div>
+        </article>
+
+        <article class="gallery-card">
+          <img src="RIPED/lemon_mockup.png" alt="RIPED lemon candle mockup" loading="lazy">
+          <div class="gallery-copy">
+            <span>Lemon</span>
+            <span>Product Mockup</span>
+          </div>
+        </article>
+
+        <article class="gallery-card">
+          <img src="RIPED/orange_mockup.png" alt="RIPED orange candle mockup" loading="lazy">
+          <div class="gallery-copy">
+            <span>Orange</span>
+            <span>Product Mockup</span>
+          </div>
+        </article>
+
+        <article class="gallery-card">
+          <img src="RIPED/strawberry_mockup.png" alt="RIPED strawberry candle mockup" loading="lazy">
+          <div class="gallery-copy">
+            <span>Strawberry</span>
+            <span>Product Mockup</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="other-projects">
+      <h2 class="other-title">Other Projects</h2>
+      <div class="other-grid">
+        <a class="other-card" href="bloomberg.html">
+          <div class="other-thumb">
+            <video src="bloomberg/bloomberg_combination.mp4" muted autoplay loop playsinline preload="metadata"></video>
+          </div>
+          <p class="other-name">Editorial Illustration</p>
+        </a>
+
+        <a class="other-card" href="controlledchaos.html">
+          <div class="other-thumb">
+            <video src="chaos /particles1.mp4" poster="chaos /chaos_00001.png" autoplay muted loop playsinline preload="metadata"></video>
+          </div>
+          <p class="other-name">Controlled Chaos</p>
+        </a>
+
+        <a class="other-card" href="work.html">
+          <div class="other-thumb other-thumb--riped">
+            <img src="RIPED/orange_mockup.png" alt="RIPED mockup preview" loading="lazy">
+          </div>
+          <p class="other-name">Work Index</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="fl">
+      <a href="mailto:kapadiakeyaa@gmail.com">Email</a>
+      <a href="https://www.linkedin.com/in/keyaa-kapadia-188619aa/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a href="https://www.instagram.com/keyaakapadia/?hl=en" target="_blank" rel="noopener noreferrer">Instagram</a>
+      <a href="../resume.html">Resume</a>
+    </div>
+    <div>All rights reserved © Keyaa Kapadia <span id="yr"></span></div>
+  </footer>
+
+  <script>
+    const cur = document.getElementById('cur');
+    const topbar = document.getElementById('topbar');
+    const yearEl = document.getElementById('yr');
+    const featureSlides = Array.from(document.querySelectorAll('.feature-slide'));
+    let activeSlideIndex = 0;
+
+    document.addEventListener('mousemove', (e) => {
+      if (!cur) return;
+      cur.style.left = `${e.clientX}px`;
+      cur.style.top = `${e.clientY}px`;
+    });
+
+    document.querySelectorAll('a').forEach((el) => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hov'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hov'));
+    });
+
+    if (yearEl) {
+      yearEl.textContent = new Date().getFullYear();
+    }
+
+    function handleTopbarScroll() {
+      if (!topbar) return;
+      if (window.scrollY > 10) {
+        topbar.classList.add('scrolled');
+      } else {
+        topbar.classList.remove('scrolled');
+      }
+    }
+
+    handleTopbarScroll();
+    window.addEventListener('scroll', handleTopbarScroll, { passive: true });
+
+    if (featureSlides.length > 1) {
+      window.setInterval(() => {
+        featureSlides[activeSlideIndex].classList.remove('is-active');
+        activeSlideIndex = (activeSlideIndex + 1) % featureSlides.length;
+        featureSlides[activeSlideIndex].classList.add('is-active');
+      }, 1800);
+    }
+  </script>
+</body>
+</html>
