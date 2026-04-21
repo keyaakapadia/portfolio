@@ -45,7 +45,7 @@ body {
 }
 
 .item:hover .cap {
-  max-height: 96px;
+  max-height: 132px;
   opacity: 1;
   padding: 8px 0 0;
 }
