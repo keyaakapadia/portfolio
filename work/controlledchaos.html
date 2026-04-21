@@ -175,6 +175,39 @@
       box-shadow: 0 22px 54px rgba(18, 20, 26, 0.16);
     }
 
+    .project-link-note {
+      position: absolute;
+      left: clamp(14px, 1.8vw, 22px);
+      bottom: clamp(14px, 1.8vw, 22px);
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: rgba(17, 17, 17, 0.8);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .22s ease, transform .22s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .feature-link:hover .project-link-note,
+      .feed-item:hover .project-link-note {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .feature-viewport {
       position: absolute;
       inset: 0;
@@ -202,27 +235,6 @@
       object-fit: cover;
       object-position: center;
       transform: scale(1.01);
-    }
-
-    .feature-note {
-      position: absolute;
-      left: clamp(14px, 1.8vw, 22px);
-      bottom: clamp(14px, 1.8vw, 22px);
-      z-index: 3;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.84);
-      border: 1px solid rgba(17, 17, 17, 0.08);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      font-size: 12px;
-      line-height: 1;
-      letter-spacing: .02em;
-      text-transform: uppercase;
-      color: rgba(17, 17, 17, 0.8);
     }
 
     .media-frame video,
@@ -398,13 +410,6 @@
         min-height: 0;
       }
 
-      .feature-note {
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        justify-content: center;
-      }
-
       .media-frame video,
       .media-frame img,
       .feature-link video,
@@ -461,7 +466,7 @@
             aria-label="Open the live Controlled Chaos experience"
           >
             <div class="feature-viewport" id="featureViewport"></div>
-            <span class="feature-note">Open live experience</span>
+            <span class="project-link-note">Open live experience</span>
           </a>
         </div>
 
@@ -484,19 +489,21 @@
           <div class="other-thumb">
             <video src="bloomberg/bloomberg_combination.mp4" muted autoplay loop playsinline preload="metadata"></video>
           </div>
-          <p class="other-name">Editorial Illustration</p>
+          <p class="other-name">Editorial</p>
         </a>
 
-        <a class="other-card" href="work.html">
-          <div class="other-thumb other-thumb--chaos">◈</div>
-          <p class="other-name">Work Index</p>
+        <a class="other-card" href="riped.html">
+          <div class="other-thumb">
+            <img src="RIPED/overall_mockup_2.png" alt="RIPED project preview" loading="lazy">
+          </div>
+          <p class="other-name">RIPED</p>
         </a>
 
         <a class="other-card" href="../play/play.html">
           <div class="other-thumb">
             <img src="../play/animation.png" alt="Play section preview" loading="lazy">
           </div>
-          <p class="other-name">Play Experiments</p>
+          <p class="other-name">Play Explorations</p>
         </a>
       </div>
     </section>
@@ -579,7 +586,10 @@
     let resizeTimer = null;
 
     function createMediaMarkup(item) {
-      return `<video src="${item.src}" autoplay muted loop playsinline preload="metadata"></video>`;
+      return `
+        <video src="${item.src}" autoplay muted loop playsinline preload="metadata"></video>
+        <span class="project-link-note">Open live experience</span>
+      `;
     }
 
     function bindHoverableLinks() {

@@ -8,12 +8,12 @@
   <link rel="stylesheet" href="../shared.css"/>
   <style>
     :root {
-      --riped-cream: #f6efe7;
-      --riped-sand: #eadbca;
-      --riped-red: #b84131;
-      --riped-peach: #efb27f;
-      --riped-leaf: #52613f;
-      --riped-shadow: rgba(43, 28, 18, 0.14);
+      --riped-cream: #f6efe5;
+      --riped-sand: #e8d7c7;
+      --riped-shadow: rgba(57, 34, 21, 0.14);
+      --riped-gap: clamp(10px, 1.2vw, 14px);
+      --riped-tight-gap: 4px;
+      --mockup-shift: calc((100% + var(--riped-gap)) / 2);
     }
 
     body {
@@ -59,9 +59,11 @@
     }
 
     .project-intro { animation-delay: .12s; }
-    .block-feature { animation-delay: .2s; }
-    .block-gallery { animation-delay: .28s; }
-    .other-projects { animation-delay: .36s; }
+    .block-hero { animation-delay: .18s; }
+    .block-carousel { animation-delay: .24s; }
+    .block-social { animation-delay: .3s; }
+    .block-guidelines { animation-delay: .36s; }
+    .other-projects { animation-delay: .42s; }
 
     .project-intro {
       display: grid;
@@ -109,7 +111,6 @@
       margin-top: 12px;
     }
 
-    .project-credit,
     .project-tools {
       color: var(--muted);
     }
@@ -120,107 +121,88 @@
       gap: 0;
     }
 
-    .feature-shell {
-      position: relative;
+    .hero-stage,
+    .mockup-carousel,
+    .guidelines-stage,
+    .social-card {
+      border-radius: var(--media-radius);
+      overflow: hidden;
+      box-shadow: none;
+      background: transparent;
+    }
+
+    .hero-stage img,
+    .guidelines-stage img,
+    .mockup-carousel img,
+    .social-card img {
+      width: 100%;
+      display: block;
+      border-radius: 0;
+    }
+
+    .hero-stage img,
+    .guidelines-stage img,
+    .social-card img {
+      height: auto;
+    }
+
+    .mockup-carousel {
+      overflow: hidden;
+    }
+
+    .mockup-track {
+      display: flex;
+      gap: var(--riped-gap);
+      transform: translateX(0);
+    }
+
+    .mockup-track.is-animating {
+      transition: transform .75s cubic-bezier(.22, 1, .36, 1);
+      transform: translateX(calc(-1 * var(--mockup-shift)));
+    }
+
+    .mockup-slide {
+      flex: 0 0 calc((100% - var(--riped-gap)) / 2);
       overflow: hidden;
       border-radius: var(--media-radius);
-      background:
-        radial-gradient(circle at 22% 18%, rgba(255,255,255,.82) 0%, rgba(255,255,255,0) 18%),
-        linear-gradient(135deg, var(--riped-cream) 0%, #f2e3d4 52%, #e7d6c7 100%);
-      box-shadow: 0 20px 54px var(--riped-shadow);
-      min-height: clamp(340px, 52vw, 760px);
     }
 
-    .feature-shell::after {
-      content: "";
-      position: absolute;
-      inset: auto 5% 5% auto;
-      width: min(280px, 36%);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(239,178,127,.52) 0%, rgba(239,178,127,0) 72%);
-      filter: blur(14px);
-      pointer-events: none;
+    .mockup-slide img {
+      aspect-ratio: 16 / 10;
+      height: 100%;
+      object-fit: cover;
     }
 
-    .feature-viewport {
-      position: absolute;
-      inset: 0;
+    .social-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--riped-gap);
+      align-items: stretch;
     }
 
-    .feature-slide {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transform: scale(1.015);
-      transition: opacity .7s ease, transform .9s ease;
+    .social-grid > * {
+      min-width: 0;
+      min-height: 0;
     }
 
-    .feature-slide.is-active {
-      opacity: 1;
-      transform: scale(1);
+    .social-stack {
+      display: grid;
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      gap: var(--riped-gap);
+      height: 100%;
+      min-height: 0;
     }
 
-    .feature-slide img {
+    .social-card {
+      overflow: hidden;
+      height: 100%;
+      min-height: 0;
+    }
+
+    .social-card img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      display: block;
-    }
-
-    .feature-note {
-      position: absolute;
-      left: clamp(14px, 1.8vw, 22px);
-      bottom: clamp(14px, 1.8vw, 22px);
-      z-index: 2;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 9px 14px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.84);
-      border: 1px solid rgba(17, 17, 17, 0.08);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      font-size: 12px;
-      line-height: 1;
-      letter-spacing: .02em;
-      text-transform: uppercase;
-      color: rgba(17, 17, 17, 0.8);
-    }
-
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: clamp(16px, 2vw, 22px);
-    }
-
-    .gallery-card {
-      background: linear-gradient(135deg, rgba(246,239,231,.96) 0%, rgba(236,221,204,.92) 100%);
-      border-radius: var(--media-radius);
-      overflow: hidden;
-      box-shadow: 0 18px 42px rgba(43, 28, 18, 0.08);
-    }
-
-    .gallery-card img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .gallery-copy {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px 14px;
-      font-size: var(--text-small);
-      color: var(--ink);
-    }
-
-    .gallery-copy span:last-child {
-      color: var(--muted);
-      white-space: nowrap;
     }
 
     .other-projects {
@@ -290,16 +272,12 @@
 
     footer {
       opacity: 0;
-      animation: fadeUp .5s ease .45s forwards;
+      animation: fadeUp .5s ease .54s forwards;
     }
 
-    @media (max-width: 1100px) {
+    @media (max-width: 1180px) {
       .project-intro {
         grid-template-columns: 1fr 1fr;
-      }
-
-      .project-brand {
-        padding-top: 0;
       }
 
       .project-copy {
@@ -309,9 +287,8 @@
     }
 
     @media (max-width: 980px) {
-      .project-intro,
-      .gallery-grid,
-      .other-grid {
+      .other-grid,
+      .social-grid {
         grid-template-columns: 1fr;
       }
     }
@@ -326,15 +303,18 @@
         font-size: clamp(40px, 13vw, 62px);
       }
 
-      .feature-shell {
-        min-height: 0;
-        aspect-ratio: 4 / 5;
+      :root {
+        --mockup-shift: 100%;
       }
 
-      .gallery-copy {
-        align-items: flex-start;
-        flex-direction: column;
+      .mockup-track {
+        gap: 0;
       }
+
+      .mockup-slide {
+        flex-basis: 100%;
+      }
+
     }
   </style>
 </head>
@@ -362,70 +342,58 @@
       </div>
 
       <div>
-        <p class="project-meta">Brand Identity, Visual System, Digital Design, Art Direction</p>
+        <p class="project-meta">Brand Identity, Packaging Design, Campaign Design, Social Art Direction, Visual System</p>
       </div>
 
       <div class="project-copy">
-        <p>RIPED is a branding concept for a fruity scented candle experience built around lush color, playful product styling, and a warm editorial atmosphere. The current mockups start shaping how the identity can live across fruit-led objects, product storytelling, and digital campaign moments.</p>
-        <p class="project-credit">Branding Concept · In Progress</p>
+        <p>RIPED is a branding campaign for a fruit-inspired candle line rooted in warmth, ripeness, and the feeling of scent becoming atmosphere.</p>
+        <p class="project-credit">Self Initiated · Spring 2026</p>
         <p class="project-tools">[Figma, Adobe Photoshop, Adobe Illustrator, After Effects]</p>
       </div>
     </section>
 
-    <section class="project-block block-feature">
-      <div class="feature-shell" aria-label="RIPED mockup rotation">
-        <div class="feature-viewport" id="featureViewport">
-          <div class="feature-slide is-active">
-            <img src="RIPED/cherry_mockup.png" alt="RIPED cherry candle mockup" loading="eager">
+    <section class="project-block block-hero">
+      <figure class="hero-stage">
+        <img src="RIPED/overall_mockup_2.png" alt="RIPED packaging lineup featuring multiple fruit-inspired candle scents" loading="eager">
+      </figure>
+    </section>
+
+    <section class="project-block block-carousel">
+      <figure class="mockup-carousel" aria-live="polite">
+        <div class="mockup-track" id="mockupTrack">
+          <div class="mockup-slide">
+            <img id="mockupImageA" src="RIPED/cherry_mockup.png" alt="RIPED cherry candle packaging mockup" loading="lazy">
           </div>
-          <div class="feature-slide">
-            <img src="RIPED/lemon_mockup.png" alt="RIPED lemon candle mockup" loading="lazy">
+          <div class="mockup-slide">
+            <img id="mockupImageB" src="RIPED/mango_mockup.png" alt="RIPED mango candle packaging mockup" loading="lazy">
           </div>
-          <div class="feature-slide">
-            <img src="RIPED/orange_mockup.png" alt="RIPED orange candle mockup" loading="lazy">
-          </div>
-          <div class="feature-slide">
-            <img src="RIPED/strawberry_mockup.png" alt="RIPED strawberry candle mockup" loading="lazy">
+          <div class="mockup-slide">
+            <img id="mockupImageC" src="RIPED/lemon_mockup.png" alt="RIPED lemon candle packaging mockup" loading="lazy">
           </div>
         </div>
-        <span class="feature-note">Previewing current mockups</span>
+      </figure>
+    </section>
+
+    <section class="project-block block-social">
+      <div class="social-grid">
+        <div class="social-stack">
+          <figure class="social-card">
+            <img src="RIPED/posts_grid2.png" alt="RIPED social post grid" loading="lazy">
+          </figure>
+          <figure class="social-card">
+            <img src="RIPED/riped_socialmedia.png" alt="RIPED social campaign layouts" loading="lazy">
+          </figure>
+        </div>
+        <figure class="social-card">
+          <img src="RIPED/mockup_socialmedia.png" alt="RIPED social media profile mockup" loading="lazy">
+        </figure>
       </div>
     </section>
 
-    <section class="project-block block-gallery">
-      <div class="gallery-grid">
-        <article class="gallery-card">
-          <img src="RIPED/cherry_mockup.png" alt="RIPED cherry candle mockup" loading="lazy">
-          <div class="gallery-copy">
-            <span>Cherry</span>
-            <span>Product Mockup</span>
-          </div>
-        </article>
-
-        <article class="gallery-card">
-          <img src="RIPED/lemon_mockup.png" alt="RIPED lemon candle mockup" loading="lazy">
-          <div class="gallery-copy">
-            <span>Lemon</span>
-            <span>Product Mockup</span>
-          </div>
-        </article>
-
-        <article class="gallery-card">
-          <img src="RIPED/orange_mockup.png" alt="RIPED orange candle mockup" loading="lazy">
-          <div class="gallery-copy">
-            <span>Orange</span>
-            <span>Product Mockup</span>
-          </div>
-        </article>
-
-        <article class="gallery-card">
-          <img src="RIPED/strawberry_mockup.png" alt="RIPED strawberry candle mockup" loading="lazy">
-          <div class="gallery-copy">
-            <span>Strawberry</span>
-            <span>Product Mockup</span>
-          </div>
-        </article>
-      </div>
+    <section class="project-block block-guidelines">
+      <figure class="guidelines-stage">
+        <img src="RIPED/brand_guidelines.png" alt="RIPED brand guidelines board with logo, palette, typography, and campaign samples" loading="lazy">
+      </figure>
     </section>
 
     <section class="other-projects">
@@ -445,11 +413,11 @@
           <p class="other-name">Controlled Chaos</p>
         </a>
 
-        <a class="other-card" href="work.html">
-          <div class="other-thumb other-thumb--riped">
-            <img src="RIPED/orange_mockup.png" alt="RIPED mockup preview" loading="lazy">
+        <a class="other-card" href="../play/play.html">
+          <div class="other-thumb">
+            <img src="../play/animation.png" alt="Play section preview" loading="lazy">
           </div>
-          <p class="other-name">Work Index</p>
+          <p class="other-name">Play Experiments</p>
         </a>
       </div>
     </section>
@@ -469,8 +437,55 @@
     const cur = document.getElementById('cur');
     const topbar = document.getElementById('topbar');
     const yearEl = document.getElementById('yr');
-    const featureSlides = Array.from(document.querySelectorAll('.feature-slide'));
-    let activeSlideIndex = 0;
+    const mockupTrack = document.getElementById('mockupTrack');
+    const mockupImageA = document.getElementById('mockupImageA');
+    const mockupImageB = document.getElementById('mockupImageB');
+    const mockupImageC = document.getElementById('mockupImageC');
+
+    const mockups = [
+      { src: 'RIPED/cherry_mockup.png', alt: 'RIPED cherry candle packaging mockup' },
+      { src: 'RIPED/mango_mockup.png', alt: 'RIPED mango candle packaging mockup' },
+      { src: 'RIPED/lemon_mockup.png', alt: 'RIPED lemon candle packaging mockup' },
+      { src: 'RIPED/orange_mockup.png', alt: 'RIPED orange candle packaging mockup' },
+      { src: 'RIPED/strawberry_mockup.png', alt: 'RIPED strawberry candle packaging mockup' },
+    ];
+
+    let mockupIndex = 0;
+
+    function assignMockup(imageEl, mockup) {
+      imageEl.src = mockup.src;
+      imageEl.alt = mockup.alt;
+    }
+
+    function renderMockups() {
+      assignMockup(mockupImageA, mockups[mockupIndex % mockups.length]);
+      assignMockup(mockupImageB, mockups[(mockupIndex + 1) % mockups.length]);
+      assignMockup(mockupImageC, mockups[(mockupIndex + 2) % mockups.length]);
+      mockupTrack.classList.remove('is-animating');
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function cycleMockups() {
+      if (!mockupTrack || mockupTrack.classList.contains('is-animating')) return;
+      mockupTrack.classList.add('is-animating');
+    }
+
+    if (mockupTrack) {
+      mockupTrack.addEventListener('transitionend', (event) => {
+        if (event.propertyName !== 'transform') return;
+        mockupIndex = (mockupIndex + 1) % mockups.length;
+        renderMockups();
+      });
+    }
+
+    if (!prefersReducedMotion && mockupTrack) {
+      window.setInterval(() => {
+        cycleMockups();
+      }, 2600);
+    }
+
+    renderMockups();
 
     document.addEventListener('mousemove', (e) => {
       if (!cur) return;
@@ -498,14 +513,6 @@
 
     handleTopbarScroll();
     window.addEventListener('scroll', handleTopbarScroll, { passive: true });
-
-    if (featureSlides.length > 1) {
-      window.setInterval(() => {
-        featureSlides[activeSlideIndex].classList.remove('is-active');
-        activeSlideIndex = (activeSlideIndex + 1) % featureSlides.length;
-        featureSlides[activeSlideIndex].classList.add('is-active');
-      }, 1800);
-    }
   </script>
 </body>
 </html>

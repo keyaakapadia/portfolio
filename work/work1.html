@@ -555,40 +555,88 @@
       });
     });
 
-    const touchPreviewMode = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    const touchPreviewMode = (
+      window.matchMedia('(hover: none)').matches
+      || window.matchMedia('(pointer: coarse)').matches
+      || navigator.maxTouchPoints > 0
+      || 'ontouchstart' in window
+    );
 
-    if (touchPreviewMode && 'IntersectionObserver' in window) {
+    if (touchPreviewMode) {
       previewItems.forEach(({ video }) => {
         video.autoplay = true;
         video.muted = true;
         video.defaultMuted = true;
         video.loop = true;
         video.playsInline = true;
+        video.preload = 'auto';
         video.setAttribute('autoplay', '');
+        video.setAttribute('muted', '');
+        video.setAttribute('loop', '');
+        video.setAttribute('playsinline', '');
+        video.setAttribute('webkit-playsinline', '');
+
+        const attemptPlay = () => {
+          video.play().catch(() => {});
+        };
+
+        if (video.readyState >= 2) {
+          attemptPlay();
+        } else {
+          video.load();
+          video.addEventListener('loadeddata', attemptPlay, { once: true });
+          video.addEventListener('canplay', attemptPlay, { once: true });
+        }
+
         video.play().catch(() => {});
       });
 
-      const previewObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          const video = entry.target;
+      const syncPreviewPlayback = () => {
+        previewItems.forEach(({ video }) => {
+          const bounds = video.getBoundingClientRect();
+          const isVisible = bounds.bottom > window.innerHeight * 0.08
+            && bounds.top < window.innerHeight * 0.92;
 
-          if (entry.isIntersecting && entry.intersectionRatio > 0.05) {
+          if (isVisible) {
             video.play().catch(() => {});
           } else {
             video.pause();
           }
         });
-      }, {
-        threshold: [0, 0.05, 0.2, 0.45]
-      });
+      };
 
-      previewItems.forEach(({ video }) => previewObserver.observe(video));
+      if ('IntersectionObserver' in window) {
+        const previewObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            const video = entry.target;
+
+            if (entry.isIntersecting && entry.intersectionRatio > 0.05) {
+              video.play().catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+        }, {
+          threshold: [0, 0.05, 0.2, 0.45]
+        });
+
+        previewItems.forEach(({ video }) => previewObserver.observe(video));
+      } else {
+        syncPreviewPlayback();
+        window.addEventListener('scroll', syncPreviewPlayback, { passive: true });
+        window.addEventListener('resize', syncPreviewPlayback);
+      }
 
       document.addEventListener('visibilitychange', () => {
         if (document.hidden) {
           previewItems.forEach(({ video }) => video.pause());
+        } else {
+          syncPreviewPlayback();
         }
       });
+
+      window.addEventListener('pageshow', syncPreviewPlayback);
+      window.setTimeout(syncPreviewPlayback, 180);
     }
   </script>
 </body>
