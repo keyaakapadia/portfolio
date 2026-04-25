@@ -124,6 +124,15 @@ body {
   text-transform: uppercase;
   color: rgba(17, 17, 17, 0.8);
   pointer-events: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .22s ease, transform .22s ease;
+}
+
+.item:hover .item-link-note,
+.item:focus-visible .item-link-note {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .video-still,
@@ -175,6 +184,9 @@ body {
   .item-link-note {
     padding: 8px 12px;
     font-size: 10px;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
   }
 }
 
