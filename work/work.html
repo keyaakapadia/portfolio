@@ -412,8 +412,31 @@
 
   <section class="works">
 
-    <!-- PROJECT 0: Thesis Journal (private) -->
-    <a href="thesis.html" class="w-item">
+    <!-- PROJECT 0: Loom -->
+    <a href="loom.html" class="w-item">
+      <div class="w-thumb">
+        <div class="w-thumb-inner">
+          <video
+            src="loom/hero.mp4"
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            data-video
+          ></video>
+        </div>
+      </div>
+      <div class="w-info">
+        <p class="w-title">Loom</p>
+        <p class="w-tags">Creative Coding · Data Visualization · Interaction Design</p>
+        <div class="w-desc-wrap">
+          <p class="w-desc">An interactive archive of 150 grids, linked by the meanings they share.</p>
+        </div>
+      </div>
+    </a>
+
+    <!-- PROJECT 0.5: Thesis Journal (hosted + password protected separately) -->
+    <a href="https://keyaakapadia.github.io/Thesis-Journal/" class="w-item" target="_blank" rel="noopener noreferrer">
       <div class="w-thumb c3 thesis-thumb">
         <div class="w-thumb-inner">
           <span class="thesis-thumb-mark">Thesis Journal</span>
@@ -602,109 +625,89 @@
     handleScrollFade();
     window.addEventListener('scroll', handleScrollFade, { passive: true });
 
-    // Desktop keeps hover previews; touch devices autoplay visible cards.
+    // Card preview videos always autoplay and loop while visible — not gated behind hover.
     const previewItems = [];
 
     document.querySelectorAll('.w-item:not(.w-item--static)').forEach((item) => {
       const video = item.querySelector('video[data-video]');
       if (!video) return;
-
       previewItems.push({ item, video });
-
-      item.addEventListener('mouseenter', () => {
-        // Resume from wherever it was paused
-        video.play().catch(() => {});
-      });
-
-      item.addEventListener('mouseleave', () => {
-        video.pause();
-        // currentTime is intentionally NOT reset — stays at last frame
-      });
     });
 
-    const touchPreviewMode = (
-      window.matchMedia('(hover: none)').matches
-      || window.matchMedia('(pointer: coarse)').matches
-      || navigator.maxTouchPoints > 0
-      || 'ontouchstart' in window
-    );
+    previewItems.forEach(({ video }) => {
+      video.autoplay = true;
+      video.muted = true;
+      video.defaultMuted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.setAttribute('autoplay', '');
+      video.setAttribute('muted', '');
+      video.setAttribute('loop', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('webkit-playsinline', '');
 
-    if (touchPreviewMode) {
-      previewItems.forEach(({ video }) => {
-        video.autoplay = true;
-        video.muted = true;
-        video.defaultMuted = true;
-        video.loop = true;
-        video.playsInline = true;
-        video.preload = 'auto';
-        video.setAttribute('autoplay', '');
-        video.setAttribute('muted', '');
-        video.setAttribute('loop', '');
-        video.setAttribute('playsinline', '');
-        video.setAttribute('webkit-playsinline', '');
-
-        const attemptPlay = () => {
-          video.play().catch(() => {});
-        };
-
-        if (video.readyState >= 2) {
-          attemptPlay();
-        } else {
-          video.load();
-          video.addEventListener('loadeddata', attemptPlay, { once: true });
-          video.addEventListener('canplay', attemptPlay, { once: true });
-        }
-
+      const attemptPlay = () => {
         video.play().catch(() => {});
+      };
+
+      if (video.readyState >= 2) {
+        attemptPlay();
+      } else {
+        video.load();
+        video.addEventListener('loadeddata', attemptPlay, { once: true });
+        video.addEventListener('canplay', attemptPlay, { once: true });
+      }
+
+      video.play().catch(() => {});
+    });
+
+    const syncPreviewPlayback = () => {
+      previewItems.forEach(({ video }) => {
+        const bounds = video.getBoundingClientRect();
+        const isVisible = bounds.bottom > window.innerHeight * 0.08
+          && bounds.top < window.innerHeight * 0.92;
+
+        if (isVisible) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
       });
+    };
 
-      const syncPreviewPlayback = () => {
-        previewItems.forEach(({ video }) => {
-          const bounds = video.getBoundingClientRect();
-          const isVisible = bounds.bottom > window.innerHeight * 0.08
-            && bounds.top < window.innerHeight * 0.92;
+    if ('IntersectionObserver' in window) {
+      const previewObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          const video = entry.target;
 
-          if (isVisible) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.05) {
             video.play().catch(() => {});
           } else {
             video.pause();
           }
         });
-      };
-
-      if ('IntersectionObserver' in window) {
-        const previewObserver = new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            const video = entry.target;
-
-            if (entry.isIntersecting && entry.intersectionRatio > 0.05) {
-              video.play().catch(() => {});
-            } else {
-              video.pause();
-            }
-          });
-        }, {
-          threshold: [0, 0.05, 0.2, 0.45]
-        });
-
-        previewItems.forEach(({ video }) => previewObserver.observe(video));
-      } else {
-        syncPreviewPlayback();
-        window.addEventListener('scroll', syncPreviewPlayback, { passive: true });
-        window.addEventListener('resize', syncPreviewPlayback);
-      }
-
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          previewItems.forEach(({ video }) => video.pause());
-        } else {
-          syncPreviewPlayback();
-        }
+      }, {
+        threshold: [0, 0.05, 0.2, 0.45]
       });
 
-      window.addEventListener('pageshow', syncPreviewPlayback);
-      window.setTimeout(syncPreviewPlayback, 180);
+      previewItems.forEach(({ video }) => previewObserver.observe(video));
+    } else {
+      syncPreviewPlayback();
+      window.addEventListener('scroll', syncPreviewPlayback, { passive: true });
+      window.addEventListener('resize', syncPreviewPlayback);
     }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        previewItems.forEach(({ video }) => video.pause());
+      } else {
+        syncPreviewPlayback();
+      }
+    });
+
+    window.addEventListener('pageshow', syncPreviewPlayback);
+    window.setTimeout(syncPreviewPlayback, 180);
 
     document.querySelectorAll('[data-rotator]').forEach((rotator) => {
       const slides = Array.from(rotator.querySelectorAll('img'));
