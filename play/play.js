@@ -119,12 +119,6 @@ makeVideoTile(
 );
 
 makeVideoTile(
-  document.getElementById("disconnectBlock"),
-  document.getElementById("disconnectStill"),
-  document.querySelectorAll('[data-tile="disconnect"]')
-);
-
-makeVideoTile(
   document.getElementById("lightBlock"),
   document.getElementById("lightStill"),
   document.querySelectorAll('[data-tile="light"]')
@@ -136,8 +130,3 @@ makeVideoTile(
   document.querySelectorAll('[data-tile="breathe"]')
 );
 
-makeVideoTile(
-  document.getElementById("unfilteredBlock"),
-  document.getElementById("unfilteredStill"),
-  document.querySelectorAll('[data-tile="unfiltered"]')
-);
