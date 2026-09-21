@@ -111,11 +111,14 @@
 
     .hero-frame {
       width: 100%;
-      aspect-ratio: 1072 / 728;
+      aspect-ratio: 1512 / 1276;
       border-radius: var(--media-radius);
       overflow: hidden;
       background: var(--loom-ink);
       box-shadow: 0 18px 48px var(--loom-shadow);
+      position: relative;
+      display: block;
+      text-decoration: none;
     }
 
     .hero-frame video {
@@ -123,6 +126,38 @@
       height: 100%;
       object-fit: contain;
       display: block;
+    }
+
+    .hero-link-note {
+      position: absolute;
+      left: clamp(14px, 1.8vw, 22px);
+      bottom: clamp(14px, 1.8vw, 22px);
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.84);
+      border: 1px solid rgba(17, 17, 17, 0.08);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      font-size: 12px;
+      line-height: 1;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      color: rgba(17, 17, 17, 0.8);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity .22s ease, transform .22s ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .hero-frame:hover .hero-link-note {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .block-features {
@@ -166,7 +201,7 @@
 
     .feature-frame {
       width: 100%;
-      aspect-ratio: 1512 / 982;
+      aspect-ratio: 1512 / 948;
       border-radius: var(--media-radius);
       overflow: hidden;
       background: var(--loom-ink);
@@ -322,8 +357,8 @@
       </div>
 
       <div class="project-copy">
-        <p>150 photographs of grids, each tagged by what the grid does. A line joins any two that share a meaning &mdash; measure, organize, guide, contain, control, separate, repeat, play, break.</p>
-        <p>Pick a meaning and follow it through the archive, or click a picture and pull a thread somewhere new. Five views of the same set &mdash; nodes, a timeline, clusters, a colour grid, or a sphere you turn by hand &mdash; each sortable three ways: by meaning, by colour, or by frequency.</p>
+        <p>150 photographs of grids, each tagged by what it does: measure, organize, guide, contain, control, separate, repeat, play, or break. A line joins two that share a meaning.</p>
+        <p>Five views of the same set: nodes, a timeline, clusters, a colour grid, or a sphere you turn by hand. Sort any of them by meaning, colour, or frequency, and click a picture in any view to gather its connections.</p>
         <p class="project-credit">With Joe Marianek &amp; Dinah Fried · Fall 2026</p>
         <p class="project-credit">Thesis Development · 3 weeks</p>
         <p class="project-tools">[JavaScript, WebGL, HTML / CSS]</p>
@@ -331,15 +366,16 @@
     </section>
 
     <section class="project-block block-hero">
-      <div class="hero-frame">
-        <video src="loom/hero.mp4" muted loop playsinline preload="metadata" data-autoplay-video></video>
-      </div>
+      <a class="hero-frame" href="https://keyaakapadia.github.io/256_Project_Website/" target="_blank" rel="noopener noreferrer" aria-label="Open the live Loom experience">
+        <video src="loom/hero-live.mp4" muted loop playsinline preload="metadata" data-autoplay-video></video>
+        <span class="hero-link-note">Open live experience</span>
+      </a>
     </section>
 
     <section class="project-block block-features">
       <div class="features-heading">
-        <h2>Five ways to read the archive</h2>
-        <p>Every grid carries the same tags &mdash; only how they're laid out changes.</p>
+        <h2>Ways to read the archive</h2>
+        <p>Every grid carries the same tags. Only the layout changes.</p>
       </div>
 
       <div class="feature-grid">
@@ -348,7 +384,7 @@
             <video src="loom/feature-timeline.mp4" muted loop playsinline preload="metadata" data-autoplay-video></video>
           </div>
           <p class="feature-name">Timeline</p>
-          <p class="feature-desc">Lays the 150 grids out in sequence, so the archive can be read start to end instead of all at once.</p>
+          <p class="feature-desc">Lays the archive out in sequence, start to end.</p>
         </div>
 
         <div class="feature-card">
@@ -356,7 +392,7 @@
             <video src="loom/feature-sphere.mp4" muted loop playsinline preload="metadata" data-autoplay-video></video>
           </div>
           <p class="feature-name">Sphere</p>
-          <p class="feature-desc">Wraps the whole set around a 3D sphere you turn by hand, meaning-lines curving across the surface.</p>
+          <p class="feature-desc">Wraps the set around a 3D sphere you turn by hand.</p>
         </div>
 
         <div class="feature-card">
@@ -364,7 +400,7 @@
             <video src="loom/feature-grid.mp4" muted loop playsinline preload="metadata" data-autoplay-video></video>
           </div>
           <p class="feature-name">Grid, sorted by colour</p>
-          <p class="feature-desc">Sorts every grid left to right across the colour spectrum, from neutral through red to magenta.</p>
+          <p class="feature-desc">Sorts every grid by colour, left to right.</p>
         </div>
 
         <div class="feature-card">
@@ -372,7 +408,7 @@
             <video src="loom/feature-clusters.mp4" muted loop playsinline preload="metadata" data-autoplay-video></video>
           </div>
           <p class="feature-name">Clusters</p>
-          <p class="feature-desc">Groups grids that share the most meanings into loose clusters, letting outliers drift apart.</p>
+          <p class="feature-desc">Groups grids that share meanings into loose clusters.</p>
         </div>
 
         <div class="feature-card">
@@ -380,7 +416,7 @@
             <video src="loom/feature-detail.mp4" muted loop playsinline preload="metadata" data-autoplay-video></video>
           </div>
           <p class="feature-name">Gather a thread</p>
-          <p class="feature-desc">Click any grid to pull its threads forward and read what it's tied to, one connection at a time.</p>
+          <p class="feature-desc">Click a grid to pull its connections forward.</p>
         </div>
       </div>
     </section>
