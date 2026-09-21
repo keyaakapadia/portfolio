@@ -119,6 +119,12 @@ makeVideoTile(
 );
 
 makeVideoTile(
+  document.getElementById("disconnectBlock"),
+  document.getElementById("disconnectStill"),
+  document.querySelectorAll('[data-tile="disconnect"]')
+);
+
+makeVideoTile(
   document.getElementById("lightBlock"),
   document.getElementById("lightStill"),
   document.querySelectorAll('[data-tile="light"]')
