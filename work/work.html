@@ -152,37 +152,6 @@
       transform: translateY(0);
     }
 
-    .w-thumb-still,
-    .w-thumb-clip {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .w-thumb-still {
-      z-index: 3;
-      opacity: 1;
-      transition: opacity .25s ease;
-    }
-
-    .w-thumb-still.hide {
-      opacity: 0;
-    }
-
-    .w-thumb-clip {
-      opacity: 0;
-      z-index: 1;
-      transition: opacity .2s ease;
-    }
-
-    .w-thumb-clip.is-active {
-      opacity: 1;
-      z-index: 2;
-    }
-
     .w-thumb-inner {
       width: 100%;
       height: 100%;
@@ -580,8 +549,15 @@
       <a href="https://keyaakapadia.github.io/unfilteedat3am/" class="w-item" target="_blank" rel="noopener noreferrer">
         <div class="w-thumb" style="--media-ratio: 3024 / 1896;">
           <div class="w-thumb-inner">
-            <img src="unfiltered/home.png" class="w-thumb-still" id="unfilteredStill" alt="Unfiltered at 3 AM cover image" loading="lazy">
-            <video class="w-thumb-clip" id="unfilteredClip" src="unfiltered/home.mp4" muted loop playsinline preload="metadata"></video>
+            <video
+              src="unfiltered/home.mp4"
+              poster="unfiltered/home.png"
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              data-video
+            ></video>
             <span class="w-link-note">See prototype</span>
           </div>
         </div>
@@ -819,36 +795,6 @@
         slides[activeIndex].classList.add('is-active');
       }, 1800);
     });
-
-    // Unfiltered at 3 AM: crossfade the still into the looping clip once it can play.
-    const unfilteredStill = document.getElementById('unfilteredStill');
-    const unfilteredClip = document.getElementById('unfilteredClip');
-
-    if (unfilteredStill && unfilteredClip) {
-      unfilteredClip.muted = true;
-      unfilteredClip.loop = true;
-      unfilteredClip.playsInline = true;
-
-      const revealClip = () => {
-        unfilteredClip.classList.add('is-active');
-        unfilteredStill.classList.add('hide');
-      };
-
-      unfilteredClip.play().then(revealClip).catch(() => {});
-      previewItems.push({ item: unfilteredClip.closest('.w-item'), video: unfilteredClip });
-
-      if ('IntersectionObserver' in window) {
-        new IntersectionObserver((entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              entry.target.play().then(revealClip).catch(() => {});
-            } else {
-              entry.target.pause();
-            }
-          });
-        }, { threshold: 0.1 }).observe(unfilteredClip);
-      }
-    }
   </script>
 </body>
 </html>
