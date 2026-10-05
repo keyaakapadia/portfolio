@@ -137,3 +137,8 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 .beats{display:flex;flex-direction:column;gap:14px;margin:6px 0 4px}
 .beat{display:grid;grid-template-columns:7.5em 1fr;gap:12px;align-items:baseline;border-top:1px solid var(--line);padding-top:12px}
 .beat p{font-size:16px;line-height:1.3}
+
+.now-box{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:6px}
+.now-box p{font-size:15px;line-height:1.3}
+.now-box p a,.now-box .jlink{text-decoration:underline;text-underline-offset:3px}
+.now-box .jlink{font-weight:500;width:fit-content}
