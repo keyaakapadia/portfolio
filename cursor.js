@@ -1,14 +1,24 @@
 (() => {
   if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  document.documentElement.classList.add('has-cursor');
+  const mq = matchMedia('(min-width: 901px)');
+  // Hide the native cursor only while the custom one is showing, so the
+  // pointer can never vanish (narrow windows, iframes, leaving the page).
+  const root = document.documentElement;
   const cur = document.createElement('div');
   cur.id = 'cur';
   cur.innerHTML = '<span class="dot"></span><span class="label"><kbd>⌘Z</kbd> is part of the process</span>';
   document.body.appendChild(cur);
 
   let x = innerWidth / 2, y = innerHeight / 2, tx = x, ty = y;
-  addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; cur.classList.add('on'); });
-  document.addEventListener('mouseleave', () => cur.classList.remove('on'));
+  const native = () => { root.classList.remove('has-cursor'); cur.classList.remove('on'); };
+  addEventListener('mousemove', e => {
+    if (!mq.matches || e.target.closest('iframe, input, textarea, select, video[controls]')) return native();
+    tx = e.clientX; ty = e.clientY;
+    root.classList.add('has-cursor'); cur.classList.add('on');
+  });
+  document.addEventListener('mouseleave', native);
+  addEventListener('blur', native);
+  addEventListener('resize', () => { if (!mq.matches) native(); });
   (function loop() {
     x += (tx - x) * 0.28; y += (ty - y) * 0.28;
     cur.style.transform = `translate(${x}px,${y}px)`;
