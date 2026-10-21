@@ -24,3 +24,6 @@ const videos=[...document.querySelectorAll('video[data-motion]')];
 const observer=new IntersectionObserver(entries=>entries.forEach(({target,isIntersecting})=>{if(isIntersecting)target.play().catch(()=>{});else target.pause();}),{threshold:.05});
 videos.forEach(v=>{v.muted=true;observer.observe(v)});
 document.getElementById('yr').textContent=new Date().getFullYear();
+
+// Keep the compact section rail in sync with reading position.
+(()=>{const links=[...document.querySelectorAll('.section-rail a')];const targets=links.map(a=>document.getElementById(a.hash.slice(1)));let queued=false;function update(){let active=0;targets.forEach((target,i)=>{if(target&&target.getBoundingClientRect().top<=innerHeight*.3)active=i});links.forEach((link,i)=>{if(i===active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current')});queued=false}addEventListener('scroll',()=>{if(!queued){queued=true;requestAnimationFrame(update)}},{passive:true});addEventListener('resize',update);update()})();
