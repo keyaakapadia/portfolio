@@ -1,0 +1,18 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Dot art">
+<path id="Vector" d="M42 80.85C63.4563 80.85 80.85 63.4563 80.85 42C80.85 20.5437 63.4563 3.15 42 3.15C20.5437 3.15 3.15 20.5437 3.15 42C3.15 63.4563 20.5437 80.85 42 80.85Z" fill="url(#paint0_linear_0_55)" stroke-width="4.2" stroke="#1B1B1F"/>
+<ellipse id="shine" cx="28.7569" cy="15.4964" rx="10.5" ry="5.775" transform="rotate(-25 28.7569 15.4964)" fill="white" fill-opacity="0.5"/>
+<path id="Vector_2" d="M19.95 54.075C23.4294 54.075 26.25 52.4296 26.25 50.4C26.25 48.3704 23.4294 46.725 19.95 46.725C16.4706 46.725 13.65 48.3704 13.65 50.4C13.65 52.4296 16.4706 54.075 19.95 54.075Z" fill="#FF7A59" fill-opacity="0.55"/>
+<path id="Vector_3" d="M64.05 54.075C67.5294 54.075 70.35 52.4296 70.35 50.4C70.35 48.3704 67.5294 46.725 64.05 46.725C60.5706 46.725 57.75 48.3704 57.75 50.4C57.75 52.4296 60.5706 54.075 64.05 54.075Z" fill="#FF7A59" fill-opacity="0.55"/>
+<path id="Vector_4" d="M24.15 38.85C28.35 34.65 32.55 34.65 36.75 38.85" stroke-width="4.2" stroke-linecap="round" stroke="#1B1B1F"/>
+<path id="Vector_5" d="M47.25 38.85C51.45 34.65 55.65 34.65 59.85 38.85" stroke-width="4.2" stroke-linecap="round" stroke="#1B1B1F"/>
+<path id="Vector_6" d="M35.7 53.55C39.9 57.05 44.1 57.05 48.3 53.55" stroke-width="4.2" stroke-linecap="round" stroke="#1B1B1F"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_55" x1="42" y1="3.15" x2="42" y2="80.85" gradientUnits="userSpaceOnUse">
+<stop stop-color="#a5b67d"/>
+<stop offset="0.55" stop-color="#a5b67d"/>
+<stop offset="1" stop-color="#a5b67d"/>
+</linearGradient>
+</defs>
+</svg>

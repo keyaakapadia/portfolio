@@ -1,0 +1,21 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Dot art" clip-path="url(#clip0_0_109)">
+<path id="Vector" d="M24 46.2C36.2607 46.2 46.2 36.2607 46.2 24C46.2 11.7393 36.2607 1.8 24 1.8C11.7393 1.8 1.8 11.7393 1.8 24C1.8 36.2607 11.7393 46.2 24 46.2Z" fill="url(#paint0_linear_0_109)" stroke-width="2.4" stroke="#1B1B1F"/>
+<ellipse id="shine" cx="16.4325" cy="8.85511" rx="6" ry="3.3" transform="rotate(-25 16.4325 8.85511)" fill="white" fill-opacity="0.5"/>
+<path id="Vector_2" d="M11.4 30.9C13.3882 30.9 15 29.9598 15 28.8C15 27.6402 13.3882 26.7 11.4 26.7C9.41178 26.7 7.8 27.6402 7.8 28.8C7.8 29.9598 9.41178 30.9 11.4 30.9Z" fill="#FF7A59" fill-opacity="0.55"/>
+<path id="Vector_3" d="M36.6 30.9C38.5882 30.9 40.2 29.9598 40.2 28.8C40.2 27.6402 38.5882 26.7 36.6 26.7C34.6118 26.7 33 27.6402 33 28.8C33 29.9598 34.6118 30.9 36.6 30.9Z" fill="#FF7A59" fill-opacity="0.55"/>
+<path id="Vector_4" d="M13.8 22.8L17.4 18.6L21 22.8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke="#1B1B1F"/>
+<path id="Vector_5" d="M27 22.8L30.6 18.6L34.2 22.8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" stroke="#1B1B1F"/>
+<path id="Vector_6" d="M16.8 27.6C21.6 35.6 26.4 35.6 31.2 27.6H16.8Z" fill="#1B1B1F" stroke-width="1.8" stroke-linejoin="round" stroke="#1B1B1F"/>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_109" x1="24" y1="1.8" x2="24" y2="46.2" gradientUnits="userSpaceOnUse">
+<stop stop-color="#a5b67d"/>
+<stop offset="0.55" stop-color="#a5b67d"/>
+<stop offset="1" stop-color="#a5b67d"/>
+</linearGradient>
+<clipPath id="clip0_0_109">
+<rect width="48" height="48" fill="white"/>
+</clipPath>
+</defs>
+</svg>
