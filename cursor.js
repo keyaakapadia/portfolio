@@ -19,11 +19,16 @@
   document.addEventListener('mouseleave', native);
   addEventListener('blur', native);
   addEventListener('resize', () => { if (!mq.matches) native(); });
-  (function loop() {
-    x += (tx - x) * 0.28; y += (ty - y) * 0.28;
+  // Only run the frame loop while the cursor is still catching up.
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  let raf = 0;
+  function loop() {
+    const k = still.matches ? 1 : 0.28;
+    x += (tx - x) * k; y += (ty - y) * k;
     cur.style.transform = `translate(${x}px,${y}px)`;
-    requestAnimationFrame(loop);
-  })();
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.1 ? requestAnimationFrame(loop) : 0;
+  }
+  addEventListener('mousemove', () => { if (!raf) raf = requestAnimationFrame(loop); });
 
   // pill over work + media, ring over links
   document.addEventListener('mouseover', e => {

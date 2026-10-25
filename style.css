@@ -8,12 +8,14 @@
   --pad:clamp(20px,2.4vw,32px);
   --hero:clamp(40px,7.2vw,104px);
   --small:14px;
+  --ease-out:cubic-bezier(.23,1,.32,1);--ease-in-out:cubic-bezier(.77,0,.175,1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{background:var(--bg);scroll-behavior:smooth}
+html{background:var(--bg);-webkit-tap-highlight-color:transparent}
+@media(prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 body{font-family:var(--font);color:var(--ink);font-size:var(--small);line-height:1.2;letter-spacing:-.01em;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
-a{color:inherit;text-decoration:none}
-a:hover{opacity:.5}
+a{color:inherit;text-decoration:none;touch-action:manipulation;transition:opacity .15s ease}
+@media(hover:hover) and (pointer:fine){a:hover{opacity:.5}}
 img,video{display:block;width:100%;height:100%;object-fit:cover}
 p{text-wrap:pretty}
 h1,h2{text-wrap:balance}
@@ -37,9 +39,9 @@ h1,h2{text-wrap:balance}
 .works{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(40px,5vw,72px) var(--pad);padding:0 var(--pad) clamp(60px,8vw,120px)}
 .work{display:block}
 .thumb{aspect-ratio:4/3;overflow:hidden;background:var(--hatch);border-radius:2px}
-.thumb img,.thumb video{transition:transform .6s cubic-bezier(.16,1,.3,1)}
+.thumb img,.thumb video{transition:transform .4s var(--ease-out)}
 .work:hover{opacity:1}
-.work:hover .thumb img,.work:hover .thumb video{transform:scale(1.03)}
+@media(hover:hover) and (pointer:fine){.work:hover .thumb img,.work:hover .thumb video{transform:scale(1.03)}}
 .work h2{font-weight:500;font-size:16px;margin:16px 0 10px;letter-spacing:-.015em}
 .tag{display:inline-block;border:1px solid var(--ink);border-radius:3px;padding:3px 7px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;margin:0 6px 10px 0}
 .work p{max-width:32em;line-height:1.35;color:#222}
@@ -104,7 +106,7 @@ footer .col .label{margin-bottom:6px}
 .block{margin:0 0 var(--pad);position:relative;background:var(--hatch);border-radius:2px;overflow:hidden}
 .block img,.block video{height:auto}
 .block.plain{background:none}
-.block .note{position:absolute;left:16px;bottom:16px;background:#fff;border:1px solid var(--ink);border-radius:3px;padding:4px 8px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;opacity:0;transition:opacity .2s}
+.block .note{position:absolute;left:16px;bottom:16px;background:#fff;border:1px solid var(--ink);border-radius:3px;padding:4px 8px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;opacity:0;transition:opacity .2s ease-out}
 a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 .duo{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);margin-bottom:var(--pad)}
 .duo .block{margin:0}
@@ -122,13 +124,13 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 
 /* cursor */
 .has-cursor,.has-cursor *{cursor:none!important}
-#cur{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;opacity:0;transition:opacity .2s}
+#cur{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;opacity:0;transition:opacity .2s ease-out}
 #cur.on{opacity:1}
-#cur .dot{position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;background:#000;transition:transform .2s,opacity .2s}
+#cur .dot{position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;background:#000;transition:transform .2s var(--ease-out),opacity .2s ease-out}
 #cur.ring .dot{transform:scale(2.6);opacity:.12}
-#cur .label{text-transform:none;letter-spacing:-.005em;position:absolute;left:14px;top:14px;white-space:nowrap;background:#000;color:#fff;border-radius:999px;padding:7px 12px;font-size:12px;letter-spacing:-.005em;opacity:0;transform:scale(.85);transform-origin:left top;transition:opacity .18s,transform .18s}
+#cur .label{text-transform:none;letter-spacing:-.005em;position:absolute;left:14px;top:14px;white-space:nowrap;background:#000;color:#fff;border-radius:999px;padding:7px 12px;font-size:12px;letter-spacing:-.005em;opacity:0;transform:scale(.85);filter:blur(2px);transform-origin:left top;transition:opacity .18s ease-out,transform .18s var(--ease-out),filter .18s ease-out}
 #cur .label kbd{font:inherit;font-weight:600;margin-right:2px}
-#cur.pill .label,#cur.flash .label{opacity:1;transform:none}
+#cur.pill .label,#cur.flash .label{opacity:1;transform:none;filter:none}
 
 .r .what.txt b{font-weight:500}
 
@@ -142,3 +144,41 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 .now-box p{font-size:15px;line-height:1.3}
 .now-box p a,.now-box .jlink{text-decoration:underline;text-underline-offset:3px}
 .now-box .jlink{font-weight:500;width:fit-content}
+
+/* motion
+   Frequent things (nav, links) stay instant-ish. Entrances are one-shot, ease-out,
+   and the hero resolves from blur to sharp: complex -> clear. */
+#clock{font-variant-numeric:tabular-nums}
+.work,.p{transition:transform .16s var(--ease-out)}
+.work:active,.p:active{transform:scale(.985)}
+.tag{transition:background-color .15s ease,color .15s ease}
+@media(hover:hover) and (pointer:fine){a.work:hover .tag{background:var(--ink);color:var(--bg)}}
+
+@keyframes clarify{from{opacity:0;transform:translateY(.22em);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+.hero h1 .l,.page h1,.proj h1{animation:clarify .9s var(--ease-out) both}
+.hero h1 .l:nth-child(2){animation-delay:90ms}
+.hero h1 .l:nth-child(3){animation-delay:180ms}
+
+.rv{opacity:0;transform:translateY(14px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);transition-delay:var(--d,0ms)}
+.rv.rv-media{transform:none;opacity:1;clip-path:inset(0 0 100% 0);transition:clip-path .8s var(--ease-in-out);transition-delay:var(--d,0ms)}
+.rv.in{opacity:1;transform:none}
+.rv.rv-media.in{clip-path:inset(0 0 0 0)}
+
+/* cross-page: header holds still, the rest resolves */
+@view-transition{navigation:auto}
+.nav{view-transition-name:nav}
+::view-transition-group(nav){animation-duration:0s}
+::view-transition-old(root){animation:vt-out .16s ease-out both}
+::view-transition-new(root){animation:vt-in .28s var(--ease-out) .05s both}
+::view-transition-group(proj){animation-duration:.5s;animation-timing-function:var(--ease-in-out)}
+@keyframes vt-out{to{opacity:0;filter:blur(3px)}}
+@keyframes vt-in{from{opacity:0;filter:blur(3px)}}
+
+@media(prefers-reduced-motion:reduce){
+  .hero h1 .l,.page h1,.proj h1{animation:none}
+  .rv,.rv.rv-media{transform:none;clip-path:none;transition:opacity .2s ease}
+  .thumb img,.thumb video{transition:none}
+  .work:hover .thumb img,.work:hover .thumb video{transform:none}
+  .work:active,.p:active{transform:none}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+}
