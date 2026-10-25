@@ -158,6 +158,7 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 .hero h1 .l,.page h1,.proj h1{animation:clarify .9s var(--ease-out) both}
 .hero h1 .l:nth-child(2){animation-delay:90ms}
 .hero h1 .l:nth-child(3){animation-delay:180ms}
+.hero h1 .l:nth-child(4){animation-delay:270ms}
 
 .rv{opacity:0;transform:translateY(14px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);transition-delay:var(--d,0ms)}
 .rv.rv-media{transform:none;opacity:1;clip-path:inset(0 0 100% 0);transition:clip-path .8s var(--ease-in-out);transition-delay:var(--d,0ms)}
@@ -182,3 +183,13 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
   .work:active,.p:active{transform:none}
   ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
 }
+
+/* playground zoom */
+.play .p.zoom{cursor:zoom-in}
+.zoom-dlg{border:0;padding:0;margin:0;width:100vw;max-width:none;height:100dvh;max-height:none;background:rgba(255,255,255,.96);display:none;place-items:center;overflow:hidden}
+.zoom-dlg[open]{display:grid}
+.zoom-dlg::backdrop{background:transparent}
+.zoom-dlg img{max-width:min(92vw,1400px);max-height:84dvh;width:auto;height:auto;object-fit:contain;cursor:zoom-out;border-radius:2px}
+.zoom-cap{position:absolute;left:var(--pad);bottom:var(--pad);font-size:var(--small)}
+.zoom-x{position:absolute;right:var(--pad);top:var(--pad);font:inherit;background:none;border:0;cursor:pointer;transition:transform .16s var(--ease-out)}
+.zoom-x:active{transform:scale(.97)}
