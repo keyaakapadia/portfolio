@@ -76,3 +76,10 @@ body .nav>a{flex:1 0 45%}
 body .nav .links{display:flex;gap:16px;flex-wrap:wrap}
 body .nav .last{width:100%;font-size:12px;color:#777}
 }
+
+/* quiet top and close */
+.project-page>h1{margin-bottom:0}
+.proj-intro .credit{font-size:13px;color:#86868b}
+.photo-credit{max-width:60ch;margin:56px auto 0;text-align:center;font-size:12px;line-height:1.5;color:#86868b}
+.photo-credit a{text-decoration:underline;text-underline-offset:2px}
+.process-heading h3,.visual-caption h3{text-wrap:balance}
