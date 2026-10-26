@@ -269,12 +269,27 @@ a.block{display:block}
 @media(prefers-reduced-motion:reduce){.nav-toggle span,.nav-menu{transition:none}}
 
 /* wired */
-.wired-hero{position:relative;margin:0 calc(var(--pad)*-1) var(--pad);aspect-ratio:16/9;background:var(--hatch);cursor:pointer}
+.wired-hero{position:relative;margin:0 0 var(--pad);border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:var(--hatch);cursor:pointer}
 .wired-hero iframe,.thumb.wired iframe{display:block;width:100%;height:100%;border:0;pointer-events:none}
 .thumb.wired{position:relative}
 .wired-play{position:absolute;inset:0;display:block}
 .wired-play .f1-open{background:var(--ink);color:var(--bg)}
-.wtrio{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pad);margin-bottom:var(--pad)}
-.wtrio .block{margin:0}
-@media(max-width:700px){.wired-hero{aspect-ratio:4/5}}
-@media(max-width:900px){.wtrio{grid-template-columns:1fr}}
+.proj .block.w-white{background:#fff}
+.proj.wired .block,.proj.wired .block img,.proj.wired .block video{border-radius:12px}
+.proj.wired .w-border{border-radius:16px}
+.w-border{border:10px solid var(--day,#e23478);background:var(--day,#e23478)}
+.w-video video{height:auto}
+.wflats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pad);margin-bottom:var(--pad)}
+.wflats .block{margin:0;aspect-ratio:3/4}
+.wflats .block img{height:100%;object-fit:cover}
+.block.w-mockups{aspect-ratio:16/9}
+.wduo,.wpair{display:grid;grid-template-columns:1fr 1fr;gap:var(--pad);margin-bottom:var(--pad)}
+.wpair.w-wide-left{grid-template-columns:2fr 1fr}
+.wduo .block,.wpair .block{margin:0}
+.wduo .w-sq{aspect-ratio:1/1}
+.wduo .w-sq img,.wpair .block img{height:100%;object-fit:cover}
+.wconcept{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--pad);padding:0 0 clamp(32px,5vw,72px)}
+.wconcept p{grid-column:3/5;font-size:16px;line-height:1.35;margin-bottom:1em}
+.wconcept p:first-child{font-size:clamp(18px,1.6vw,24px);line-height:1.2;letter-spacing:-.025em;font-weight:500}
+@media(max-width:900px){.wconcept p{grid-column:1/-1}}
+@media(max-width:700px){.wired-hero{aspect-ratio:4/5}.w-border{border-width:6px}.wpair,.wpair.w-wide-left{grid-template-columns:1fr}}

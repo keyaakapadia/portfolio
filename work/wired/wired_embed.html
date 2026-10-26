@@ -102,7 +102,12 @@
     {name:'split',     hue:[0,150,210,20]},
     {name:'triad',     hue:[0,120,240,0]},
   ];
+  /* hand-picked palettes for specific days: [bg, box A, box B, accent] */
+  const DAILY_OVERRIDES={
+    '2026-10-26':[[226,52,120],[255,122,44],[255,208,64],[255,176,196]],
+  };
   function generatePalette(key){
+    if(DAILY_OVERRIDES[key]) return {colors:DAILY_OVERRIDES[key].map(c=>c.slice()),scheme:'custom'};
     const r=rng(key+':wired-palette');
     const count=1+Math.floor(r()*4);
     const scheme=SCHEMES[Math.floor(r()*SCHEMES.length)];
@@ -204,11 +209,12 @@ const SCROLL_PX_PER_MIN = 4;
 const IDLE_MS      = 2500;
 
 /* ================= LAYOUT ================= */
-const MIN_MARGIN = PARAMS.get('fill')=='1' ? 0.6 : 3;   // ?fill=1 → wordmark runs nearly edge to edge
+const THUMB      = PARAMS.get('thumb')==='1';   // ?thumb=1 → letters only, stretched to fill the box
+const MIN_MARGIN = THUMB ? 0.4 : (PARAMS.get('fill')=='1' ? 0.6 : 3);   // ?fill=1 → wordmark runs nearly edge to edge
 const ROW_RATIO  = 1.3;
 const MAX_DEV    = 1;
 const MAX_DEV_Y  = 2;
-const CAP_UNITS  = 2.6;
+const CAP_UNITS  = THUMB ? 0 : 2.6;
 const FONT_CSS   = '"Saans","Helvetica Neue",Helvetica,Arial,sans-serif';
 
 /* ================= LOOK ================= */
@@ -305,7 +311,7 @@ function refreshPalette(){
   if(key===PAL_KEY) return;
   PAL_KEY=key;
   PAL=paletteAt(m/1440);
-  if(PARAMS.get('bg')==='white'){ PAL.bg=[255,255,255]; PAL.frame=[17,17,17]; }   // ?bg=white → colour stays inside the wordmark box only
+  if(PARAMS.get('dark')==='1'){ const l=rgb2lab(PAL.bg); l[0]=Math.min(l[0],13); PAL.bg=lab2rgb(l); PAL.frame=mixC([245,240,235],PAL.bg,0.12); }   // ?dark=1 → always a deep background, boxes keep the day's colours
   const root=document.documentElement.style;
   root.setProperty('--bg',hex(PAL.bg));
   root.setProperty('--fg',hex(PAL.frame));
@@ -429,8 +435,8 @@ function computeLayout(){
   }
   minX-=QUAD_PAD_X; maxX+=QUAD_PAD_X; minY-=QUAD_PAD_Y; maxY+=QUAD_PAD_Y;
   const w=maxX-minX, h=maxY-minY;
-  CW = Math.min(width/(w+2*MIN_MARGIN), height/((h+2*MIN_MARGIN)*ROW_RATIO+CAP_UNITS));
-  CH = CW*ROW_RATIO;
+  if(THUMB){ CW=width/(w+2*MIN_MARGIN); CH=height/(h+2*MIN_MARGIN); }
+  else { CW = Math.min(width/(w+2*MIN_MARGIN), height/((h+2*MIN_MARGIN)*ROW_RATIO+CAP_UNITS)); CH = CW*ROW_RATIO; }
   OX = (width-w*CW)/2 - minX*CW;
   OY = (height-(h*CH+CAP_UNITS*CW))/2 - minY*CH;
   RECT = {l:OX+minX*CW, r:OX+maxX*CW, t:OY+minY*CH, b:OY+maxY*CH};
@@ -778,6 +784,7 @@ function drawFan(s,now){
   }
 }
 function drawCaption(B){
+  if(THUMB) return;
   const d=new Date(displayTime());
   const dateStr=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
   const timeStr=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
