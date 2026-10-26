@@ -18,6 +18,7 @@
   .ui{position:fixed;z-index:3;transition:opacity .6s}
   body.idle .ui{opacity:0;pointer-events:none}
   body.idle{cursor:none}
+  .back{top:18px;left:24px;text-decoration:none}
   .top{top:18px;right:24px;display:flex;align-items:center;gap:16px}
   .bottom{left:24px;right:24px;bottom:18px;display:flex;align-items:center;gap:16px}
 
@@ -39,6 +40,7 @@
 </style>
 </head>
 <body>
+<a class="ui back txt" href="wired.html">← Back</a>
 <div class="ui top">
   <img id="thumb" class="thumb" alt="" title="Replace poster" hidden>
   <button id="clear" class="txt" title="Remove poster" hidden>×</button>
@@ -60,7 +62,7 @@
 
 <div class="drop">Drop a poster</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script src="p5.min.js"></script>
 <script>
 /* ================= TIMING ================= */
 const STEP_MS      = 5000;   // preview: one move every 5s  →  60000 for one move per minute

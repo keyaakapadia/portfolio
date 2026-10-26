@@ -68,7 +68,7 @@
 
 <div class="drop">Drop a poster</div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script src="p5.min.js"></script>
 
 <!-- ===================== DAILY PALETTE (image of the day / palette of the day) ===================== -->
 <script>
@@ -204,7 +204,7 @@ const SCROLL_PX_PER_MIN = 4;
 const IDLE_MS      = 2500;
 
 /* ================= LAYOUT ================= */
-const MIN_MARGIN = 3;
+const MIN_MARGIN = PARAMS.get('fill')=='1' ? 0.6 : 3;   // ?fill=1 → wordmark runs nearly edge to edge
 const ROW_RATIO  = 1.3;
 const MAX_DEV    = 1;
 const MAX_DEV_Y  = 2;
@@ -305,6 +305,7 @@ function refreshPalette(){
   if(key===PAL_KEY) return;
   PAL_KEY=key;
   PAL=paletteAt(m/1440);
+  if(PARAMS.get('bg')==='white'){ PAL.bg=[255,255,255]; PAL.frame=[17,17,17]; }   // ?bg=white → colour stays inside the wordmark box only
   const root=document.documentElement.style;
   root.setProperty('--bg',hex(PAL.bg));
   root.setProperty('--fg',hex(PAL.frame));
