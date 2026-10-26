@@ -40,22 +40,33 @@
 
   targets.forEach(el => el.classList.add('rv', ...(el.matches(MEDIA) ? ['rv-media'] : [])));
 
-  let batch = 0, flush;
-  const io = new IntersectionObserver(entries => {
-    entries.filter(en => en.isIntersecting).forEach(en => {
-      const el = en.target;
-      io.unobserve(el);
-      el.style.setProperty('--d', Math.min(batch++, 6) * 60 + 'ms');
-      requestAnimationFrame(() => el.classList.add('in'));
-      const done = () => el.classList.remove('rv', 'rv-media', 'in');
-      el.addEventListener('transitionend', e => { if (e.target === el) done(); }, { once: true });
-      setTimeout(done, 1600);
-    });
-    clearTimeout(flush); flush = setTimeout(() => batch = 0, 120);
-  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
-  targets.forEach(el => io.observe(el));
-  // Safety net: if observers never report (backgrounded or odd embeds), never leave content hidden.
-  setTimeout(() => { if (!batch && !flush) targets.forEach(el => { if (el.classList.contains('rv')) { io.unobserve(el); el.classList.remove('rv', 'rv-media', 'in'); } }); }, 2000);
+  // Reveal by geometry on scroll rather than IntersectionObserver: an element clipped to nothing
+  // can report as never intersecting, which left whole pages blank. Anything at or above the
+  // fold is shown, and a timer guarantees nothing stays hidden.
+  let pending = new Set(targets), batch = 0, tick = false;
+  const show = el => {
+    pending.delete(el);
+    el.style.setProperty('--d', Math.min(batch++, 6) * 60 + 'ms');
+    requestAnimationFrame(() => el.classList.add('in'));
+    const done = () => el.classList.remove('rv', 'rv-media', 'in');
+    el.addEventListener('transitionend', e => { if (e.target === el) done(); }, { once: true });
+    setTimeout(done, 1600);
+  };
+  const check = () => {
+    tick = false; batch = 0;
+    const atEnd = scrollY + innerHeight >= document.documentElement.scrollHeight - 4;
+    const limit = atEnd ? Infinity : innerHeight * 0.92;
+    pending.forEach(el => { if (el.getBoundingClientRect().top < limit) show(el); });
+    if (!pending.size) { removeEventListener('scroll', onScroll); removeEventListener('resize', onScroll); }
+  };
+  const onScroll = () => { if (!tick) { tick = true; requestAnimationFrame(check); } };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  addEventListener('load', onScroll);
+  check();
+  setTimeout(check, 400);
+  // Safety net: never leave content hidden, whatever the browser does with scroll events.
+  setTimeout(() => { pending.forEach(el => el.classList.remove('rv', 'rv-media', 'in')); pending.clear(); }, 6000);
 
   pauseOffscreenVideo();
 
