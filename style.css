@@ -216,3 +216,28 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 .f1-motion{background:#15151e;position:relative}
 .f1-motion video{display:block;width:100%}
 .f1-open{position:absolute;right:16px;top:16px;background:#e10600;color:#fff;border-radius:999px;padding:10px 16px;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+
+/* F1 atlas textures */
+.f1-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pad);margin:0 0 var(--pad)}
+.tx{position:relative;aspect-ratio:4/3;overflow:hidden;border-radius:2px;color:#fff;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;background:
+  radial-gradient(circle at 30% 20%,#ffffff12,transparent 55%),
+  repeating-conic-gradient(#1b1b25 0 25%,#15151e 0 50%) 0 0/8px 8px,#15151e}
+.tx.red{background:radial-gradient(circle at 30% 20%,#ffffff22,transparent 55%),repeating-conic-gradient(#e10600 0 25%,#c40500 0 50%) 0 0/8px 8px,#e10600}
+.tx.wide{grid-column:span 2;aspect-ratio:auto}
+.tx svg{position:absolute;inset:0;width:100%;height:100%;padding:10%}
+.tx b{position:relative;font-weight:900;font-style:italic;font-size:clamp(40px,5.5vw,84px);line-height:.85;letter-spacing:-.04em}
+.tx b i{font-size:.45em;opacity:.6;font-style:normal;margin-left:2px}
+.tx span{position:relative;font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.75;margin-top:6px}
+.tx .rings{position:absolute;inset:0;display:grid;place-items:center;padding:6%}
+.tx .rings svg{position:static;padding:0}
+.tx.carbon span{position:absolute;left:18px;bottom:16px}
+.tx.checker{background:repeating-conic-gradient(#fff 0 25%,#15151e 0 50%) 0 0/48px 48px;justify-content:center;align-items:center}
+.tx.checker b{background:#15151e;padding:12px 18px;color:#fff}
+@media(max-width:700px){.f1-tiles{grid-template-columns:1fr 1fr}.tx.wide{grid-column:span 2}}
+
+/* F1 home thumbnail: fit the whole recording on a carbon poster instead of cropping it */
+.thumb.f1{display:flex;flex-direction:column;justify-content:center;position:relative;background:radial-gradient(circle at 25% 15%,#ffffff14,transparent 55%),repeating-conic-gradient(#1b1b25 0 25%,#15151e 0 50%) 0 0/8px 8px,#15151e}
+.thumb.f1::before{content:"";position:absolute;left:0;right:0;top:0;height:14px;background:repeating-conic-gradient(#fff 0 25%,#15151e 0 50%) 0 0/14px 14px}
+.thumb.f1::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:#e10600}
+.thumb.f1 video{height:auto;aspect-ratio:16/10;object-fit:contain}
+.tx.checker b em{display:block;font:600 11px/1 var(--font);font-style:normal;letter-spacing:.1em;text-transform:uppercase;opacity:.7;margin-top:8px}

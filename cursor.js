@@ -30,9 +30,12 @@
   }
   addEventListener('mousemove', () => { if (!raf) raf = requestAnimationFrame(loop); });
 
+  // project pages keep the plain dot; the "⌘Z" pill is for the home feed only
+  const project = !!document.querySelector('main.proj');
+
   // pill over work + media, ring over links
   document.addEventListener('mouseover', e => {
-    const t = e.target.closest('.work, .p, .block, .thumb');
+    const t = !project && e.target.closest('.work, .p, .block, .thumb');
     cur.classList.toggle('pill', !!t);
     cur.classList.toggle('ring', !t && !!e.target.closest('a'));
   });
@@ -40,7 +43,7 @@
   // pressing the real shortcut flashes the pill
   let timer;
   addEventListener('keydown', e => {
-    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') {
+    if (!project && (e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z') {
       cur.classList.add('pill', 'flash');
       clearTimeout(timer);
       timer = setTimeout(() => cur.classList.remove('flash'), 900);
