@@ -277,7 +277,7 @@ a.block{display:block}
 .proj .block.w-white{background:#fff}
 .proj.wired .block,.proj.wired .block img,.proj.wired .block video{border-radius:12px}
 .proj.wired .w-border{border-radius:16px}
-.w-border{border:10px solid var(--day,#e23478);background:var(--day,#e23478)}
+.w-border{border:10px solid var(--day,#6b001f);background:var(--day,#6b001f)}
 .w-video video{height:auto}
 .wflats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pad);margin-bottom:var(--pad)}
 .wflats .block{margin:0;aspect-ratio:3/4}

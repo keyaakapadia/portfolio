@@ -303,6 +303,13 @@ function paletteAt(frac){
   const frame=tuneFor(farthest(bg,C.filter(c=>labDist(c,bg)>6))||bg, bg);
   return {bg,boxA,boxB,frame,inksA:inkOptions(boxA,C),inksB:inkOptions(boxB,C)};
 }
+/* tell the host page which colour is behind the wordmark (used for borders around its other work) */
+function announceBg(){
+  if(!PAL||window.parent===window) return;
+  const c='#'+PAL.bg.map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');
+  window.parent.postMessage({wiredBg:c},'*');
+}
+addEventListener('message',e=>{ if(e.data&&e.data.wiredAsk) announceBg(); });
 let PAL_KEY=null, PAL_VER=0;
 function applyPalette(){ ROLES=baseRoles(); PAL_VER++; PAL_KEY=null; refreshPalette(); }
 function refreshPalette(){
@@ -312,6 +319,7 @@ function refreshPalette(){
   PAL_KEY=key;
   PAL=paletteAt(m/1440);
   if(PARAMS.get('dark')==='1'){ const l=rgb2lab(PAL.bg); l[0]=Math.min(l[0],13); PAL.bg=lab2rgb(l); PAL.frame=mixC([245,240,235],PAL.bg,0.12); }   // ?dark=1 → always a deep background, boxes keep the day's colours
+  announceBg();
   const root=document.documentElement.style;
   root.setProperty('--bg',hex(PAL.bg));
   root.setProperty('--fg',hex(PAL.frame));

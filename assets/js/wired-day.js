@@ -1,17 +1,13 @@
-// Wired page: borders take the main colour of the day, read from the live embed.
+// Wired page: borders and their backing take the colour behind the live embed, as the embed reports it.
 (() => {
   const frame = document.querySelector('.wired-hero iframe');
   if (!frame) return;
-  let last = '';
-  const read = () => {
-    try {
-      const c = frame.contentWindow.eval('IMG_COLORS && IMG_COLORS[0]');
-      if (!c || c.length !== 3) return;
-      const hex = '#' + c.map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
-      if (hex !== last) { last = hex; document.documentElement.style.setProperty('--day', hex); }
-    } catch (e) {}
-  };
-  read();
-  setInterval(read, 1000);
-  frame.addEventListener('load', read);
+  addEventListener('message', e => {
+    if (e.source !== frame.contentWindow) return;
+    const c = e.data && e.data.wiredBg;
+    if (/^#[0-9a-f]{6}$/i.test(c)) document.documentElement.style.setProperty('--day', c);
+  });
+  const ask = () => { try { frame.contentWindow.postMessage({ wiredAsk: 1 }, '*'); } catch (e) {} };
+  frame.addEventListener('load', ask);
+  setInterval(ask, 2000);
 })();
