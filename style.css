@@ -278,3 +278,7 @@ a.block{display:block}
 .wtrio{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pad);margin-bottom:var(--pad)}
 .wtrio .block{margin:0}
 @media(max-width:900px){.wgrid{grid-template-columns:repeat(2,1fr)}.wtrio{grid-template-columns:1fr}.wired-hero{height:70svh}}
+.wired-page body{background:var(--bg);transition:background .6s}
+.wired-page{transition:background .6s}
+.wired-page .proj .block{border:6px solid var(--bg);background:var(--bg);transition:border-color .6s,background .6s}
+.wired-page .wgrid .block{aspect-ratio:auto}
