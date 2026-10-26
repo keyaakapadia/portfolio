@@ -269,15 +269,15 @@ a.block{display:block}
 @media(prefers-reduced-motion:reduce){.nav-toggle span,.nav-menu{transition:none}}
 
 /* wired */
-.wired-hero{position:relative;margin:0 0 var(--pad);border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:var(--hatch);cursor:pointer}
+.wired-hero{position:relative;margin:0 0 var(--pad);overflow:hidden;aspect-ratio:16/9;background:var(--hatch);cursor:pointer}
 .wired-hero iframe,.thumb.wired iframe{display:block;width:100%;height:100%;border:0;pointer-events:none}
 .thumb.wired{position:relative}
 .wired-play{position:absolute;inset:0;display:block}
 .wired-play .f1-open{background:var(--ink);color:var(--bg)}
 .proj .block.w-white{background:#fff}
-.proj.wired .block,.proj.wired .block img,.proj.wired .block video{border-radius:12px}
-.proj.wired .w-border{border-radius:16px}
-.w-border{border:10px solid var(--day,#6b001f);background:var(--day,#6b001f)}
+.proj.wired .block,.proj.wired .block img,.proj.wired .block video{border-radius:0}
+.proj.wired .w-border{border-radius:0}
+.w-border{border:10px solid var(--day,#6b001f);background:var(--day,#6b001f);transition:border-color 1.2s,background-color 1.2s}
 .w-video video{height:auto}
 .wflats{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pad);margin-bottom:var(--pad)}
 .wflats .block{margin:0;aspect-ratio:3/4}
