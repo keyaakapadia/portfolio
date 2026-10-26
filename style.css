@@ -160,17 +160,6 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 .tag{transition:background-color .15s ease,color .15s ease}
 @media(hover:hover) and (pointer:fine){a.work:hover .tag{background:var(--ink);color:var(--bg)}}
 
-@keyframes clarify{from{opacity:0;transform:translateY(.22em);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
-.hero h1 .l,.page h1,.proj h1{animation:clarify .9s var(--ease-out) both}
-.hero h1 .l:nth-child(2){animation-delay:90ms}
-.hero h1 .l:nth-child(3){animation-delay:180ms}
-.hero h1 .l:nth-child(4){animation-delay:270ms}
-
-.rv{opacity:0;transform:translateY(14px);transition:opacity .5s var(--ease-out),transform .5s var(--ease-out);transition-delay:var(--d,0ms)}
-.rv.rv-media{transform:none;opacity:1;clip-path:inset(0 0 100% 0);transition:clip-path .8s var(--ease-in-out);transition-delay:var(--d,0ms)}
-.rv.in{opacity:1;transform:none}
-.rv.rv-media.in{clip-path:inset(0 0 0 0)}
-
 /* cross-page: header holds still, the rest resolves */
 @view-transition{navigation:auto}
 .nav{view-transition-name:nav}
@@ -182,8 +171,6 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 @keyframes vt-in{from{opacity:0;filter:blur(3px)}}
 
 @media(prefers-reduced-motion:reduce){
-  .hero h1 .l,.page h1,.proj h1{animation:none}
-  .rv,.rv.rv-media{transform:none;clip-path:none;transition:opacity .2s ease}
   .thumb img,.thumb video{transition:none}
   .work:hover .thumb img,.work:hover .thumb video{transform:none}
   .work:active,.p:active{transform:none}
