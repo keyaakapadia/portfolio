@@ -238,3 +238,10 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 .tx.speed{grid-column:1/-1;aspect-ratio:24/7;padding:0}
 .tx.speed img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .tx.speed span{position:absolute;left:18px;bottom:16px}
+
+.masonry.balanced{columns:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pad);align-items:start}
+.masonry.balanced .mcol{display:flex;flex-direction:column;gap:var(--pad)}
+.masonry.balanced .block{margin:0}
+@media(max-width:900px){.masonry.balanced{grid-template-columns:1fr}}
+
+a.block{display:block}

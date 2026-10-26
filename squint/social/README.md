@@ -41,3 +41,12 @@ Posts, stories and the grid were composed as native SVG layouts using the existi
 Final phone-mockup prompt:
 
 One polished photorealistic landscape 3:2 studio photograph presenting a social media campaign on two contemporary thin black smartphones, on a pure black background. Input 1 is the exact nine-post campaign grid for the left phone; preserve the imagery, colors, headlines and three-column tile arrangement. Input 2 is the exact vertical story for the right phone. Left phone slightly taller and further back, right phone in front at a restrained eight-degree angle. Both stand supported by a matte black tabletop, with believable contact shadow and subtle edge light. Screens are large and clear; phones fill 90% of image height. The left screen has a minimal dark profile header reading only “Squint” and the supplied grid, without follower counts, fake engagement or invented handles. Right screen shows the supplied story verbatim. Realistic proportions and restrained reflection; no floating phones, hands, props, presentation labels, watermarks, outside captions or website address. Standalone photographic mockup only.
+
+## Revised presentation
+
+- `previews/iphone-post-screen.png`: flat, composed social feed screen with the exact campaign artwork; 1170 × 2532. This is a concept interface, not a screenshot of a live account.
+- `previews/iphone-post-mockup.png`: the same screen in a simple front-facing phone frame on a neutral background; 1600 × 3000.
+- `previews/campaign-post-set.png`: six separate posts arranged on a neutral surface; 3300 × 2250.
+- Matching self-contained SVGs are in `source/`.
+
+The primary `social-phone-mockup.png` now uses the revised phone presentation. The previous generated two-phone photograph is retained in `archive/generated-phone-mockup.png`. The revised layouts were composed directly from the exported posts, without generative reinterpretation of the artwork or lettering.
