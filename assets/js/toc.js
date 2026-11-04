@@ -1,31 +1,33 @@
-// Case study contents: the list on the left follows the section you are reading.
+// Case study progress bar: each segment fills as you read through its section,
+// and the one you are in is marked current.
 (() => {
   const toc = document.querySelector('.toc');
   if (!toc) return;
-  const list = toc.querySelector('ol');
   const links = [...toc.querySelectorAll('a[href^="#"]')];
   const secs = links.map(a => document.getElementById(a.hash.slice(1)));
+  if (secs.some(s => !s)) return;
   let cur = -1;
 
   const set = i => {
     if (i === cur) return;
     cur = i;
     links.forEach((a, j) => j === i ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current'));
-    // phones: the list is a sideways strip, so keep the current item in view.
-    // Jump rather than animate, so it never interrupts the page's own smooth scroll.
-    if (list.scrollWidth > list.clientWidth) {
-      const a = links[i];
-      list.scrollLeft = a.offsetLeft - (list.clientWidth - a.offsetWidth) / 2;
-    }
   };
 
-  // the current section is the last one whose heading has reached a line near the top;
-  // at the very bottom the last sections can't reach it, so take the last one on screen
+  // reading line sits near the top; at the very bottom the last sections can't reach it,
+  // so the line drops to the bottom edge and everything left fills
   const update = () => {
     const end = scrollY + innerHeight >= document.documentElement.scrollHeight - 4;
     const line = end ? innerHeight : Math.min(innerHeight * 0.25, 160);
+    const tops = secs.map(s => s.getBoundingClientRect().top);
+    const bottom = secs[secs.length - 1].getBoundingClientRect().bottom;
     let i = 0;
-    secs.forEach((s, j) => { if (s && s.getBoundingClientRect().top <= line) i = j; });
+    tops.forEach((t, j) => {
+      if (t <= line) i = j;
+      const next = j + 1 < tops.length ? tops[j + 1] : bottom;
+      const p = Math.min(1, Math.max(0, (line - t) / (next - t)));
+      links[j].style.setProperty('--p', p.toFixed(3));
+    });
     set(i);
   };
 
