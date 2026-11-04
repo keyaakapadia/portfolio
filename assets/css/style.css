@@ -290,10 +290,6 @@ a.block{display:block}
 .wduo .block,.wpair .block{margin:0}
 .wduo .w-sq{aspect-ratio:1/1}
 .wduo .w-sq img,.wpair .block img{height:100%;object-fit:cover}
-.wconcept{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--pad);padding:0 0 clamp(32px,5vw,72px)}
-.wconcept p{grid-column:3/5;font-size:16px;line-height:1.35;margin-bottom:1em}
-.wconcept p:first-child{font-size:clamp(18px,1.6vw,24px);line-height:1.2;letter-spacing:-.025em;font-weight:500}
-@media(max-width:900px){.wconcept p{grid-column:1/-1}}
 @media(max-width:700px){.wired-hero{aspect-ratio:4/5}.w-border{border-width:6px}.wpair,.wpair.w-wide-left{grid-template-columns:1fr}}
 
 .wbento{--h:clamp(220px,32vw,440px);display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:var(--h) var(--h) calc(var(--h)*1.5);gap:var(--pad);margin-bottom:var(--pad)}
@@ -309,3 +305,42 @@ a.block{display:block}
 .wlaptop .block img{height:100%;object-fit:cover}
 .proj .block.w-last img{height:clamp(420px,62vw,780px);object-fit:contain}
 @media(max-width:700px){.wlaptop{grid-template-columns:1fr}}
+
+/* case study: title, hero, then a contents list that sticks on the left while the sections scroll */
+.cs-hero{margin-top:clamp(28px,4vw,56px)}
+.cs{display:grid;grid-template-columns:repeat(4,1fr);gap:0 var(--pad);padding:clamp(48px,7vw,104px) 0 0}
+.toc{grid-column:1;align-self:start;position:sticky;top:clamp(24px,3vw,40px)}
+.toc ol{position:relative;list-style:none;display:flex;flex-direction:column;gap:12px}
+.toc a{display:flex;align-items:center;gap:12px;color:var(--muted);transition:color .2s ease}
+.toc a::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--line);transition:background-color .2s ease}
+.toc a[aria-current]{color:var(--ink)}
+.toc a[aria-current]::before{background:var(--ink)}
+@media(hover:hover) and (pointer:fine){.toc a:hover{opacity:1;color:var(--ink)}}
+.cs-main{grid-column:2/5;min-width:0}
+.cs-sec{scroll-margin-top:clamp(24px,3vw,40px)}
+.cs-sec+.cs-sec{margin-top:clamp(72px,9vw,136px)}
+.cs-sec h2{font-weight:500;font-size:clamp(26px,2.6vw,38px);line-height:1.05;letter-spacing:-.035em;margin-bottom:clamp(16px,1.6vw,24px)}
+.cs-sec>p{font-size:16px;line-height:1.4;max-width:36em}
+.cs-sec>p+p{margin-top:1em}
+.cs-sec>p+:not(p){margin-top:clamp(28px,3vw,48px)}
+.cs-sec>:last-child{margin-bottom:0}
+.cs-sec>.cs-lede{font-weight:500;font-size:clamp(22px,2.2vw,32px);line-height:1.15;letter-spacing:-.03em;max-width:22em}
+
+/* spec sheet: year, tools, discipline, context */
+.spec{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--pad)}
+.spec>div{border-top:1px solid var(--ink);padding:12px 0 clamp(24px,3vw,40px)}
+.spec dt{margin-bottom:10px}
+.spec dd{font-size:16px;line-height:1.35}
+.spec dd .tag{margin:0 6px 6px 0}
+.spec+.play-btn{margin-top:4px}
+.cs .wbento{--h:clamp(200px,24vw,340px)}
+
+@media(max-width:900px){
+  .cs{display:block}
+  .toc{top:0;z-index:50;background:var(--bg);margin:0 calc(-1*var(--pad)) clamp(28px,6vw,48px);border-bottom:1px solid var(--line)}
+  .toc ol{flex-direction:row;gap:22px;overflow-x:auto;padding:14px var(--pad);scrollbar-width:none}
+  .toc ol::-webkit-scrollbar{display:none}
+  .toc a{gap:8px;white-space:nowrap}
+  .cs-sec{scroll-margin-top:64px}
+}
+@media(max-width:560px){.spec{grid-template-columns:1fr}}
