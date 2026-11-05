@@ -1,6 +1,6 @@
 // Wired page: borders and their backing take the colour behind the live embed, as the embed reports it.
 (() => {
-  const frame = document.querySelector('.wired-hero iframe');
+  const frame = document.querySelector('.wired-hero iframe, .cover iframe');
   if (!frame) return;
   addEventListener('message', e => {
     if (e.source !== frame.contentWindow) return;

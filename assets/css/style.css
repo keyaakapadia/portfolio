@@ -26,10 +26,10 @@ h1,h2{text-wrap:balance}
 .nav a.on{text-decoration:underline;text-underline-offset:3px}
 .nav .last{text-align:left;white-space:nowrap}
 
-/* hero */
-.hero{padding:clamp(56px,11vw,160px) var(--pad) clamp(40px,5vw,72px)}
-.hero h1{font-weight:500;font-size:var(--hero);line-height:.98;letter-spacing:-.045em}.hero h1 .l{display:block}@media(max-width:700px){.hero h1{font-size:clamp(34px,10vw,48px)}}
-.hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--pad);padding:clamp(40px,6vw,88px) 0 0;align-items:start}
+/* hero: sized to the screen height too, so the first projects peek in at the bottom */
+.hero{padding:clamp(32px,min(7vw,10vh),112px) var(--pad) clamp(20px,2.4vw,36px)}
+.hero h1{font-weight:500;font-size:clamp(36px,min(5.6vw,9vh),84px);line-height:.98;letter-spacing:-.045em}.hero h1 .l{display:block}@media(max-width:700px){.hero h1{font-size:clamp(34px,10vw,48px)}}
+.hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--pad);padding:clamp(24px,min(3.4vw,5vh),52px) 0 0;align-items:start}
 .hero-meta .intro{grid-column:1/3;max-width:34em;line-height:1.35}
 .hero-meta .now{grid-column:3/5;line-height:1.35}
 .hero-meta .now b{font-weight:500}
@@ -43,7 +43,8 @@ h1,h2{text-wrap:balance}
 .work:hover{opacity:1}
 @media(hover:hover) and (pointer:fine){.work:hover .thumb img,.work:hover .thumb video{transform:scale(1.03)}}
 .work h2{font-weight:500;font-size:16px;margin:16px 0 10px;letter-spacing:-.015em}
-.tag{display:inline-block;border:1px solid var(--ink);border-radius:3px;padding:3px 7px;font-size:11px;letter-spacing:.04em;text-transform:uppercase;margin:0 6px 10px 0}
+.tag{display:inline-block;border:1px solid var(--ink);border-radius:999px;padding:3px 10px;font-size:12px;letter-spacing:0;text-transform:lowercase;margin:0 6px 10px 0}
+.tag::first-letter{text-transform:uppercase}
 .work p{max-width:32em;line-height:1.35;color:#222}
 
 /* text pages */
@@ -195,7 +196,8 @@ a.block:hover{opacity:1}a.block:hover .note{opacity:1}
 .work[hidden]{display:none}
 .tag-filter{display:flex;gap:16px;align-items:center;padding:0 var(--pad) 28px;font-size:var(--small)}
 .tag-filter[hidden]{display:none}
-.tag-filter b{font-weight:500;text-transform:uppercase;letter-spacing:.04em;font-size:11px;border:1px solid var(--ink);border-radius:3px;padding:3px 7px;margin-left:4px}
+.tag-filter b{display:inline-block;font-weight:500;font-size:12px;border:1px solid var(--ink);border-radius:999px;padding:3px 10px;margin-left:4px}
+.tag-filter b::first-letter{text-transform:uppercase}
 .tag-filter button{font:inherit;color:var(--muted);background:none;border:0;cursor:pointer;padding:0}
 .tag-filter button:hover{color:var(--ink)}
 
@@ -306,53 +308,105 @@ a.block{display:block}
 .proj .block.w-last img{height:clamp(420px,62vw,780px);object-fit:contain}
 @media(max-width:700px){.wlaptop{grid-template-columns:1fr}}
 
-/* case study: title, hero, then a progress bar that sticks to the top while the sections scroll */
-.cs-hero{margin-top:clamp(28px,4vw,56px)}
-.cs{padding-top:clamp(24px,3vw,40px)}
-
-/* progress bar: one numbered segment per section, each fills as you read through it */
-.toc{position:sticky;top:0;z-index:50;background:var(--bg);margin:0 calc(-1*var(--pad));padding:14px var(--pad) 12px}
-.toc ol{list-style:none;display:flex;gap:6px;counter-reset:toc}
-.toc li{flex:1 1 0;min-width:0;transition:flex-grow .4s var(--ease-out)}
-.toc a{--p:0;display:block;padding-bottom:12px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);transition:color .2s ease;
-  background:linear-gradient(var(--ink),var(--ink)) 0 100%/calc(var(--p)*100%) 2px no-repeat,linear-gradient(var(--line),var(--line)) 0 100%/100% 2px no-repeat}
-.toc a::before{counter-increment:toc;content:counter(toc,decimal-leading-zero);margin-right:8px;font-variant-numeric:tabular-nums}
+/* case study: the cover (styled below), then a rail on the left that fills as you read, beside
+   sections that each open with a rule, the heading on the left and the words on the right */
+.cs{display:grid;grid-template-columns:repeat(4,1fr);gap:0 var(--pad);padding-top:clamp(24px,3vw,40px)}
+.toc{grid-column:1;align-self:start;position:sticky;top:clamp(24px,3vw,40px);z-index:5}
+.toc ol{list-style:none}
+.toc a{--p:0;display:block;padding:3px 0 16px 18px;color:var(--muted);line-height:1.3;transition:color .2s ease;
+  background:linear-gradient(var(--ink),var(--ink)) 0 0/2px calc(var(--p)*100%) no-repeat,linear-gradient(var(--line),var(--line)) 0 0/2px 100% no-repeat}
+.toc li:last-child a{padding-bottom:3px}
 .toc a[aria-current]{color:var(--ink)}
 @media(hover:hover) and (pointer:fine){.toc a:hover{opacity:1;color:var(--ink)}}
-
-/* sections: a rule, the heading on the left, words on the right, media full width */
-.cs-main{counter-reset:cs;padding-top:clamp(40px,5vw,72px)}
-.cs-sec{counter-increment:cs;display:grid;grid-template-columns:repeat(4,1fr);gap:0 var(--pad);align-items:start;border-top:1px solid var(--ink);padding-top:16px;scroll-margin-top:72px}
+.cs-main{grid-column:2/5;min-width:0;counter-reset:cs 1}
+.cs-sec{counter-increment:cs;display:grid;grid-template-columns:repeat(3,1fr);gap:0 var(--pad);align-items:start;border-top:1px solid var(--ink);padding-top:16px;scroll-margin-top:clamp(24px,3vw,40px)}
 .cs-sec+.cs-sec{margin-top:clamp(64px,8vw,120px)}
-.cs-sec>h2{grid-column:1/3;font-weight:500;font-size:clamp(26px,2.6vw,38px);line-height:1.05;letter-spacing:-.035em}
+.cs-sec>h2{grid-column:1;font-weight:500;font-size:clamp(24px,2.4vw,34px);line-height:1.05;letter-spacing:-.035em}
 .cs-sec>h2::before{content:counter(cs,decimal-leading-zero);vertical-align:top;margin-right:12px;font-size:11px;font-weight:400;letter-spacing:.05em;color:var(--muted);font-variant-numeric:tabular-nums}
-.cs-sec>p{grid-column:3/5;font-size:16px;line-height:1.4;max-width:36em}
+.cs-sec>p{grid-column:2/4;font-size:16px;line-height:1.4;max-width:36em}
 .cs-sec>p+p{margin-top:1em}
 .cs-sec>:not(h2,p){grid-column:1/-1;margin-top:clamp(28px,3vw,48px)}
 .cs-sec>:not(h2,p)~:not(h2,p){margin-top:0}
+.cs-sec>.play-btn{grid-column:2/4;justify-self:start;margin-top:clamp(24px,2.4vw,36px)}
 .cs-sec>:last-child{margin-bottom:0}
 
-/* overview: the line on the left, the spec sheet on the right */
-.cs-sec>.cs-lede{grid-column:1/3;font-weight:500;font-size:clamp(22px,2.2vw,32px);line-height:1.15;letter-spacing:-.03em;max-width:20em}
-.cs-sec>.spec{grid-column:3/5;grid-row:1/span 2;margin-top:0}
-.cs-sec>.play-btn{grid-column:1/3;justify-self:start;margin-top:clamp(20px,2vw,32px)}
-.spec{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--pad)}
-.spec>div{padding-bottom:clamp(20px,2.4vw,32px)}
-.spec>div:nth-child(n+3){border-top:1px solid var(--line);padding-top:12px}
-.spec dt{margin-bottom:8px}
-.spec dd{font-size:16px;line-height:1.35}
-.spec dd .tag{margin:0 6px 6px 0}
-
 @media(max-width:900px){
-  .toc ol{gap:4px}
+  .cs{display:block}
+  .toc{top:0;z-index:50;background:var(--bg);margin:0 calc(-1*var(--pad)) 32px;padding:12px var(--pad)}
+  .toc ol{display:flex;gap:4px}
+  .toc li{flex:1 1 0;min-width:0;transition:flex-grow .4s var(--ease-out)}
   .toc li:has(>a[aria-current]){flex-grow:6}
+  .toc a,.toc li:last-child a{padding:0 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;
+    background:linear-gradient(var(--ink),var(--ink)) 0 100%/calc(var(--p)*100%) 2px no-repeat,linear-gradient(var(--line),var(--line)) 0 100%/100% 2px no-repeat}
   .toc a:not([aria-current]){color:transparent}
   .cs-sec{display:block;scroll-margin-top:64px}
   .cs-sec>h2{margin-bottom:16px}
-  .cs-sec>.spec{margin-top:28px}
-}
-@media(max-width:560px){
-  .spec{grid-template-columns:1fr}
-  .spec>div:nth-child(n+2){border-top:1px solid var(--line);padding-top:12px}
+  .cs-sec>.play-btn{display:inline-block}
 }
 @media(prefers-reduced-motion:reduce){.toc li{transition:none}}
+
+/* trial (index2): the first screen is the project. Video on top with the title on it, a black
+   strip below with the line, tags and a nudge to read on. The nav and cursor float over in
+   difference mode, so they read on dark video and white page alike */
+.cover{display:flex;flex-direction:column;height:100vh;height:100svh;min-height:560px;background:#000;color:#fff}
+.cover-media{position:relative;flex:1;min-height:0;overflow:hidden}
+.cover-media>video,.cover-media>img,.cover-media>iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.cover-media>iframe{pointer-events:none}
+.cover-media::after{content:"";position:absolute;inset:auto 0 0;height:50%;background:linear-gradient(to top,rgba(0,0,0,.5),transparent);pointer-events:none}
+.cover h1{position:absolute;z-index:1;left:var(--pad);right:var(--pad);bottom:clamp(16px,2vw,28px);font-weight:500;font-size:var(--hero);line-height:.98;letter-spacing:-.045em}
+.cover-info{display:grid;grid-template-columns:repeat(4,1fr);gap:0 var(--pad);padding:var(--pad) var(--pad) 0}
+.cover-lede{grid-column:1/3;font-weight:500;font-size:clamp(18px,1.6vw,24px);line-height:1.2;letter-spacing:-.025em;max-width:24em}
+.cover-meta{grid-column:3/5;display:flex;flex-direction:column;gap:4px;line-height:1.35}
+.cover-meta .tag{border-color:currentColor;margin:0 6px 6px 0}
+.cover-meta .tag:hover{background:#fff;color:#000}
+.cover-meta .dim{color:rgba(255,255,255,.55)}
+.cover-cue{grid-column:1/-1;display:flex;align-items:center;gap:10px;margin-top:clamp(20px,2.4vw,32px);padding:14px 0 var(--pad);border-top:1px solid rgba(255,255,255,.25)}
+.cover-cue::after{content:"\2193";display:inline-block;animation:cue 1.8s var(--ease-in-out) infinite}
+@keyframes cue{50%{transform:translateY(4px)}}
+body:has(.cover) .nav{position:absolute;top:0;left:0;right:0;z-index:10;color:#fff;mix-blend-mode:difference;view-transition-name:none}
+body:has(.cover) .nav-toggle{color:inherit}
+body:has(.cover) .nav-toggle span{background:currentColor}
+body:has(.cover) #cur{mix-blend-mode:difference}
+body:has(.cover) #cur .dot{background:#fff}
+
+/* the story: no headings or labels. A rail on the left fills as you read, named with a few
+   words from each passage, and the passages drift left and right between the pictures */
+.og{display:grid;grid-template-columns:repeat(4,1fr);gap:0 var(--pad)}
+.og-rail{grid-column:1;align-self:start;position:sticky;top:clamp(24px,3vw,40px);z-index:5}
+.og-rail ol{list-style:none}
+.og-rail a{--p:0;display:block;padding:3px 0 16px 18px;color:var(--muted);line-height:1.3;transition:color .2s ease;
+  background:linear-gradient(var(--ink),var(--ink)) 0 0/2px calc(var(--p)*100%) no-repeat,linear-gradient(var(--line),var(--line)) 0 0/2px 100% no-repeat}
+.og-rail li:last-child a{padding-bottom:3px}
+.og-rail a[aria-current]{color:var(--ink)}
+@media(hover:hover) and (pointer:fine){.og-rail a:hover{opacity:1;color:var(--ink)}}
+.og-main{grid-column:2/5;min-width:0}
+.og-sec{scroll-margin-top:clamp(24px,3vw,40px)}
+.og-sec+.og-sec{margin-top:clamp(96px,12vw,180px)}
+.og-sec>.say{font-weight:500;font-size:clamp(24px,2.6vw,40px);line-height:1.12;letter-spacing:-.035em;max-width:18em}
+.og-sec:nth-child(even)>.say{margin-left:auto}
+.og-sec>p:not(.say){font-size:16px;line-height:1.45;max-width:30em;margin-left:auto;margin-right:clamp(0px,6vw,96px)}
+.og-sec>.say+p{margin-top:clamp(20px,2vw,32px)}
+.og-sec>p+:not(p){margin-top:clamp(40px,5vw,72px)}
+.og-sec>.block.sm{width:78%}
+.og-sec:nth-child(even)>.block.sm{margin-left:auto}
+.og-sec>.play-btn{margin-top:clamp(28px,3vw,44px)}
+.og-sec>:last-child{margin-bottom:0}
+
+@media(max-width:900px){
+  .cover-lede,.cover-meta{grid-column:1/-1}.cover-meta{margin-top:16px}
+  .og{display:block}
+  .og-rail{top:0;z-index:50;background:var(--bg);margin:0 calc(-1*var(--pad)) 32px;padding:12px var(--pad)}
+  .og-rail ol{display:flex;gap:4px}
+  .og-rail li{flex:1 1 0;min-width:0;transition:flex-grow .4s var(--ease-out)}
+  .og-rail li:has(>a[aria-current]){flex-grow:6}
+  .og-rail a,.og-rail li:last-child a{padding:0 0 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;
+    background:linear-gradient(var(--ink),var(--ink)) 0 100%/calc(var(--p)*100%) 2px no-repeat,linear-gradient(var(--line),var(--line)) 0 100%/100% 2px no-repeat}
+  .og-rail a:not([aria-current]){color:transparent}
+  .og-sec{scroll-margin-top:64px}
+  .og-sec:nth-child(even)>.say{margin-left:0}
+  .og-sec>p:not(.say){margin-left:0;margin-right:0}
+  .og-sec>.block.sm{width:100%}
+}
+@media(max-width:700px){body:has(.cover) .nav.open{mix-blend-mode:normal;color:var(--ink);background:var(--bg)}}
+@media(prefers-reduced-motion:reduce){.cover-cue::after{animation:none}.og-rail li{transition:none}}
+
